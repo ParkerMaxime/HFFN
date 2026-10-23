@@ -1,0 +1,99 @@
+{
+  "files": [
+    {
+      "path": "../../../common/llm/training/native/hffn_compact_g4_training.cpp",
+      "sha256": "5267a5bb531f76505c60cdde3f024878de06804e2b7f7398ed356769354cb3de",
+      "role": "G4 training kernel, one copy for the x86 and M1 training leaves; the group count is read from g4_contract.h"
+    },
+    {
+      "path": "../../../common/llm/training/torch_extension/hffn_compact_torch_binding.cpp",
+      "sha256": "c6cf9be4141d3ffd479d44e8d56fa1f63f3f70687655cfdfb3d0f2dbbe26b99b",
+      "role": "Torch binding of the G4 training kernel"
+    },
+    {
+      "path": "../../../common/llm/training/native/g4_contract.h",
+      "sha256": "74c28eb210bc965a4464cf1e626a4293d863e2d41aab577136caa037c21c0305",
+      "role": "the group count of the G4 contract (kG4Groups = 4)"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/compact_model.py",
+      "sha256": "a573d3897111526bf40edd060b30bbdf052e7947c57d40bf1b4134f9a50328b5",
+      "role": "compact model and optimizer; zero_grad and step follow torch.optim semantics; cold state_dict and load_state_dict"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/compact_direct_loader.py",
+      "sha256": "16b6f773cbed85b53bcf583dae4a3a5e40db54dc988cc5aee1a18bb8c5e69541",
+      "role": "compact loading, on the forward of the sibling inference kernel"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/compact_export.py",
+      "sha256": "c465ea949b68e0cddc8e762be29be512f8f1fc20d5385854070935f7b65d40be",
+      "role": "conversion of a padded layer to the compact format"
+    },
+    {
+      "path": "../../../../common/pythia/hffn_pythia/export.py",
+      "sha256": "3881ed36970f651c940a2bec8cfe847de4b20c61caf8043c88f63b551f7bea9f",
+      "role": "reader of the compact exports (groups=True for the training runtime), shared with the Pythia inference leaves"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/padded_export.py",
+      "sha256": "b652cc884dd043dd375b38a76044474556848a78da2f13f5329cefbbee5662b0",
+      "role": "reader of the padded export format"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/compact_runtime.py",
+      "sha256": "d9f7a0cf5edb96447fd949a22df6be1775e1617cb33029787cecd0201132448c",
+      "role": "compact training runtime, with cold state_dict and load_state_dict"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/compact_checkpoint.py",
+      "sha256": "5090f84540ad6d2f2d7b2a15acce39cca7b911771bb9a24e2c648b16c57a8548",
+      "role": "save and restore of the compact runtime and of the compact optimizer"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/padded_import.py",
+      "sha256": "78d7c694ff4fcdee49bb036b936795990021c0095d5235e3ffcdc59fc426baae",
+      "role": "cold import of a padded training checkpoint into the compact runtime"
+    },
+    {
+      "path": "hffn_training_runtime/forward_entry.py",
+      "sha256": "22ff18a6fc9171130ecbee437d1c4f8cf497b87f33892f633cfea75113a8530e",
+      "role": "entry of the forward of this leaf: the sibling inference kernel"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/forward_route_check.py",
+      "sha256": "0278bbc484d741e69b215b78fa312d735d0efe7ffe9dda5d1471c05ff699655c",
+      "role": "check of the forward route, one copy for x86 and M1"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/masked_reference.py",
+      "sha256": "471730b3b96b6965416217b454aa47dced82cafc2c78944d1a941e919fc3ea56",
+      "role": "dense fixed-support reference of the checks (a control)"
+    },
+    {
+      "path": "../../../common/llm/training/hffn_training_runtime/compact_torch_extension.py",
+      "sha256": "90e0be38177001c70850e5b88099da948a54936f21c3f8500c0c18ce75610b0b",
+      "role": "build and load of the training extension"
+    },
+    {
+      "path": "hffn_training_runtime/build_entry.py",
+      "sha256": "88b23b0f35f9dcb3daad928b41410e78c955669cb93a3d795b5c47c5d0dcc552",
+      "role": "build constants of this leaf (name, flags, link arguments)"
+    },
+    {
+      "path": "hffn_training_runtime/__init__.py",
+      "sha256": "9ff68b7663ee65442891b1a747aa795eb52002ccf118648fbe6cf6a253d741cb",
+      "role": "compact names; the package path extends to the shared level"
+    },
+    {
+      "path": "../../common/hffn_x86_common/inference.py",
+      "sha256": "4d4a8c64a47c24a5b938ebf0fa163a4edd1a4e7fe2791ab32ac50ca47256a18d",
+      "role": "x86 inference binding, with the isolated N = 1 sidecar and the ordinary inference library"
+    },
+    {
+      "path": "../../common/kernels/hffn_compact_g4_inference_n1.cpp",
+      "sha256": "7f5eaa934f41bbcd2aa33ffbf2824aaa84a2e9aecfdd2d6bf8ba7ae58e55a95f",
+      "role": "N = 1 sidecar: a materializing entry compiled as a hidden-visibility library that includes the shared inference kernel source"
+    }
+  ]
+}

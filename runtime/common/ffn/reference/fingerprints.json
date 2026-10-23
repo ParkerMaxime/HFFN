@@ -1,0 +1,8 @@
+{
+  "description": "SHA-256 of the arrays of each generated test layer (hffn_ffn_layers.layers.FIELDS) followed by the benchmark inputs for N in hffn_ffn_layers.layers.FINGERPRINT_N; checked by hffn_ffn_layers.layers.load",
+  "fingerprints": {
+    "homog_256_1024": "fcb2b2a23999a40ba441d0553885ca55b2065be2adbd7c269d8796939eed0da0",
+    "homog_512_2048": "3fa3ec558aa322580f9619fa96f5a946d1b0ec5c86f170924d9dc850a42747af",
+    "irreg_512_2048": "315a16a09dd74e623ddfba0a06212b059cbb0789ffd2b4c0d659c1891de9d014"
+  }
+}

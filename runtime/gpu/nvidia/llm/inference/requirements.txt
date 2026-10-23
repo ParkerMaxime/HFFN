@@ -1,0 +1,5 @@
+# CUDA build of PyTorch for the driver of the machine, and CuPy for CUDA 12 (NVRTC compiles the kernels at run time).
+torch
+cupy-cuda12x
+transformers==5.9.0
+safetensors

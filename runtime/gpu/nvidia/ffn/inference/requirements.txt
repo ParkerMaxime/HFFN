@@ -1,0 +1,5 @@
+# CUDA build of PyTorch for the driver of the machine, CuPy for CUDA 12 (NVRTC compiles the kernels at run time), and
+# numpy for the test layers and the float64 oracle.
+torch
+cupy-cuda12x
+numpy
