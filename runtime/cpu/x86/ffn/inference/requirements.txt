@@ -1,0 +1,7 @@
+# Runtime (loader + x86 kernel): numpy and a C++17 compiler (g++ >= 9).
+numpy>=1.24
+# Tests and benchmarks: dense PyTorch reference, dense_numpy (scipy erf), pytest.
+# CPU wheels: pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.2
+scipy>=1.10
+pytest>=7

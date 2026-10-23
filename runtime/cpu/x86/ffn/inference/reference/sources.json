@@ -1,0 +1,14 @@
+{
+  "files": [
+    {
+      "path": "../../common/kernels/hffn_compact_g4_inference.cpp",
+      "sha256": "7fbd2d5581c68c7b8d9a321de1b7a05282cad7fae076e1b8cbcc46cfbfdaab7c",
+      "role": "HFFN compact G4 inference kernel for x86_64 (AVX2/FMA); the group scheduler is a compile-time choice (private persistent pool by default, OpenMP team with -DHFFN_GROUPS_OPENMP)"
+    },
+    {
+      "path": "../../common/kernels/hffn_compact_g4_inference_n1.cpp",
+      "sha256": "7f5eaa934f41bbcd2aa33ffbf2824aaa84a2e9aecfdd2d6bf8ba7ae58e55a95f",
+      "role": "N = 1 sidecar: a materializing entry compiled as a hidden-visibility library that includes the shared inference kernel source"
+    }
+  ]
+}
