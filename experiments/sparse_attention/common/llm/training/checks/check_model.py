@@ -256,6 +256,10 @@ def check_hash_and_router():
     xh = batch(42)
     ph = run_parts(h, xh, "selected")
     check("hash routing: route = table[byte of the token]", bool((ph["route"] == h.hash_table[xh]).all()))
+    hr = model_for("E4a_L4rot", seed=2)
+    l1 = hr.layers[1].parts(hr.emb(xh), xh, hr.cos, hr.sin, hr.hash_table, "selected")
+    check("hash routing with rotation: route at layer l = (table[byte] + l) mod G",
+          bool((l1["route"] == (hr.hash_table[xh] + 1) % 4).all()))
 
 
 def check_mixing_zero_for_ind():

@@ -124,7 +124,7 @@ class Layer(nn.Module):
             r = (torch.arange(N) + self.shift()) % G
             return r[None, :].expand(B, N), None, stats
         if cfg.routing == "hash":
-            return hash_table[tokens], None, stats
+            return (hash_table[tokens] + self.shift()) % G, None, stats
         logits = xi @ self.eff("w_route").t()
         probs = logits.softmax(-1)
         p_top, top = probs.max(-1)

@@ -1,0 +1,117 @@
+{
+  "step": "e5",
+  "workers": 4,
+  "threads": 1,
+  "stages": [
+    {
+      "name": "sweep",
+      "kind": "sweep",
+      "arms": [
+        "REF4",
+        "E4a_L4"
+      ],
+      "lrs": [
+        0.002,
+        0.004,
+        0.008,
+        0.016,
+        0.032,
+        0.064
+      ],
+      "seeds": [
+        100
+      ],
+      "steps": 1500,
+      "eval_every": 500
+    },
+    {
+      "name": "main",
+      "arms": [
+        "REF4",
+        "E4a_L4"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "steps": 4000,
+      "eval_every": 500,
+      "lr": {
+        "REF4": "sweep:REF4",
+        "E4a_L4": "sweep:E4a_L4"
+      }
+    },
+    {
+      "name": "rot",
+      "arms": [
+        "E4a_L4rot"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "steps": 4000,
+      "eval_every": 500,
+      "lr": {
+        "E4a_L4rot": "sweep:E4a_L4"
+      }
+    },
+    {
+      "name": "pos",
+      "arms": [
+        "E3b_L4",
+        "E3b_L4rot"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "steps": 4000,
+      "eval_every": 500,
+      "lr": {
+        "E3b_L4": "sweep:E4a_L4",
+        "E3b_L4rot": "sweep:E4a_L4"
+      }
+    }
+  ],
+  "analysis": {
+    "stage": [
+      "main",
+      "rot",
+      "pos"
+    ],
+    "comparisons": [
+      {
+        "candidate": "E4a_L4",
+        "control": "REF4",
+        "bound": 0.075
+      },
+      {
+        "candidate": "E4a_L4rot",
+        "control": "E4a_L4",
+        "bound": 0.075
+      },
+      {
+        "candidate": "E3b_L4",
+        "control": "REF4",
+        "bound": 0.075
+      },
+      {
+        "candidate": "E3b_L4rot",
+        "control": "E3b_L4",
+        "bound": 0.075
+      },
+      {
+        "candidate": "E4a_L4",
+        "control": "E3b_L4",
+        "bound": 0.075
+      }
+    ]
+  }
+}

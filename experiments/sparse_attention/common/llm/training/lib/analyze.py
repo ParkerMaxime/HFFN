@@ -56,8 +56,10 @@ def compare(cmp, runs):
 def main(run_dir):
     run_dir = Path(run_dir).resolve()
     spec = json.loads((run_dir.parents[1] / "step.json").read_text())
-    stage = spec["analysis"]["stage"]
-    runs = load(run_dir, stage)
+    stages = spec["analysis"]["stage"]
+    runs = {}
+    for stage in ([stages] if isinstance(stages, str) else stages):
+        runs.update(load(run_dir, stage))
     res = {"step": spec["step"], "run": str(run_dir.relative_to(run_dir.parents[2])), "arms": {}}
     for arm, by_seed in runs.items():
         bpb = {s: v["summary"]["final_valid_bpb"] for s, v in by_seed.items()}

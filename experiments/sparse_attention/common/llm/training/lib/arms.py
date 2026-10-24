@@ -81,7 +81,10 @@ REF4 = E0.with_(name="REF4", n_layers=4)
 E3B4 = E3B.with_(name="E3b_L4", n_layers=4)
 E3B4R = E3B.with_(name="E3b_L4rot", n_layers=4, layer_routing="rotation")
 
-ARMS = {a.name: a for a in (E0, NOATT, E1, E2, E3A, E3B, IND, E4A, E4B, REF4, E3B4, E3B4R)}
+E4A_L4 = E4A.with_(name="E4a_L4", n_layers=4)
+E4A_L4R = E4A.with_(name="E4a_L4rot", n_layers=4, layer_routing="rotation")
+
+ARMS = {a.name: a for a in (E0, NOATT, E1, E2, E3A, E3B, IND, E4A, E4B, REF4, E3B4, E3B4R, E4A_L4, E4A_L4R)}
 
 
 def get_arm(name: str, **overrides) -> ArmConfig:
