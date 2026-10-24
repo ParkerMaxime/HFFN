@@ -1,0 +1,31 @@
+{
+ "step": "e0",
+ "mode": "smoke",
+ "started": "20261024T180423Z",
+ "jobs": {
+  "smoke/E3b_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T180442Z",
+   "final_valid_bpb": 4.604007202001983,
+   "cause": null
+  },
+  "smoke/E0_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T180447Z",
+   "final_valid_bpb": 4.009533778271087,
+   "cause": null
+  },
+  "smoke/NOATT_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T180442Z",
+   "final_valid_bpb": 3.9819740140612496,
+   "cause": null
+  }
+ },
+ "ended": "20261024T180447Z",
+ "exit": 0,
+ "why": ""
+}

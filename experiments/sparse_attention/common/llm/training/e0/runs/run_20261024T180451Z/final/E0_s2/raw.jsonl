@@ -1,0 +1,2 @@
+{"step": 1, "lr": 8e-05, "train_bpb": 8.065561184352791, "train_bpb_ema": 8.065561184352791, "balance_loss": null, "wall_s": 0.29414844512939453}
+{"step": 50, "lr": 0.004, "train_bpb": 4.092776739929887, "train_bpb_ema": 6.102537175385056, "balance_loss": null, "wall_s": 11.576383113861084}

@@ -1,0 +1,33 @@
+18:04:51Z step e0 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e0/runs/run_20261024T180451Z
+18:04:59Z checks: 112/112 passed (exit 0)
+18:04:59Z stage sweep: 12 jobs, 4 workers x 1 thread(s)
+18:04:59Z start sweep/E0_lr0.0005_s100
+18:04:59Z start sweep/E0_lr0.001_s100
+18:04:59Z start sweep/E0_lr0.002_s100
+18:04:59Z start sweep/E0_lr0.004_s100
+18:13:49Z done  sweep/E0_lr0.0005_s100: exit 0, valid bpb 2.9148504209025012
+18:13:49Z start sweep/E0_lr0.008_s100
+18:13:52Z done  sweep/E0_lr0.004_s100: exit 0, valid bpb 2.5227087492577565
+18:13:52Z start sweep/E0_lr0.016_s100
+18:13:53Z done  sweep/E0_lr0.001_s100: exit 0, valid bpb 2.742255168024698
+18:13:53Z start sweep/E3b_lr0.0005_s100
+18:13:53Z done  sweep/E0_lr0.002_s100: exit 0, valid bpb 2.6128853756662695
+18:13:53Z start sweep/E3b_lr0.001_s100
+18:19:27Z done  sweep/E3b_lr0.0005_s100: exit 0, valid bpb 3.4461508390191837
+18:19:27Z start sweep/E3b_lr0.002_s100
+18:19:29Z done  sweep/E3b_lr0.001_s100: exit 0, valid bpb 3.2790949188619662
+18:19:29Z start sweep/E3b_lr0.004_s100
+18:22:58Z done  sweep/E0_lr0.016_s100: exit 0, valid bpb 2.4509470242251914
+18:22:58Z start sweep/E3b_lr0.008_s100
+18:22:59Z done  sweep/E0_lr0.008_s100: exit 0, valid bpb 2.4684149676211873
+18:22:59Z start sweep/E3b_lr0.016_s100
+18:24:56Z done  sweep/E3b_lr0.002_s100: exit 0, valid bpb 3.149334860253004
+18:25:02Z done  sweep/E3b_lr0.004_s100: exit 0, valid bpb 3.0621469358250173
+18:28:24Z done  sweep/E3b_lr0.016_s100: exit 0, valid bpb 2.9725987533790916
+18:28:29Z done  sweep/E3b_lr0.008_s100: exit 0, valid bpb 3.0000174546969305
+18:28:29Z learning-rate selection: {'E0': 0.016, 'E3b': 0.016} (coincide: True)
+18:28:29Z stage final: 8 jobs, 4 workers x 1 thread(s)
+18:28:29Z start final/E0_s1
+18:28:29Z start final/E0_s0
+18:28:29Z start final/E0_s2
+18:28:29Z start final/E0_s3

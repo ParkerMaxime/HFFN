@@ -1,0 +1,46 @@
+[E0 seed=100 lr=0.0005] params=93184 steps=2000
+/home/user/HFFN/experiments/sparse_attention/common/llm/training/lib/train.py:176: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  tb = float(ce) / LN2
+{"step": 1, "lr": 0.0, "train_bpb": 8.2396, "train_bpb_ema": 8.2396, "balance_loss": null, "wall_s": 0.2865}
+{"step": 50, "lr": 0.0003, "train_bpb": 6.0007, "train_bpb_ema": 7.5317, "balance_loss": null, "wall_s": 11.4943}
+{"step": 100, "lr": 0.0005, "train_bpb": 4.6539, "train_bpb_ema": 5.9425, "balance_loss": null, "wall_s": 22.5565}
+{"step": 150, "lr": 0.0005, "train_bpb": 3.9834, "train_bpb_ema": 4.842, "balance_loss": null, "wall_s": 34.5985}
+{"step": 200, "lr": 0.0005, "train_bpb": 3.837, "train_bpb_ema": 4.2554, "balance_loss": null, "wall_s": 45.8687}
+{"step": 250, "lr": 0.0005, "train_bpb": 3.6591, "train_bpb_ema": 3.9296, "balance_loss": null, "wall_s": 56.5467}
+{"step": 300, "lr": 0.0005, "train_bpb": 3.5479, "train_bpb_ema": 3.7251, "balance_loss": null, "wall_s": 67.5275}
+{"step": 350, "lr": 0.0005, "train_bpb": 3.4725, "train_bpb_ema": 3.5805, "balance_loss": null, "wall_s": 78.5443}
+{"step": 400, "lr": 0.0005, "train_bpb": 3.3972, "train_bpb_ema": 3.4777, "balance_loss": null, "wall_s": 89.6165}
+{"step": 450, "lr": 0.0005, "train_bpb": 3.1935, "train_bpb_ema": 3.3968, "balance_loss": null, "wall_s": 100.7388}
+{"step": 500, "lr": 0.0005, "train_bpb": 3.3432, "train_bpb_ema": 3.3385, "balance_loss": null, "wall_s": 111.8404}
+{"step": 550, "lr": 0.0004, "train_bpb": 3.3126, "train_bpb_ema": 3.2873, "balance_loss": null, "wall_s": 127.5248}
+{"step": 600, "lr": 0.0004, "train_bpb": 3.2166, "train_bpb_ema": 3.2461, "balance_loss": null, "wall_s": 138.6211}
+{"step": 650, "lr": 0.0004, "train_bpb": 3.0865, "train_bpb_ema": 3.2019, "balance_loss": null, "wall_s": 149.4987}
+{"step": 700, "lr": 0.0004, "train_bpb": 3.1908, "train_bpb_ema": 3.1703, "balance_loss": null, "wall_s": 160.7678}
+{"step": 750, "lr": 0.0004, "train_bpb": 3.1747, "train_bpb_ema": 3.1425, "balance_loss": null, "wall_s": 172.4518}
+{"step": 800, "lr": 0.0004, "train_bpb": 3.1752, "train_bpb_ema": 3.1206, "balance_loss": null, "wall_s": 184.013}
+{"step": 850, "lr": 0.0003, "train_bpb": 3.1207, "train_bpb_ema": 3.101, "balance_loss": null, "wall_s": 195.4072}
+{"step": 900, "lr": 0.0003, "train_bpb": 3.0462, "train_bpb_ema": 3.0827, "balance_loss": null, "wall_s": 206.8221}
+{"step": 950, "lr": 0.0003, "train_bpb": 2.9798, "train_bpb_ema": 3.0571, "balance_loss": null, "wall_s": 218.4822}
+{"step": 1000, "lr": 0.0003, "train_bpb": 3.0171, "train_bpb_ema": 3.0423, "balance_loss": null, "wall_s": 230.8777}
+{"step": 1050, "lr": 0.0003, "train_bpb": 3.0695, "train_bpb_ema": 3.0294, "balance_loss": null, "wall_s": 246.269}
+{"step": 1100, "lr": 0.0003, "train_bpb": 3.0501, "train_bpb_ema": 3.0182, "balance_loss": null, "wall_s": 257.501}
+{"step": 1150, "lr": 0.0002, "train_bpb": 2.9617, "train_bpb_ema": 3.0031, "balance_loss": null, "wall_s": 268.7081}
+{"step": 1200, "lr": 0.0002, "train_bpb": 2.926, "train_bpb_ema": 2.9867, "balance_loss": null, "wall_s": 279.9865}
+{"step": 1250, "lr": 0.0002, "train_bpb": 2.9546, "train_bpb_ema": 2.9823, "balance_loss": null, "wall_s": 290.9097}
+{"step": 1300, "lr": 0.0002, "train_bpb": 3.05, "train_bpb_ema": 2.9817, "balance_loss": null, "wall_s": 302.11}
+{"step": 1350, "lr": 0.0002, "train_bpb": 2.9012, "train_bpb_ema": 2.9784, "balance_loss": null, "wall_s": 312.901}
+{"step": 1400, "lr": 0.0002, "train_bpb": 2.9462, "train_bpb_ema": 2.97, "balance_loss": null, "wall_s": 323.7488}
+{"step": 1450, "lr": 0.0001, "train_bpb": 2.8991, "train_bpb_ema": 2.9525, "balance_loss": null, "wall_s": 335.0337}
+{"step": 1500, "lr": 0.0001, "train_bpb": 2.8771, "train_bpb_ema": 2.9482, "balance_loss": null, "wall_s": 346.0802}
+{"step": 1550, "lr": 0.0001, "train_bpb": 2.8418, "train_bpb_ema": 2.9441, "balance_loss": null, "wall_s": 361.1674}
+{"step": 1600, "lr": 0.0001, "train_bpb": 2.8914, "train_bpb_ema": 2.9348, "balance_loss": null, "wall_s": 371.2828}
+{"step": 1650, "lr": 0.0001, "train_bpb": 2.9525, "train_bpb_ema": 2.9291, "balance_loss": null, "wall_s": 381.6898}
+{"step": 1700, "lr": 0.0001, "train_bpb": 2.874, "train_bpb_ema": 2.9336, "balance_loss": null, "wall_s": 392.4261}
+{"step": 1750, "lr": 0.0001, "train_bpb": 2.8507, "train_bpb_ema": 2.9307, "balance_loss": null, "wall_s": 404.6294}
+{"step": 1800, "lr": 0.0001, "train_bpb": 3.0021, "train_bpb_ema": 2.9443, "balance_loss": null, "wall_s": 415.841}
+{"step": 1850, "lr": 0.0001, "train_bpb": 2.985, "train_bpb_ema": 2.9337, "balance_loss": null, "wall_s": 426.4215}
+{"step": 1900, "lr": 0.0001, "train_bpb": 2.888, "train_bpb_ema": 2.9207, "balance_loss": null, "wall_s": 436.804}
+{"step": 1950, "lr": 0.0001, "train_bpb": 3.0321, "train_bpb_ema": 2.9239, "balance_loss": null, "wall_s": 447.6145}
+{"step": 2000, "lr": 0.0001, "train_bpb": 2.8667, "train_bpb_ema": 2.9152, "balance_loss": null, "wall_s": 458.4164}
+{"arm": "E0", "seed": 100, "lr": 0.0005, "steps_done": 2000, "steps": 2000, "status": "passed", "cause": null, "params_outside_embedding": 93184, "train_wall_s": 458.4165606498718, "final_valid_bpb": 2.9148504209025012, "train_bpb_ema_last": 2.9152004054817118}
