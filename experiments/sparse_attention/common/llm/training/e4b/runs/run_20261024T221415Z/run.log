@@ -1,0 +1,20 @@
+22:14:15Z step e4b mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e4b/runs/run_20261024T221415Z
+22:14:22Z checks: 112/112 passed (exit 0)
+22:14:22Z stage final: 8 jobs, 4 workers x 1 thread(s)
+22:14:22Z start final/E3b_s0
+22:14:22Z start final/E3b_s1
+22:14:22Z start final/E3b_s2
+22:14:22Z start final/E3b_s3
+22:24:21Z done  final/E3b_s2: exit 0, valid bpb 2.868665307978453
+22:24:21Z start final/E4b_s0
+22:24:24Z done  final/E3b_s1: exit 0, valid bpb 2.8697039918207072
+22:24:24Z start final/E4b_s1
+22:24:28Z done  final/E3b_s0: exit 0, valid bpb 2.862696429700178
+22:24:28Z start final/E4b_s2
+22:24:28Z done  final/E3b_s3: exit 0, valid bpb 2.872874840594595
+22:24:28Z start final/E4b_s3
+22:47:43Z done  final/E4b_s1: exit 0, valid bpb 2.8474277899607
+22:48:13Z done  final/E4b_s3: exit 0, valid bpb 2.877593799215944
+22:48:17Z done  final/E4b_s0: exit 0, valid bpb 3.0229755575424826
+22:48:40Z done  final/E4b_s2: exit 0, valid bpb 3.0359916945199608
+22:48:40Z EXIT 0 
