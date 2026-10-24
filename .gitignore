@@ -1,0 +1,78 @@
+# macOS and Python
+.DS_Store
+__pycache__/
+*.pyc
+
+# Local environments and caches
+.venv/
+.env/
+.conda/
+.cache/
+.hf_cache/
+wandb/
+
+# Generated builds and temporary outputs
+**/build/
+**/work/
+**/tmp/
+dist/
+*.dylib
+*.so
+*.o
+*.trace/
+
+# Large binary assets are tracked through project manifests
+*.zip
+_purge/
+dot_git/
+*.pt
+*.pth
+*.safetensors
+*.onnx
+*.onnx.data
+*.gguf
+*.h5
+*.hdf5
+*.npy
+*.npz
+*.parquet
+*.pkl
+*.pickle
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Raw run records are tracked (overrides the global gitignore rule `runs/`).
+# Binary assets inside runs stay excluded by the patterns above.
+!runs/
+
+# Excluded by the global pre-commit policy (files over 50 MiB, compressed archives).
+# These run records stay on disk; their integrity relies on the run manifests.
+*.gz
+/current/assets/enwik8/enwik8
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_20260911T133254Z_22920/dense/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_20260911T133254Z_22920/full30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_20260911T133254Z_22920/moe30/metrics.csv
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_20260911T133254Z_22920/moe30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref2_20260911T205600Z_42320/dense/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref2_20260911T205600Z_42320/full30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref2_20260911T205600Z_42320/moe30/metrics.csv
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref2_20260911T205600Z_42320/moe30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref3_20260912T133821Z_55894/dense/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref3_20260912T133821Z_55894/full30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref3_20260912T133821Z_55894/moe30/metrics.csv
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref3_20260912T133821Z_55894/moe30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T191039Z_68993/dense/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T191039Z_68993/full30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T191039Z_68993/moe30/metrics.csv
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T191039Z_68993/moe30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T193742Z_71048/dense/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T193742Z_71048/full30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T193742Z_71048/moe30/metrics.csv
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref4_20260912T193742Z_71048/moe30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref5_20260913T155503Z_41368/dense/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref5_20260913T155503Z_41368/full30/raw.jsonl
+/archive/moe/gpu/m1/legacy_conditional_hffn/ablations/c18_e1b_inference/runs/instrumentation_ref5_20260913T155503Z_41368/moe30/raw.jsonl
+
+# Agent team: machine readiness and local campaign grants (machine state, not tracked)
+.claude/team/state/
