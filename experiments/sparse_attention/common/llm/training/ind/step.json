@@ -1,0 +1,37 @@
+{
+  "step": "ind",
+  "workers": 4,
+  "threads": 1,
+  "stages": [
+    {
+      "name": "final",
+      "arms": [
+        "E3b",
+        "IND"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "steps": 4000,
+      "eval_every": 500,
+      "lr": {
+        "E3b": 0.032,
+        "IND": 0.032
+      }
+    }
+  ],
+  "analysis": {
+    "stage": "final",
+    "comparisons": [
+      {
+        "candidate": "E3b",
+        "control": "IND",
+        "bound": 0.075,
+        "direction": "min_improvement"
+      }
+    ]
+  }
+}

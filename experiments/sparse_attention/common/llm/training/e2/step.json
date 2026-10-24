@@ -1,0 +1,36 @@
+{
+  "step": "e2",
+  "workers": 4,
+  "threads": 1,
+  "stages": [
+    {
+      "name": "final",
+      "arms": [
+        "E1",
+        "E2"
+      ],
+      "seeds": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "steps": 4000,
+      "eval_every": 500,
+      "lr": {
+        "E1": 0.032,
+        "E2": 0.032
+      }
+    }
+  ],
+  "analysis": {
+    "stage": "final",
+    "comparisons": [
+      {
+        "candidate": "E2",
+        "control": "E1",
+        "bound": 0.075
+      }
+    ]
+  }
+}
