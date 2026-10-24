@@ -1,0 +1,66 @@
+{
+ "step": "ind",
+ "mode": "run",
+ "started": "20261024T211955Z",
+ "jobs": {
+  "final/E3b_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T213000Z",
+   "final_valid_bpb": 2.862696429700178,
+   "cause": null
+  },
+  "final/E3b_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T213001Z",
+   "final_valid_bpb": 2.8697039918207072,
+   "cause": null
+  },
+  "final/E3b_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T212959Z",
+   "final_valid_bpb": 2.868665307978453,
+   "cause": null
+  },
+  "final/E3b_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T212958Z",
+   "final_valid_bpb": 2.872874840594595,
+   "cause": null
+  },
+  "final/IND_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T214005Z",
+   "final_valid_bpb": 2.882112591491578,
+   "cause": null
+  },
+  "final/IND_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T214005Z",
+   "final_valid_bpb": 2.8704400326600665,
+   "cause": null
+  },
+  "final/IND_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T214006Z",
+   "final_valid_bpb": 2.8712659028113454,
+   "cause": null
+  },
+  "final/IND_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T214003Z",
+   "final_valid_bpb": 2.8765059198207887,
+   "cause": null
+  }
+ },
+ "ended": "20261024T214006Z",
+ "exit": 0,
+ "why": ""
+}

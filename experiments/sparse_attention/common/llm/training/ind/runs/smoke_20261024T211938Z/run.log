@@ -1,0 +1,7 @@
+21:19:38Z step ind mode smoke -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/ind/runs/smoke_20261024T211938Z
+21:19:46Z checks: 112/112 passed (exit 0)
+21:19:46Z start smoke/IND_s0
+21:19:46Z start smoke/E3b_s0
+21:19:55Z done  smoke/IND_s0: exit 0, valid bpb 4.860660640147006
+21:19:55Z done  smoke/E3b_s0: exit 0, valid bpb 4.604007202001983
+21:19:55Z EXIT 0 

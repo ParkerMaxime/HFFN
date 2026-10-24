@@ -1,0 +1,30 @@
+{
+ "arm": "IND",
+ "seed": 3,
+ "lr": 0.032,
+ "steps_done": 4000,
+ "steps": 4000,
+ "status": "passed",
+ "cause": null,
+ "params_outside_embedding": 44032,
+ "train_wall_s": 563.9922623634338,
+ "final_valid": {
+  "bpb": 2.8765059198207887,
+  "bpb_by_class": [
+   2.9023835321228892,
+   2.873105889510681,
+   2.8711342035054503,
+   2.8594000541441353
+  ],
+  "windows": 39062
+ },
+ "final_valid_bpb": 2.8765059198207887,
+ "train_bpb_ema_last": 2.883193737761154,
+ "mixing": {
+  "base_bpb": 2.8667726505211553,
+  "delta_q": 0.0,
+  "delta_kv": 0.0,
+  "delta_down": 0.0,
+  "delta_all": 0.0
+ }
+}

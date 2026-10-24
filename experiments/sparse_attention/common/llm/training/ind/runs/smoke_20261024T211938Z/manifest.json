@@ -1,0 +1,24 @@
+{
+ "step": "ind",
+ "mode": "smoke",
+ "started": "20261024T211938Z",
+ "jobs": {
+  "smoke/IND_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T211955Z",
+   "final_valid_bpb": 4.860660640147006,
+   "cause": null
+  },
+  "smoke/E3b_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T211955Z",
+   "final_valid_bpb": 4.604007202001983,
+   "cause": null
+  }
+ },
+ "ended": "20261024T211955Z",
+ "exit": 0,
+ "why": ""
+}
