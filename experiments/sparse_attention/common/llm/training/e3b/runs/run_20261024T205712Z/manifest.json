@@ -1,0 +1,66 @@
+{
+ "step": "e3b",
+ "mode": "run",
+ "started": "20261024T205712Z",
+ "jobs": {
+  "final/E3a_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T210937Z",
+   "final_valid_bpb": 2.757560411903915,
+   "cause": null
+  },
+  "final/E3a_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T210933Z",
+   "final_valid_bpb": 2.7606293514422937,
+   "cause": null
+  },
+  "final/E3a_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T210934Z",
+   "final_valid_bpb": 2.754632801481858,
+   "cause": null
+  },
+  "final/E3a_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T210932Z",
+   "final_valid_bpb": 2.7568740295844285,
+   "cause": null
+  },
+  "final/E3b_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T211935Z",
+   "final_valid_bpb": 2.862696429700178,
+   "cause": null
+  },
+  "final/E3b_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T211934Z",
+   "final_valid_bpb": 2.8697039918207072,
+   "cause": null
+  },
+  "final/E3b_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T211934Z",
+   "final_valid_bpb": 2.868665307978453,
+   "cause": null
+  },
+  "final/E3b_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T211938Z",
+   "final_valid_bpb": 2.872874840594595,
+   "cause": null
+  }
+ },
+ "ended": "20261024T211938Z",
+ "exit": 0,
+ "why": ""
+}

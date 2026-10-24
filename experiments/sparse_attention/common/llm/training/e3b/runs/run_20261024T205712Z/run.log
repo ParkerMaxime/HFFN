@@ -1,0 +1,20 @@
+20:57:12Z step e3b mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e3b/runs/run_20261024T205712Z
+20:57:19Z checks: 112/112 passed (exit 0)
+20:57:19Z stage final: 8 jobs, 4 workers x 1 thread(s)
+20:57:19Z start final/E3a_s1
+20:57:19Z start final/E3a_s0
+20:57:19Z start final/E3a_s2
+20:57:19Z start final/E3a_s3
+21:09:32Z done  final/E3a_s3: exit 0, valid bpb 2.7568740295844285
+21:09:32Z start final/E3b_s0
+21:09:33Z done  final/E3a_s0: exit 0, valid bpb 2.7606293514422937
+21:09:33Z start final/E3b_s1
+21:09:34Z done  final/E3a_s2: exit 0, valid bpb 2.754632801481858
+21:09:34Z start final/E3b_s2
+21:09:37Z done  final/E3a_s1: exit 0, valid bpb 2.757560411903915
+21:09:37Z start final/E3b_s3
+21:19:34Z done  final/E3b_s2: exit 0, valid bpb 2.868665307978453
+21:19:34Z done  final/E3b_s1: exit 0, valid bpb 2.8697039918207072
+21:19:35Z done  final/E3b_s0: exit 0, valid bpb 2.862696429700178
+21:19:38Z done  final/E3b_s3: exit 0, valid bpb 2.872874840594595
+21:19:38Z EXIT 0 

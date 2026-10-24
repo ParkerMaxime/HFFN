@@ -1,0 +1,7 @@
+[E3b seed=0 lr=0.002] params=80896 steps=40
+/home/user/HFFN/experiments/sparse_attention/common/llm/training/lib/train.py:176: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  tb = float(ce) / LN2
+{"step": 1, "lr": 0.001, "train_bpb": 8.0777, "train_bpb_ema": 8.0777, "balance_loss": null, "wall_s": 0.1718}
+{"step": 20, "lr": 0.0012, "wall_s": 2.8538}
+{"arm": "E3b", "seed": 0, "lr": 0.002, "steps_done": 40, "steps": 40, "status": "passed", "cause": null, "params_outside_embedding": 80896, "train_wall_s": 5.610060214996338, "final_valid_bpb": 4.604007202001983, "train_bpb_ema_last": 6.537094262644799}

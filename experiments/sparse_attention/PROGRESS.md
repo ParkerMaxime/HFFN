@@ -11,7 +11,7 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | E1 | done | `e1/runs/run_20261024T192919Z` | 0 | within bound (median d −0.0045 bpb, bound 0.075) |
 | E2 | done | `e2/runs/run_20261024T200327Z` | 0 | beyond bound (median d +0.2516 bpb, bound 0.075) |
 | E3a | done | `e3a/runs/run_20261024T203226Z` | 0 | beyond bound (median d +0.1160 bpb, bound 0.075) |
-| E3b | README committed | | | queued in the chain |
+| E3b | done | `e3b/runs/run_20261024T205712Z` | 0 | beyond bound (median d +0.1131 bpb, bound 0.075); complete constraint +0.477 bpb above E0 |
 | IND | README committed | | | queued in the chain |
 | E4a | README committed | | | queued in the chain |
 | E4b | README committed | | | queued in the chain |
