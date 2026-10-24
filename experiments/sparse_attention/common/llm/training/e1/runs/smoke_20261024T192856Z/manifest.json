@@ -1,0 +1,24 @@
+{
+ "step": "e1",
+ "mode": "smoke",
+ "started": "20261024T192856Z",
+ "jobs": {
+  "smoke/E1_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T192919Z",
+   "final_valid_bpb": 3.9982331440271053,
+   "cause": null
+  },
+  "smoke/E0_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T192918Z",
+   "final_valid_bpb": 4.009533778271087,
+   "cause": null
+  }
+ },
+ "ended": "20261024T192919Z",
+ "exit": 0,
+ "why": ""
+}
