@@ -13,7 +13,7 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | E3a | done | `e3a/runs/run_20261024T203226Z` | 0 | beyond bound (median d +0.1160 bpb, bound 0.075) |
 | E3b | done | `e3b/runs/run_20261024T205712Z` | 0 | beyond bound (median d +0.1131 bpb, bound 0.075); complete constraint +0.477 bpb above E0 |
 | IND | done | `ind/runs/run_20261024T211955Z` | 0 | mixing not worth it at L=1: E3b better than IND by +0.0031 bpb median (bound 0.075) — not met |
-| E4a | README committed | | | queued in the chain |
+| E4a | done | `e4a/runs/run_20261024T214033Z` | 0 | within bound, better than E3b in every seed (median d −0.2264 bpb; wide seed spread) |
 | E4b | README committed | | | queued in the chain |
 | E5 | not started | | | |
 | SUMMARY.md | not started | | | |

@@ -1,0 +1,7 @@
+21:40:07Z step e4a mode smoke -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e4a/runs/smoke_20261024T214007Z
+21:40:14Z checks: 112/112 passed (exit 0)
+21:40:14Z start smoke/E4a_s0
+21:40:14Z start smoke/E3b_s0
+21:40:24Z done  smoke/E3b_s0: exit 0, valid bpb 4.604007202001983
+21:40:33Z done  smoke/E4a_s0: exit 0, valid bpb 4.102482053240905
+21:40:33Z EXIT 0 
