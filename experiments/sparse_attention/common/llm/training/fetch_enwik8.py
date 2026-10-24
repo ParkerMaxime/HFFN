@@ -2,8 +2,10 @@
 """Fetch enwik8 into current/assets/enwik8 and verify it against split.json.
 
 The file and each of the three splits are checked by sha256 against `split.json`; nothing is written unless the
-download verifies. Idempotent: a file that already verifies is left as it is. `HFFN_ENWIK8_URL` overrides the
-source URL of `split.json` (the zip is still checked by its recorded sha256).
+data verifies. Idempotent: a file that already verifies is left as it is. The bundle `enwik8_bundle.zip` next to
+`split.json` (the same bytes, recompressed, committed on the cloud branch because the cloud network could not reach
+the source) is read first; only if it is absent or does not verify is the file downloaded. `HFFN_ENWIK8_URL`
+overrides the source URL of `split.json` (that zip is checked by its recorded sha256).
 """
 import hashlib
 import io
@@ -13,6 +15,9 @@ import sys
 import urllib.request
 import zipfile
 from pathlib import Path
+
+
+BUNDLE = "enwik8_bundle.zip"
 
 
 def repo_root() -> Path:
@@ -50,6 +55,17 @@ def main() -> int:
         print(f"existing {target} does not verify ({'; '.join(bad)}), fetching again", flush=True)
 
     src = spec["source"]
+    bundle = dest / BUNDLE
+    if bundle.is_file():
+        with zipfile.ZipFile(bundle) as archive:
+            data = archive.read(src["zip_member"])
+        bad = problems(data, spec)
+        if not bad:
+            target.write_bytes(data)
+            print(f"enwik8 extracted from {bundle} and verified: {target}", flush=True)
+            return 0
+        print(f"{bundle} does not verify ({'; '.join(bad)}), downloading instead", flush=True)
+
     url = str(os.environ.get("HFFN_ENWIK8_URL") or src["url"])
     print(f"downloading {url}", flush=True)
     with urllib.request.urlopen(url, timeout=120) as response:

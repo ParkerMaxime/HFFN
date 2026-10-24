@@ -28,9 +28,11 @@ What stays, because it makes the results readable and not because of the machine
 ## Order of work
 
 1. **Bootstrap.** Python with torch (CPU). Check `python -c "import torch"`; install a CPU wheel if absent. Run
-   `python experiments/sparse_attention/common/llm/training/fetch_enwik8.py`. If the network blocks the download,
-   **stop and tell the user** (try `HFFN_ENWIK8_URL` only if the user provides a mirror); do not substitute another
-   dataset or a sample.
+   `python experiments/sparse_attention/common/llm/training/fetch_enwik8.py`. The data ships in the branch as
+   `current/assets/enwik8/enwik8_bundle.zip` (the same bytes, 36 MB); the script extracts it and checks the sha256
+   of the file and of each split against `split.json`, and downloads only if the bundle is missing or fails. If the
+   check fails, **stop and tell the user**; do not substitute another dataset or a sample. The extracted
+   `enwik8` file is ignored by git; the bundle is tracked and must not be rewritten.
 2. **Shared code**, in `experiments/sparse_attention/common/llm/training/lib/`: one model with a config for every arm
    of PLAN section 8 (E0, E1, E2, E3a, E3b, IND, E4a, E4b, E5), the data loader on the manifest split, the training
    loop (PLAN section 7), the evaluation (bits per byte, by position class `t mod 4`, the mixing diagnostic of
