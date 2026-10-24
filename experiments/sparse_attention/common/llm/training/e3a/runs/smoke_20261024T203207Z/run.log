@@ -1,0 +1,7 @@
+20:32:07Z step e3a mode smoke -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e3a/runs/smoke_20261024T203207Z
+20:32:15Z checks: 112/112 passed (exit 0)
+20:32:15Z start smoke/E3a_s0
+20:32:15Z start smoke/E2_s0
+20:32:26Z done  smoke/E3a_s0: exit 0, valid bpb 4.2906235362519505
+20:32:26Z done  smoke/E2_s0: exit 0, valid bpb 4.163032097099577
+20:32:26Z EXIT 0 

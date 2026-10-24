@@ -1,0 +1,24 @@
+{
+ "step": "e3a",
+ "mode": "smoke",
+ "started": "20261024T203207Z",
+ "jobs": {
+  "smoke/E3a_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T203226Z",
+   "final_valid_bpb": 4.2906235362519505,
+   "cause": null
+  },
+  "smoke/E2_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T203226Z",
+   "final_valid_bpb": 4.163032097099577,
+   "cause": null
+  }
+ },
+ "ended": "20261024T203226Z",
+ "exit": 0,
+ "why": ""
+}
