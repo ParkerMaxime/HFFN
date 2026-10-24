@@ -1,0 +1,13 @@
+{
+  "step": "e0",
+  "workers": 4,
+  "threads": 1,
+  "stages": [
+    {"name": "sweep", "kind": "sweep", "arms": ["E0", "E3b"], "lrs": [0.0005, 0.001, 0.002, 0.004, 0.008, 0.016],
+     "seeds": [100], "steps": 2000, "eval_every": 500},
+    {"name": "final", "arms": ["E0", "NOATT"], "seeds": [0, 1, 2, 3], "steps": 4000, "eval_every": 500,
+     "lr": {"E0": "sweep:E0", "NOATT": "sweep:E0"}}
+  ],
+  "analysis": {"stage": "final",
+               "discrimination": {"with": "NOATT", "reference": "E0", "r_min": 10}}
+}
