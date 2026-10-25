@@ -23,7 +23,7 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | Step | Status | Run | Exit | Verdict / what remains |
 |---|---|---|---|---|
 | prep | done | `prep/runs/run_20261025T093927Z` | 0 | 44 new checks + 179 old pass; branch = uninterrupted run bit for bit; re-estimate of the total ≈ 18.5 h (< 24 h) |
-| E6 | not started | | | |
+| E6 | done | `e6/runs/run_20261025T095209Z` | 0 | H* = 4,000 (deviations at 2,000: 0.029/0.029 fail; at 4,000: 0.014/0.011 pass); E4a_L4 below REF2 in all six pairs |
 | E7 | not started | | | |
 | E8 | not started | | | |
 | E9 | not started | | | |

@@ -1,0 +1,38 @@
+09:52:09Z step e6 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e6/runs/run_20261025T095209Z
+09:52:18Z checks check_model.py: 179/179 passed (exit 0)
+09:54:45Z checks check_series.py: 44/44 passed (exit 0)
+09:54:45Z stage plateau: 4 jobs, 4 workers x 1 thread(s)
+09:54:45Z start plateau/E4a_L4_s1
+09:54:45Z start plateau/E4a_L4_s0
+09:54:45Z start plateau/REF2_s0
+09:54:45Z start plateau/REF2_s1
+10:37:38Z done  plateau/REF2_s0: exit 0, valid bpb 2.316063467688245
+10:38:01Z done  plateau/REF2_s1: exit 0, valid bpb 2.3370393667564753
+11:22:48Z done  plateau/E4a_L4_s0: exit 0, valid bpb 2.187520110500823
+11:23:10Z done  plateau/E4a_L4_s1: exit 0, valid bpb 2.173327056381079
+11:23:10Z stage branches: 12 jobs, 4 workers x 1 thread(s)
+11:23:10Z start branches/E4a_L4_s0_H8000
+11:23:10Z start branches/E4a_L4_s1_H8000
+11:23:10Z start branches/REF2_s0_H8000
+11:23:10Z start branches/REF2_s1_H8000
+11:35:49Z done  branches/REF2_s0_H8000: exit 0, valid bpb 2.11397554208478
+11:35:49Z start branches/E4a_L4_s0_H4000
+11:35:51Z done  branches/REF2_s1_H8000: exit 0, valid bpb 2.1211536044306842
+11:35:51Z start branches/E4a_L4_s1_H4000
+11:49:28Z done  branches/E4a_L4_s1_H8000: exit 0, valid bpb 2.054512319984838
+11:49:28Z start branches/REF2_s0_H4000
+11:49:31Z done  branches/E4a_L4_s0_H8000: exit 0, valid bpb 2.064128163024472
+11:49:31Z start branches/REF2_s1_H4000
+11:50:23Z done  branches/E4a_L4_s0_H4000: exit 0, valid bpb 2.1288746451314613
+11:50:23Z start branches/E4a_L4_s0_H2000
+11:50:25Z done  branches/E4a_L4_s1_H4000: exit 0, valid bpb 2.1160945686471906
+11:50:25Z start branches/E4a_L4_s1_H2000
+11:56:30Z done  branches/REF2_s1_H4000: exit 0, valid bpb 2.1713761631698234
+11:56:30Z start branches/REF2_s0_H2000
+11:56:32Z done  branches/REF2_s0_H4000: exit 0, valid bpb 2.1645562005748404
+11:56:32Z start branches/REF2_s1_H2000
+11:59:25Z done  branches/E4a_L4_s1_H2000: exit 0, valid bpb 2.2019498949068637
+11:59:26Z done  branches/E4a_L4_s0_H2000: exit 0, valid bpb 2.2132867743510047
+12:00:43Z done  branches/REF2_s0_H2000: exit 0, valid bpb 2.233725002974239
+12:00:45Z done  branches/REF2_s1_H2000: exit 0, valid bpb 2.2394539561842026
+12:00:45Z EXIT 0 

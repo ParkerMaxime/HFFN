@@ -1,0 +1,12 @@
+09:47:14Z step e6 mode smoke -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e6/runs/smoke_20261025T094714Z
+09:47:24Z checks check_model.py: 179/179 passed (exit 0)
+09:50:06Z checks check_series.py: 44/44 passed (exit 0)
+09:50:06Z start smoke/E4a_L4_s0
+09:50:06Z start smoke/REF2_s0
+09:50:29Z done  smoke/REF2_s0: exit 0, valid bpb 5.494090312929811
+09:50:53Z done  smoke/E4a_L4_s0: exit 0, valid bpb 5.9483043315500215
+09:50:53Z start smoke_branch/plateau
+09:51:22Z done  smoke_branch/plateau: exit 0, valid bpb 3.809698140524841
+09:51:22Z start smoke_branch/branch
+09:51:36Z done  smoke_branch/branch: exit 0, valid bpb 3.730559016068536
+09:51:36Z EXIT 0 

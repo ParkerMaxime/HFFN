@@ -1,0 +1,38 @@
+{
+ "step": "e6",
+ "mode": "smoke",
+ "started": "20261025T094714Z",
+ "jobs": {
+  "smoke/E4a_L4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T095053Z",
+   "final_valid_bpb": 5.9483043315500215,
+   "cause": null
+  },
+  "smoke/REF2_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T095029Z",
+   "final_valid_bpb": 5.494090312929811,
+   "cause": null
+  },
+  "smoke_branch/plateau": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T095122Z",
+   "final_valid_bpb": 3.809698140524841,
+   "cause": null
+  },
+  "smoke_branch/branch": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T095136Z",
+   "final_valid_bpb": 3.730559016068536,
+   "cause": null
+  }
+ },
+ "ended": "20261025T095136Z",
+ "exit": 0,
+ "why": ""
+}

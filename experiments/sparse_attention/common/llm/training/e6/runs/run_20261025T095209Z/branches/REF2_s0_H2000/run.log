@@ -1,0 +1,14 @@
+[REF2 seed=0 lr=0.025] params=186240 steps=1600->2000 schedule=wsd horizon=2000 batch=64x128
+/home/user/HFFN/experiments/sparse_attention/common/llm/training/lib/train.py:218: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  tb = float(ce) / LN2
+{"step": 1601, "lr": 0.025, "train_bpb": 2.4584, "train_bpb_ema": 2.4836, "balance_loss": null, "wall_s": 0.4952}
+{"step": 1650, "lr": 0.0219, "train_bpb": 2.4886, "train_bpb_ema": 2.4699, "balance_loss": null, "wall_s": 20.1327}
+{"step": 1700, "lr": 0.0188, "train_bpb": 2.4869, "train_bpb_ema": 2.449, "balance_loss": null, "wall_s": 39.9991}
+{"step": 1750, "lr": 0.0157, "train_bpb": 2.4019, "train_bpb_ema": 2.4215, "balance_loss": null, "wall_s": 60.451}
+{"step": 1800, "lr": 0.0126, "train_bpb": 2.4656, "train_bpb_ema": 2.3971, "balance_loss": null, "wall_s": 81.2144}
+{"step": 1850, "lr": 0.0094, "train_bpb": 2.5334, "train_bpb_ema": 2.3665, "balance_loss": null, "wall_s": 102.1449}
+{"step": 1900, "lr": 0.0063, "train_bpb": 2.3391, "train_bpb_ema": 2.3375, "balance_loss": null, "wall_s": 122.773}
+{"step": 1950, "lr": 0.0032, "train_bpb": 2.3236, "train_bpb_ema": 2.2929, "balance_loss": null, "wall_s": 144.5095}
+{"step": 2000, "lr": 0.0001, "train_bpb": 2.2429, "train_bpb_ema": 2.2501, "balance_loss": null, "wall_s": 165.353}
+{"arm": "REF2", "seed": 0, "lr": 0.025, "steps_done": 2000, "steps": 2000, "start_step": 1600, "horizon": 2000, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 186240, "train_wall_s": 165.353178024292, "final_eval_wall_s": 83.71215510368347, "final_eval_windows": 39062, "final_valid_bpb": 2.233725002974239, "train_bpb_ema_last": 2.2501432812144504}
