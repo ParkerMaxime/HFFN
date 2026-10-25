@@ -25,7 +25,7 @@ full validation split for the 12 branches; plateau evaluations on 1,024 windows 
   study (two seeds, rates not tuned under WSD), not the equal-compute reading of E8, which has its own seeds, rates and rule.
 - The gap **keeps widening in favour of the constrained model as the horizon grows** (seed 0: −0.020, −0.036, −0.050; seed 1: −0.038, −0.055,
   −0.067). The rule accepts 4,000 because the gap moves by only 0.014 and 0.011 between 4,000 and 8,000, but it is not constant:
-  a gap read at  **understates the advantage of the constrained model at 8,000 by about 0.01** (measured here, direction
+  a gap read at `H* = 4,000` **understates the advantage of the constrained model at 8,000 by about 0.01** (measured here, direction
   favourable to the method being measured; for a claim of the form "the constrained model is worse than X" the horizon would be the
   conservative one). The hypothesis of PLAN 14.4 (the gap grows again in the decay because of different peak rates) is not what is seen
   here: under WSD the horizon effect goes the other way.
