@@ -1,0 +1,66 @@
+{
+ "step": "e8",
+ "mode": "smoke",
+ "started": "20261025T162055Z",
+ "jobs": {
+  "smoke/E4a_L6_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T163253Z",
+   "final_valid_bpb": 5.77736311004215,
+   "cause": null
+  },
+  "smoke/E4a_L4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T162959Z",
+   "final_valid_bpb": 5.887834514427231,
+   "cause": null
+  },
+  "smoke/REF4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T162905Z",
+   "final_valid_bpb": 5.315974340129487,
+   "cause": null
+  },
+  "smoke/IND_L4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T163009Z",
+   "final_valid_bpb": 6.5668557276018396,
+   "cause": null
+  },
+  "smoke/REF3_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T163303Z",
+   "final_valid_bpb": 5.323069034277364,
+   "cause": null
+  },
+  "smoke/REF2_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T163238Z",
+   "final_valid_bpb": 5.407331683084615,
+   "cause": null
+  },
+  "smoke/E4a_L2_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T163320Z",
+   "final_valid_bpb": 6.044644543353961,
+   "cause": null
+  },
+  "smoke/REF1_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T163404Z",
+   "final_valid_bpb": 5.496174473700506,
+   "cause": null
+  }
+ },
+ "ended": "20261025T163404Z",
+ "exit": 0,
+ "why": ""
+}

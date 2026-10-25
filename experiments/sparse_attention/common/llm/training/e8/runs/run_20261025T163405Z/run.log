@@ -1,0 +1,53 @@
+16:34:05Z step e8 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e8/runs/run_20261025T163405Z
+16:34:14Z checks check_model.py: 179/179 passed (exit 0)
+16:36:55Z checks check_series.py: 44/44 passed (exit 0)
+16:36:55Z stage final: 24 jobs, 4 workers x 1 thread(s)
+16:36:55Z start final/E4a_L6_s1
+16:36:55Z start final/E4a_L6_s2
+16:36:55Z start final/E4a_L6_s0
+16:36:55Z start final/REF4_s0
+17:39:08Z done  final/REF4_s0: exit 0, valid bpb 2.0296083529362314
+17:39:08Z start final/REF4_s1
+18:15:46Z done  final/E4a_L6_s0: exit 0, valid bpb 2.039818737877892
+18:15:46Z start final/REF4_s2
+18:15:49Z done  final/E4a_L6_s1: exit 0, valid bpb 2.0438109270439115
+18:15:49Z start final/E4a_L4_s0
+18:16:19Z done  final/E4a_L6_s2: exit 0, valid bpb 2.0391139188502057
+18:16:19Z start final/E4a_L4_s1
+18:39:53Z done  final/REF4_s1: exit 0, valid bpb 2.0264646962355854
+18:39:53Z start final/E4a_L4_s2
+19:17:14Z done  final/REF4_s2: exit 0, valid bpb 2.021452873933692
+19:17:14Z start final/IND_L4_s0
+19:22:36Z done  final/E4a_L4_s0: exit 0, valid bpb 2.1288746451314613
+19:22:36Z start final/IND_L4_s1
+19:22:49Z done  final/E4a_L4_s1: exit 0, valid bpb 2.1160945686471906
+19:22:49Z start final/IND_L4_s2
+19:45:37Z done  final/E4a_L4_s2: exit 0, valid bpb 2.1105470631006447
+19:45:37Z start final/REF3_s0
+20:23:08Z done  final/IND_L4_s0: exit 0, valid bpb 2.244049928398376
+20:23:08Z start final/REF3_s1
+20:28:16Z done  final/IND_L4_s1: exit 0, valid bpb 2.2390934960648052
+20:28:16Z start final/REF3_s2
+20:28:35Z done  final/IND_L4_s2: exit 0, valid bpb 2.2390569139887497
+20:28:35Z start final/REF2_s0
+20:31:28Z done  final/REF3_s0: exit 0, valid bpb 2.0733090546933113
+20:31:28Z start final/REF2_s1
+20:58:41Z done  final/REF2_s0: exit 0, valid bpb 2.1474680306112024
+20:58:41Z start final/REF2_s2
+21:01:25Z done  final/REF2_s1: exit 0, valid bpb 2.1439880480002906
+21:01:25Z start final/E4a_L2_s0
+21:06:59Z done  final/REF3_s1: exit 0, valid bpb 2.0687270800002864
+21:06:59Z start final/E4a_L2_s1
+21:11:58Z done  final/REF3_s2: exit 0, valid bpb 2.0721472685017646
+21:11:58Z start final/E4a_L2_s2
+21:29:11Z done  final/REF2_s2: exit 0, valid bpb 2.15128691026256
+21:29:11Z start final/REF1_s0
+21:34:52Z done  final/E4a_L2_s0: exit 0, valid bpb 2.2928356058603323
+21:34:52Z start final/REF1_s1
+21:40:30Z done  final/E4a_L2_s1: exit 0, valid bpb 2.3004865398512027
+21:40:30Z start final/REF1_s2
+21:45:06Z done  final/E4a_L2_s2: exit 0, valid bpb 2.2847388979414154
+21:45:48Z done  final/REF1_s0: exit 0, valid bpb 2.363150218530612
+21:51:31Z done  final/REF1_s1: exit 0, valid bpb 2.3671516114951325
+21:56:54Z done  final/REF1_s2: exit 0, valid bpb 2.369859632593317
+21:56:54Z EXIT 0 

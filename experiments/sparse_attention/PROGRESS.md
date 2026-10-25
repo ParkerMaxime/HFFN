@@ -25,6 +25,6 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | prep | done | `prep/runs/run_20261025T093927Z` | 0 | 44 new checks + 179 old pass; branch = uninterrupted run bit for bit; re-estimate of the total ≈ 18.5 h (< 24 h) |
 | E6 | done | `e6/runs/run_20261025T095209Z` | 0 | H* = 4,000 (deviations at 2,000: 0.029/0.029 fail; at 4,000: 0.014/0.011 pass); E4a_L4 below REF2 in all six pairs |
 | E7 | done | `e7/runs/run_20261025T120721Z` | 0 | rates: REF1 0.016, REF4 0.008, E4a_L2 0.008, E4a_L6 0.008 (one extension each, none at an edge) |
-| E8 | not started | | | |
+| E8 | done | `e8/runs/run_20261025T163405Z` | 0 | E4a dominates the dense model at 12-14 % more compute in 3/3 pairs and 3/3 seeds (valid and test); beyond bound at equal depth (+0.145, +0.090); IND_L4 worse than E4a_L4 by 0.123 |
 | E9 | not started | | | |
 | SUMMARY_E6_E9.md | not started | | | |

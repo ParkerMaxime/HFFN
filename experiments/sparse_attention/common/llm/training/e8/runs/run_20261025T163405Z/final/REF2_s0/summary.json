@@ -1,0 +1,45 @@
+{
+ "arm": "REF2",
+ "seed": 0,
+ "lr": 0.0127,
+ "steps_done": 4000,
+ "steps": 4000,
+ "start_step": 0,
+ "horizon": 4000,
+ "schedule": "wsd",
+ "status": "passed",
+ "cause": null,
+ "params_outside_embedding": 186240,
+ "train_wall_s": 1599.7995820045471,
+ "final_eval_wall_s": 80.48708248138428,
+ "final_eval_windows": 39062,
+ "final_valid": {
+  "bpb": 2.1474680306112024,
+  "bpb_by_class": [
+   2.1748774645644713,
+   2.1544180578501257,
+   2.136517680892808,
+   2.1240589191374037
+  ],
+  "windows": 39062
+ },
+ "final_valid_bpb": 2.1474680306112024,
+ "train_bpb_ema_last": 2.1471567336104838,
+ "mixing": {
+  "base_bpb": 2.1566874631027457,
+  "delta_q": 2.5593511069271,
+  "delta_kv": 3.1185887823004452,
+  "delta_down": 2.735895273904379,
+  "delta_all": 6.216344195481193
+ },
+ "final_test": {
+  "bpb": 2.124814558443705,
+  "bpb_by_class": [
+   2.1568604537026244,
+   2.1291631970313483,
+   2.1155431470278807,
+   2.097691436012966
+  ],
+  "windows": 39062
+ }
+}

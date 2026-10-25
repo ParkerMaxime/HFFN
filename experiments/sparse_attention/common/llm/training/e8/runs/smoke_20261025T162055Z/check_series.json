@@ -1,0 +1,226 @@
+{
+ "checks": [
+  {
+   "check": "params REF2 equal to PLAN 14.5",
+   "ok": true,
+   "detail": "186240 vs 186240"
+  },
+  {
+   "check": "params REF3 equal to PLAN 14.5",
+   "ok": true,
+   "detail": "279296 vs 279296"
+  },
+  {
+   "check": "params REF4 equal to PLAN 14.5",
+   "ok": true,
+   "detail": "372352 vs 372352"
+  },
+  {
+   "check": "params E4a_L2 equal to PLAN 14.5",
+   "ok": true,
+   "detail": "161664 vs 161664"
+  },
+  {
+   "check": "params E4a_L4 equal to PLAN 14.5",
+   "ok": true,
+   "detail": "323200 vs 323200"
+  },
+  {
+   "check": "params E4a_L6 equal to PLAN 14.5",
+   "ok": true,
+   "detail": "484736 vs 484736"
+  },
+  {
+   "check": "REF1 is E0 (same configuration but its name)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "params independent of the context REF1",
+   "ok": true,
+   "detail": "93184 / 93184"
+  },
+  {
+   "check": "params independent of the context REF2",
+   "ok": true,
+   "detail": "186240 / 186240"
+  },
+  {
+   "check": "params independent of the context REF3",
+   "ok": true,
+   "detail": "279296 / 279296"
+  },
+  {
+   "check": "params independent of the context REF4",
+   "ok": true,
+   "detail": "372352 / 372352"
+  },
+  {
+   "check": "params independent of the context E4a_L2",
+   "ok": true,
+   "detail": "161664 / 161664"
+  },
+  {
+   "check": "params independent of the context E4a_L4",
+   "ok": true,
+   "detail": "323200 / 323200"
+  },
+  {
+   "check": "params independent of the context E4a_L6",
+   "ok": true,
+   "detail": "484736 / 484736"
+  },
+  {
+   "check": "params independent of the context IND_L4",
+   "ok": true,
+   "detail": "175744 / 175744"
+  },
+  {
+   "check": "IND_L4 is IND with the hash route at 4 layers",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "IND_L4 under the hash route: degree 26, up_idx and down_idx inside S_g, W_Q/W_K/W_V/W_O block-diagonal",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "IND_L4 under the hash route: o_t exactly zero outside S_g at every layer",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "8,192 bytes per step at context 128 (batch 64)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "same seed and context, same batches in the same order, whatever the arm (context 128)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "stream position restorable (context 128)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "8,192 bytes per step at context 512 (batch 16)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "same seed and context, same batches in the same order, whatever the arm (context 512)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "stream position restorable (context 512)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "first-ladder batches (64 x 128) unchanged",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "WSD: 200 warm-up steps, constant peak to 0.8 H, linear decay to zero at H",
+   "ok": true,
+   "detail": "lr[0]=5.00e-05 lr[199]=0.0100 lr[900]=0.0050 lr[1000]=0.0e+00"
+  },
+  {
+   "check": "WSD: branch checkpoints 1600/3200/6400 are the starts of the decay of horizons 2000/4000/8000",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "counter: inference multiply-adds E4a_L2 equal to PLAN 14.5 at both contexts",
+   "ok": true,
+   "detail": "138240 / 187392"
+  },
+  {
+   "check": "counter: inference multiply-adds REF1 equal to PLAN 14.5 at both contexts",
+   "ok": true,
+   "detail": "157696 / 256000"
+  },
+  {
+   "check": "counter: inference multiply-adds E4a_L4 equal to PLAN 14.5 at both contexts",
+   "ok": true,
+   "detail": "243712 / 342016"
+  },
+  {
+   "check": "counter: inference multiply-adds REF2 equal to PLAN 14.5 at both contexts",
+   "ok": true,
+   "detail": "282624 / 479232"
+  },
+  {
+   "check": "counter: inference multiply-adds E4a_L6 equal to PLAN 14.5 at both contexts",
+   "ok": true,
+   "detail": "349184 / 496640"
+  },
+  {
+   "check": "counter: inference multiply-adds REF3 equal to PLAN 14.5 at both contexts",
+   "ok": true,
+   "detail": "407552 / 702464"
+  },
+  {
+   "check": "counter: inference multiply-adds REF4 equal to PLAN 14.5 at both contexts",
+   "ok": true,
+   "detail": "532480 / 925696"
+  },
+  {
+   "check": "counter: one dense layer 124,928 and one constrained layer 52,736 at N=128 (PLAN section 6)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "counter: IND_L4 counted",
+   "ok": true,
+   "detail": "133120 (N=128), 231424 (N=512)"
+  },
+  {
+   "check": "N=512: batch 16, 1,024 intermediate windows (524,288 bytes)",
+   "ok": true,
+   "detail": "batch 16, windows 1024"
+  },
+  {
+   "check": "N=512: bits per byte by position range 0-127, 128-255, 256-511",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "N=512: the mean of the ranges weighted by their counts equals the whole figure",
+   "ok": true,
+   "detail": "5.273040242 vs 5.273040242"
+  },
+  {
+   "check": "N=128: batch 64, 4,096 intermediate windows (524,288 bytes), no ranges",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "decay branch from the step-80 checkpoint equals an uninterrupted WSD run (H=100) E4a",
+   "ok": true,
+   "detail": "max|weights diff| 0.00e+00, |bpb diff| 0.00e+00 (tolerance 1e-6 float32)"
+  },
+  {
+   "check": "decay branch from the step-80 checkpoint equals an uninterrupted WSD run (H=100) E4b",
+   "ok": true,
+   "detail": "max|weights diff| 0.00e+00, |bpb diff| 0.00e+00 (tolerance 1e-6 float32)"
+  },
+  {
+   "check": "config records schedule, horizon and tokens per step",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "first ladder reproducible: the cosine run of the E0 smoke is bit-identical after the changes",
+   "ok": true,
+   "detail": "4.009533778271087 vs 4.009533778271087"
+  }
+ ],
+ "failed": [],
+ "wall_s": 161.8616693019867
+}

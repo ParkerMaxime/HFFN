@@ -1,0 +1,6 @@
+[IND_L4 seed=0 lr=0.002] params=175744 steps=0->40 schedule=wsd horizon=40 batch=64x128
+/home/user/HFFN/experiments/sparse_attention/common/llm/training/lib/train.py:218: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  tb = float(ce) / LN2
+{"step": 1, "lr": 0.0, "train_bpb": 8.2446, "train_bpb_ema": 8.2446, "balance_loss": null, "wall_s": 1.2936}
+{"arm": "IND_L4", "seed": 0, "lr": 0.002, "steps_done": 40, "steps": 40, "start_step": 0, "horizon": 40, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 175744, "train_wall_s": 38.37073302268982, "final_eval_wall_s": 2.707162618637085, "final_eval_windows": 512, "final_valid_bpb": 6.5668557276018396, "train_bpb_ema_last": 7.831410206949328, "final_test": {"bpb": 6.680809693948743, "bpb_by_class": [6.68402133448554, 6.682721263933172, 6.678777412885607, 6.677718764490653], "windows": 39062}}
