@@ -1,0 +1,39 @@
+12:07:21Z step e7 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e7/runs/run_20261025T120721Z
+12:07:38Z checks check_model.py: 179/179 passed (exit 0)
+12:10:30Z checks check_series.py: 44/44 passed (exit 0)
+12:10:30Z stage sweep: round with 12 jobs
+12:10:30Z start sweep/E4a_L6_lr0.002_s100
+12:10:30Z start sweep/E4a_L6_lr0.004_s100
+12:10:30Z start sweep/E4a_L6_lr0.008_s100
+12:10:30Z start sweep/REF4_lr0.008_s100
+13:07:12Z done  sweep/REF4_lr0.008_s100: exit 0, valid bpb 2.0272613189974167
+13:07:12Z start sweep/REF4_lr0.016_s100
+13:41:30Z done  sweep/E4a_L6_lr0.004_s100: exit 0, valid bpb 2.0452963798597166
+13:41:30Z start sweep/REF4_lr0.032_s100
+13:41:36Z done  sweep/E4a_L6_lr0.002_s100: exit 0, valid bpb 2.0824085827561434
+13:41:36Z start sweep/E4a_L2_lr0.008_s100
+13:41:44Z done  sweep/E4a_L6_lr0.008_s100: exit 0, valid bpb 2.039247716707499
+13:41:44Z start sweep/E4a_L2_lr0.016_s100
+14:03:02Z done  sweep/REF4_lr0.016_s100: exit 0, valid bpb 2.045872089458159
+14:03:02Z start sweep/E4a_L2_lr0.032_s100
+14:13:42Z done  sweep/E4a_L2_lr0.008_s100: exit 0, valid bpb 2.2939617303669233
+14:13:42Z start sweep/REF1_lr0.016_s100
+14:13:56Z done  sweep/E4a_L2_lr0.016_s100: exit 0, valid bpb 2.2968536819131087
+14:13:56Z start sweep/REF1_lr0.032_s100
+14:30:16Z done  sweep/REF1_lr0.016_s100: exit 0, valid bpb 2.363911600995444
+14:30:16Z start sweep/REF1_lr0.064_s100
+14:30:34Z done  sweep/REF1_lr0.032_s100: exit 0, valid bpb 2.371794552567274
+14:37:07Z done  sweep/REF4_lr0.032_s100: exit 0, valid bpb 2.070272585973879
+14:39:47Z done  sweep/E4a_L2_lr0.032_s100: exit 0, valid bpb 2.3684563581339786
+14:46:44Z done  sweep/REF1_lr0.064_s100: exit 0, valid bpb 2.396006902932991
+14:46:44Z stage sweep: round with 4 jobs
+14:46:44Z start sweep/E4a_L6_lr0.016_s100
+14:46:44Z start sweep/REF4_lr0.004_s100
+14:46:44Z start sweep/REF1_lr0.008_s100
+14:46:44Z start sweep/E4a_L2_lr0.004_s100
+15:03:33Z done  sweep/REF1_lr0.008_s100: exit 0, valid bpb 2.3812747988146308
+15:19:41Z done  sweep/E4a_L2_lr0.004_s100: exit 0, valid bpb 2.3063229870750175
+15:43:51Z done  sweep/REF4_lr0.004_s100: exit 0, valid bpb 2.032295987640777
+16:19:04Z done  sweep/E4a_L6_lr0.016_s100: exit 0, valid bpb 2.062465605799466
+16:19:04Z adaptive selection: {'REF1': 0.016, 'REF4': 0.008, 'E4a_L2': 0.008, 'E4a_L6': 0.008} (at edge: {'REF1': False, 'REF4': False, 'E4a_L2': False, 'E4a_L6': False}, extensions: {'REF1': 1, 'REF4': 1, 'E4a_L2': 1, 'E4a_L6': 1})
+16:19:04Z EXIT 0 

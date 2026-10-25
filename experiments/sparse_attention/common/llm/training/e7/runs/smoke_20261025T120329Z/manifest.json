@@ -1,0 +1,38 @@
+{
+ "step": "e7",
+ "mode": "smoke",
+ "started": "20261025T120329Z",
+ "jobs": {
+  "smoke/E4a_L6_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T120720Z",
+   "final_valid_bpb": 5.77736311004215,
+   "cause": null
+  },
+  "smoke/E4a_L2_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T120643Z",
+   "final_valid_bpb": 6.044644543353961,
+   "cause": null
+  },
+  "smoke/REF1_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T120629Z",
+   "final_valid_bpb": 5.496174473700506,
+   "cause": null
+  },
+  "smoke/REF4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T120652Z",
+   "final_valid_bpb": 5.315974340129487,
+   "cause": null
+  }
+ },
+ "ended": "20261025T120720Z",
+ "exit": 0,
+ "why": ""
+}

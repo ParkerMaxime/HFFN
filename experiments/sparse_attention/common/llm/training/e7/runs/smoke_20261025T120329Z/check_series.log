@@ -1,0 +1,106 @@
+--- check_params
+[ok] params REF2 equal to PLAN 14.5 186240 vs 186240
+[ok] params REF3 equal to PLAN 14.5 279296 vs 279296
+[ok] params REF4 equal to PLAN 14.5 372352 vs 372352
+[ok] params E4a_L2 equal to PLAN 14.5 161664 vs 161664
+[ok] params E4a_L4 equal to PLAN 14.5 323200 vs 323200
+[ok] params E4a_L6 equal to PLAN 14.5 484736 vs 484736
+[ok] REF1 is E0 (same configuration but its name) 
+[ok] params independent of the context REF1 93184 / 93184
+[ok] params independent of the context REF2 186240 / 186240
+[ok] params independent of the context REF3 279296 / 279296
+[ok] params independent of the context REF4 372352 / 372352
+[ok] params independent of the context E4a_L2 161664 / 161664
+[ok] params independent of the context E4a_L4 323200 / 323200
+[ok] params independent of the context E4a_L6 484736 / 484736
+[ok] params independent of the context IND_L4 175744 / 175744
+--- check_ind_hash
+[ok] IND_L4 is IND with the hash route at 4 layers 
+[ok] IND_L4 under the hash route: degree 26, up_idx and down_idx inside S_g, W_Q/W_K/W_V/W_O block-diagonal 
+[ok] IND_L4 under the hash route: o_t exactly zero outside S_g at every layer 
+--- check_tokens_per_step
+[ok] 8,192 bytes per step at context 128 (batch 64) 
+[ok] same seed and context, same batches in the same order, whatever the arm (context 128) 
+[ok] stream position restorable (context 128) 
+[ok] 8,192 bytes per step at context 512 (batch 16) 
+[ok] same seed and context, same batches in the same order, whatever the arm (context 512) 
+[ok] stream position restorable (context 512) 
+[ok] first-ladder batches (64 x 128) unchanged 
+--- check_wsd
+[ok] WSD: 200 warm-up steps, constant peak to 0.8 H, linear decay to zero at H lr[0]=5.00e-05 lr[199]=0.0100 lr[900]=0.0050 lr[1000]=0.0e+00
+[ok] WSD: branch checkpoints 1600/3200/6400 are the starts of the decay of horizons 2000/4000/8000 
+--- check_counter
+[ok] counter: inference multiply-adds E4a_L2 equal to PLAN 14.5 at both contexts 138240 / 187392
+[ok] counter: inference multiply-adds REF1 equal to PLAN 14.5 at both contexts 157696 / 256000
+[ok] counter: inference multiply-adds E4a_L4 equal to PLAN 14.5 at both contexts 243712 / 342016
+[ok] counter: inference multiply-adds REF2 equal to PLAN 14.5 at both contexts 282624 / 479232
+[ok] counter: inference multiply-adds E4a_L6 equal to PLAN 14.5 at both contexts 349184 / 496640
+[ok] counter: inference multiply-adds REF3 equal to PLAN 14.5 at both contexts 407552 / 702464
+[ok] counter: inference multiply-adds REF4 equal to PLAN 14.5 at both contexts 532480 / 925696
+[ok] counter: one dense layer 124,928 and one constrained layer 52,736 at N=128 (PLAN section 6) 
+[ok] counter: IND_L4 counted 133120 (N=128), 231424 (N=512)
+--- check_context512_and_eval_size
+[E4a_L2_N512 seed=0 lr=0.005] params=161664 steps=0->4 schedule=wsd horizon=4 batch=16x512
+/home/user/HFFN/experiments/sparse_attention/common/llm/training/lib/train.py:218: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  tb = float(ce) / LN2
+{"step": 1, "lr": 0.0025, "train_bpb": 8.1327, "train_bpb_ema": 8.1327, "balance_loss": null, "wall_s": 0.7805}
+{"step": 2, "lr": 0.005, "wall_s": 19.4702}
+{"arm": "E4a_L2_N512", "seed": 0, "lr": 0.005, "steps_done": 4, "steps": 4, "start_step": 0, "horizon": 4, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 161664, "train_wall_s": 20.588185787200928, "final_eval_wall_s": 4.497920036315918, "final_eval_windows": 256, "final_valid_bpb": 5.273040242477838, "train_bpb_ema_last": 8.04916153319311}
+[ok] N=512: batch 16, 1,024 intermediate windows (524,288 bytes) batch 16, windows 1024
+[ok] N=512: bits per byte by position range 0-127, 128-255, 256-511 
+[ok] N=512: the mean of the ranges weighted by their counts equals the whole figure 5.273040242 vs 5.273040242
+[E4a seed=0 lr=0.005] params=80896 steps=0->4 schedule=cosine horizon=4 batch=64x128
+{"step": 1, "lr": 0.005, "train_bpb": 8.1025, "train_bpb_ema": 8.1025, "balance_loss": null, "wall_s": 0.2293}
+{"step": 2, "lr": 0.005, "wall_s": 6.0531}
+{"arm": "E4a", "seed": 0, "lr": 0.005, "steps_done": 4, "steps": 4, "start_step": 0, "horizon": 4, "schedule": "cosine", "status": "passed", "cause": null, "params_outside_embedding": 80896, "train_wall_s": 6.525022029876709, "final_eval_wall_s": 0.34437990188598633, "final_eval_windows": 256, "final_valid_bpb": 5.635271265299144, "train_bpb_ema_last": 8.015280659075925}
+[ok] N=128: batch 64, 4,096 intermediate windows (524,288 bytes), no ranges 
+--- check_branch
+[E4a seed=0 lr=0.01] params=80896 steps=0->100 schedule=wsd horizon=100 batch=64x128
+{"step": 1, "lr": 0.001, "train_bpb": 8.1025, "train_bpb_ema": 8.1025, "balance_loss": null, "wall_s": 0.283}
+{"step": 20, "lr": 0.01, "train_bpb": 4.2827, "train_bpb_ema": 7.1227, "balance_loss": null, "wall_s": 4.5704}
+{"step": 40, "lr": 0.01, "train_bpb": 4.0187, "train_bpb_ema": 6.098, "balance_loss": null, "wall_s": 9.1286}
+{"step": 60, "lr": 0.01, "train_bpb": 3.8353, "train_bpb_ema": 5.3666, "balance_loss": null, "wall_s": 13.5564}
+{"step": 80, "lr": 0.01, "train_bpb": 3.6767, "train_bpb_ema": 4.848, "balance_loss": null, "wall_s": 18.0502}
+{"step": 100, "lr": 0.0005, "train_bpb": 3.649, "train_bpb_ema": 4.4759, "balance_loss": null, "wall_s": 22.3988}
+{"arm": "E4a", "seed": 0, "lr": 0.01, "steps_done": 100, "steps": 100, "start_step": 0, "horizon": 100, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 80896, "train_wall_s": 22.398940324783325, "final_eval_wall_s": 0.3188910484313965, "final_eval_windows": 256, "final_valid_bpb": 3.5137890383877006, "train_bpb_ema_last": 4.475925378967769}
+[E4a seed=0 lr=0.01] params=80896 steps=0->80 schedule=wsd horizon=100 batch=64x128
+{"step": 1, "lr": 0.001, "train_bpb": 8.1025, "train_bpb_ema": 8.1025, "balance_loss": null, "wall_s": 0.2158}
+{"step": 20, "lr": 0.01, "train_bpb": 4.2827, "train_bpb_ema": 7.1227, "balance_loss": null, "wall_s": 4.5602}
+{"step": 40, "lr": 0.01, "train_bpb": 4.0187, "train_bpb_ema": 6.098, "balance_loss": null, "wall_s": 8.9977}
+{"step": 60, "lr": 0.01, "train_bpb": 3.8353, "train_bpb_ema": 5.3666, "balance_loss": null, "wall_s": 13.4755}
+{"step": 80, "lr": 0.01, "train_bpb": 3.6767, "train_bpb_ema": 4.848, "balance_loss": null, "wall_s": 17.7329}
+{"arm": "E4a", "seed": 0, "lr": 0.01, "steps_done": 80, "steps": 80, "start_step": 0, "horizon": 100, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 80896, "train_wall_s": 17.737775325775146, "final_eval_wall_s": 0.3192100524902344, "final_eval_windows": 256, "final_valid_bpb": 3.5868179668811226, "train_bpb_ema_last": 4.848017550078551}
+[E4a seed=0 lr=0.01] params=80896 steps=80->100 schedule=wsd horizon=100 batch=64x128
+{"step": 81, "lr": 0.01, "train_bpb": 3.7391, "train_bpb_ema": 4.8258, "balance_loss": null, "wall_s": 0.2378}
+{"step": 100, "lr": 0.0005, "train_bpb": 3.649, "train_bpb_ema": 4.4759, "balance_loss": null, "wall_s": 4.7428}
+{"arm": "E4a", "seed": 0, "lr": 0.01, "steps_done": 100, "steps": 100, "start_step": 80, "horizon": 100, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 80896, "train_wall_s": 4.7429139614105225, "final_eval_wall_s": 0.3212242126464844, "final_eval_windows": 256, "final_valid_bpb": 3.5137890383877006, "train_bpb_ema_last": 4.475925378967769}
+[ok] decay branch from the step-80 checkpoint equals an uninterrupted WSD run (H=100) E4a max|weights diff| 0.00e+00, |bpb diff| 0.00e+00 (tolerance 1e-6 float32)
+[E4b seed=0 lr=0.01] params=81408 steps=0->100 schedule=wsd horizon=100 batch=64x128
+{"step": 1, "lr": 0.001, "train_bpb": 8.1181, "train_bpb_ema": 8.1181, "balance_loss": 1.0008, "wall_s": 0.2242}
+{"step": 20, "lr": 0.01, "train_bpb": 5.1548, "train_bpb_ema": 7.3157, "balance_loss": 1.0618, "wall_s": 4.7689}
+{"step": 40, "lr": 0.01, "train_bpb": 4.5429, "train_bpb_ema": 6.4433, "balance_loss": 1.0128, "wall_s": 9.5745}
+{"step": 60, "lr": 0.01, "train_bpb": 4.3735, "train_bpb_ema": 5.7609, "balance_loss": 0.9999, "wall_s": 14.5874}
+{"step": 80, "lr": 0.01, "train_bpb": 4.1385, "train_bpb_ema": 5.2561, "balance_loss": 1.0316, "wall_s": 19.437}
+{"step": 100, "lr": 0.0005, "train_bpb": 3.9735, "train_bpb_ema": 4.8733, "balance_loss": 1.0085, "wall_s": 24.1626}
+{"arm": "E4b", "seed": 0, "lr": 0.01, "steps_done": 100, "steps": 100, "start_step": 0, "horizon": 100, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 81408, "train_wall_s": 24.162713766098022, "final_eval_wall_s": 0.3551003932952881, "final_eval_windows": 256, "final_valid_bpb": 3.7583715928425474, "train_bpb_ema_last": 4.873326301346611}
+[E4b seed=0 lr=0.01] params=81408 steps=0->80 schedule=wsd horizon=100 batch=64x128
+{"step": 1, "lr": 0.001, "train_bpb": 8.1181, "train_bpb_ema": 8.1181, "balance_loss": 1.0008, "wall_s": 0.2184}
+{"step": 20, "lr": 0.01, "train_bpb": 5.1548, "train_bpb_ema": 7.3157, "balance_loss": 1.0618, "wall_s": 4.4785}
+{"step": 40, "lr": 0.01, "train_bpb": 4.5429, "train_bpb_ema": 6.4433, "balance_loss": 1.0128, "wall_s": 9.0106}
+{"step": 60, "lr": 0.01, "train_bpb": 4.3735, "train_bpb_ema": 5.7609, "balance_loss": 0.9999, "wall_s": 13.6659}
+{"step": 80, "lr": 0.01, "train_bpb": 4.1385, "train_bpb_ema": 5.2561, "balance_loss": 1.0316, "wall_s": 18.6703}
+{"arm": "E4b", "seed": 0, "lr": 0.01, "steps_done": 80, "steps": 80, "start_step": 0, "horizon": 100, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 81408, "train_wall_s": 18.67632532119751, "final_eval_wall_s": 0.3580973148345947, "final_eval_windows": 256, "final_valid_bpb": 3.91888598565229, "train_bpb_ema_last": 5.256098776498312}
+[E4b seed=0 lr=0.01] params=81408 steps=80->100 schedule=wsd horizon=100 batch=64x128
+{"step": 81, "lr": 0.01, "train_bpb": 4.1393, "train_bpb_ema": 5.2338, "balance_loss": 1.0068, "wall_s": 0.2539}
+{"step": 100, "lr": 0.0005, "train_bpb": 3.9735, "train_bpb_ema": 4.8733, "balance_loss": 1.0085, "wall_s": 4.6749}
+{"arm": "E4b", "seed": 0, "lr": 0.01, "steps_done": 100, "steps": 100, "start_step": 80, "horizon": 100, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 81408, "train_wall_s": 4.674994945526123, "final_eval_wall_s": 0.3366122245788574, "final_eval_windows": 256, "final_valid_bpb": 3.7583715928425474, "train_bpb_ema_last": 4.873326301346611}
+[ok] decay branch from the step-80 checkpoint equals an uninterrupted WSD run (H=100) E4b max|weights diff| 0.00e+00, |bpb diff| 0.00e+00 (tolerance 1e-6 float32)
+[ok] config records schedule, horizon and tokens per step 
+--- check_first_ladder_unchanged
+[E0 seed=0 lr=0.002] params=93184 steps=0->40 schedule=cosine horizon=40 batch=64x128
+{"step": 1, "lr": 0.001, "train_bpb": 8.0737, "train_bpb_ema": 8.0737, "balance_loss": null, "wall_s": 0.1916}
+{"step": 20, "lr": 0.0012, "wall_s": 4.4622}
+{"arm": "E0", "seed": 0, "lr": 0.002, "steps_done": 40, "steps": 40, "start_step": 0, "horizon": 40, "schedule": "cosine", "status": "passed", "cause": null, "params_outside_embedding": 93184, "train_wall_s": 8.671462535858154, "final_eval_wall_s": 0.595365047454834, "final_eval_windows": 512, "final_valid_bpb": 4.009533778271087, "train_bpb_ema_last": 6.2313170352007825}
+[ok] first ladder reproducible: the cosine run of the E0 smoke is bit-identical after the changes 4.009533778271087 vs 4.009533778271087
+44/44 checks passed
