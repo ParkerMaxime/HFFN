@@ -1,0 +1,53 @@
+{
+  "step": "e9",
+  "workers": 4,
+  "threads": 1,
+  "checks": [
+    "check_model.py",
+    "check_series.py"
+  ],
+  "stages": [
+    {
+      "name": "final",
+      "arms": [
+        "REF1_N512",
+        "REF2_N512",
+        "REF3_N512",
+        "REF4_N512",
+        "E4a_L2_N512",
+        "E4a_L4_N512",
+        "E4a_L6_N512",
+        "IND_L4_N512"
+      ],
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "steps": 4000,
+      "schedule": "wsd",
+      "tokens_per_step": 8192,
+      "valid_bytes": 524288,
+      "eval_every": 1000,
+      "mixing": true,
+      "test": true,
+      "lr": {
+        "REF1_N512": 0.016,
+        "REF2_N512": 0.0127,
+        "REF3_N512": 0.0101,
+        "REF4_N512": 0.008,
+        "E4a_L2_N512": 0.008,
+        "E4a_L4_N512": 0.008,
+        "E4a_L6_N512": 0.008,
+        "IND_L4_N512": 0.008
+      }
+    }
+  ],
+  "smoke": {
+    "test": false
+  },
+  "analysis": {
+    "suffix": "_N512",
+    "tau": 0.075
+  }
+}
