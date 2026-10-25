@@ -1,0 +1,234 @@
+{
+ "step": "e5",
+ "mode": "run",
+ "started": "20261024T225110Z",
+ "jobs": {
+  "sweep/REF4_lr0.004_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T231341Z",
+   "final_valid_bpb": 2.2128583272257227,
+   "cause": null
+  },
+  "sweep/REF4_lr0.002_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T231334Z",
+   "final_valid_bpb": 2.3135244189611264,
+   "cause": null
+  },
+  "sweep/REF4_lr0.008_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T231335Z",
+   "final_valid_bpb": 2.167193899899569,
+   "cause": null
+  },
+  "sweep/REF4_lr0.016_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T231343Z",
+   "final_valid_bpb": 2.1582884624473793,
+   "cause": null
+  },
+  "sweep/REF4_lr0.032_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T233756Z",
+   "final_valid_bpb": 2.2070386529377153,
+   "cause": null
+  },
+  "sweep/REF4_lr0.064_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T234427Z",
+   "final_valid_bpb": 2.661982836228141,
+   "cause": null
+  },
+  "sweep/E4a_L4_lr0.002_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T233749Z",
+   "final_valid_bpb": 2.4225037910143845,
+   "cause": null
+  },
+  "sweep/E4a_L4_lr0.004_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261024T233751Z",
+   "final_valid_bpb": 2.3163127761219466,
+   "cause": null
+  },
+  "sweep/E4a_L4_lr0.008_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T000217Z",
+   "final_valid_bpb": 2.2710689945683487,
+   "cause": null
+  },
+  "sweep/E4a_L4_lr0.016_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T000428Z",
+   "final_valid_bpb": 2.3046644070050717,
+   "cause": null
+  },
+  "sweep/E4a_L4_lr0.032_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T001316Z",
+   "final_valid_bpb": 2.434582102560951,
+   "cause": null
+  },
+  "sweep/E4a_L4_lr0.064_s100": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T001515Z",
+   "final_valid_bpb": 2.8689740295061146,
+   "cause": null
+  },
+  "main/REF4_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T010741Z",
+   "final_valid_bpb": 2.027505462752405,
+   "cause": null
+  },
+  "main/REF4_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T010736Z",
+   "final_valid_bpb": 2.034826388547433,
+   "cause": null
+  },
+  "main/REF4_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T010730Z",
+   "final_valid_bpb": 2.0325045406249775,
+   "cause": null
+  },
+  "main/REF4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T010741Z",
+   "final_valid_bpb": 2.0361611170254528,
+   "cause": null
+  },
+  "main/E4a_L4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T020517Z",
+   "final_valid_bpb": 2.1347135819623912,
+   "cause": null
+  },
+  "main/E4a_L4_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T020457Z",
+   "final_valid_bpb": 2.1203671542501286,
+   "cause": null
+  },
+  "main/E4a_L4_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T020507Z",
+   "final_valid_bpb": 2.120724988830111,
+   "cause": null
+  },
+  "main/E4a_L4_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T020507Z",
+   "final_valid_bpb": 2.1296790752194372,
+   "cause": null
+  },
+  "rot/E4a_L4rot_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T030154Z",
+   "final_valid_bpb": 2.1166801590350524,
+   "cause": null
+  },
+  "rot/E4a_L4rot_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T030200Z",
+   "final_valid_bpb": 2.1288157088798383,
+   "cause": null
+  },
+  "rot/E4a_L4rot_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T030151Z",
+   "final_valid_bpb": 2.118658051768646,
+   "cause": null
+  },
+  "rot/E4a_L4rot_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T030144Z",
+   "final_valid_bpb": 2.1292664843100453,
+   "cause": null
+  },
+  "pos/E3b_L4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T033156Z",
+   "final_valid_bpb": 2.4168231726033937,
+   "cause": null
+  },
+  "pos/E3b_L4_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T033204Z",
+   "final_valid_bpb": 2.409960102748599,
+   "cause": null
+  },
+  "pos/E3b_L4_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T033155Z",
+   "final_valid_bpb": 2.4149188194343054,
+   "cause": null
+  },
+  "pos/E3b_L4_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T033149Z",
+   "final_valid_bpb": 2.420151533253247,
+   "cause": null
+  },
+  "pos/E3b_L4rot_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T040135Z",
+   "final_valid_bpb": 2.4117973311617518,
+   "cause": null
+  },
+  "pos/E3b_L4rot_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T040154Z",
+   "final_valid_bpb": 2.409298146873912,
+   "cause": null
+  },
+  "pos/E3b_L4rot_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T040143Z",
+   "final_valid_bpb": 2.4138378686574637,
+   "cause": null
+  },
+  "pos/E3b_L4rot_s3": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T040158Z",
+   "final_valid_bpb": 2.4078900547937083,
+   "cause": null
+  }
+ },
+ "ended": "20261025T040158Z",
+ "exit": 0,
+ "why": ""
+}

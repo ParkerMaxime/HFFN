@@ -1,0 +1,30 @@
+{
+ "arm": "REF4",
+ "seed": 1,
+ "lr": 0.016,
+ "steps_done": 4000,
+ "steps": 4000,
+ "status": "passed",
+ "cause": null,
+ "params_outside_embedding": 372352,
+ "train_wall_s": 2904.5391874313354,
+ "final_valid": {
+  "bpb": 2.0325045406249775,
+  "bpb_by_class": [
+   2.062084606733643,
+   2.039492397090856,
+   2.0215305905945495,
+   2.006910568080862
+  ],
+  "windows": 39062
+ },
+ "final_valid_bpb": 2.0325045406249775,
+ "train_bpb_ema_last": 2.016756717690074,
+ "mixing": {
+  "base_bpb": 2.042186774012032,
+  "delta_q": 2.23452618487793,
+  "delta_kv": 2.7154120453713593,
+  "delta_down": 2.126056398926329,
+  "delta_all": 4.5274901146316235
+ }
+}

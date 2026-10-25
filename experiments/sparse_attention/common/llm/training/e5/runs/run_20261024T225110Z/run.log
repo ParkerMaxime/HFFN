@@ -1,0 +1,72 @@
+22:51:10Z step e5 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e5/runs/run_20261024T225110Z
+22:51:18Z checks: 121/121 passed (exit 0)
+22:51:18Z stage sweep: 12 jobs, 4 workers x 1 thread(s)
+22:51:18Z start sweep/REF4_lr0.004_s100
+22:51:18Z start sweep/REF4_lr0.002_s100
+22:51:18Z start sweep/REF4_lr0.008_s100
+22:51:18Z start sweep/REF4_lr0.016_s100
+23:13:34Z done  sweep/REF4_lr0.002_s100: exit 0, valid bpb 2.3135244189611264
+23:13:34Z start sweep/REF4_lr0.032_s100
+23:13:35Z done  sweep/REF4_lr0.008_s100: exit 0, valid bpb 2.167193899899569
+23:13:35Z start sweep/REF4_lr0.064_s100
+23:13:41Z done  sweep/REF4_lr0.004_s100: exit 0, valid bpb 2.2128583272257227
+23:13:41Z start sweep/E4a_L4_lr0.002_s100
+23:13:43Z done  sweep/REF4_lr0.016_s100: exit 0, valid bpb 2.1582884624473793
+23:13:43Z start sweep/E4a_L4_lr0.004_s100
+23:37:49Z done  sweep/E4a_L4_lr0.002_s100: exit 0, valid bpb 2.4225037910143845
+23:37:49Z start sweep/E4a_L4_lr0.008_s100
+23:37:51Z done  sweep/E4a_L4_lr0.004_s100: exit 0, valid bpb 2.3163127761219466
+23:37:51Z start sweep/E4a_L4_lr0.016_s100
+23:37:56Z done  sweep/REF4_lr0.032_s100: exit 0, valid bpb 2.2070386529377153
+23:37:56Z start sweep/E4a_L4_lr0.032_s100
+23:44:27Z done  sweep/REF4_lr0.064_s100: exit 0, valid bpb 2.661982836228141
+23:44:27Z start sweep/E4a_L4_lr0.064_s100
+00:02:17Z done  sweep/E4a_L4_lr0.008_s100: exit 0, valid bpb 2.2710689945683487
+00:04:28Z done  sweep/E4a_L4_lr0.016_s100: exit 0, valid bpb 2.3046644070050717
+00:13:16Z done  sweep/E4a_L4_lr0.032_s100: exit 0, valid bpb 2.434582102560951
+00:15:15Z done  sweep/E4a_L4_lr0.064_s100: exit 0, valid bpb 2.8689740295061146
+00:15:15Z learning-rate selection: {'REF4': 0.016, 'E4a_L4': 0.008} (coincide: False)
+00:15:15Z stage main: 8 jobs, 4 workers x 1 thread(s)
+00:15:15Z start main/REF4_s3
+00:15:15Z start main/REF4_s2
+00:15:15Z start main/REF4_s1
+00:15:15Z start main/REF4_s0
+01:07:30Z done  main/REF4_s1: exit 0, valid bpb 2.0325045406249775
+01:07:30Z start main/E4a_L4_s0
+01:07:36Z done  main/REF4_s2: exit 0, valid bpb 2.034826388547433
+01:07:36Z start main/E4a_L4_s1
+01:07:41Z done  main/REF4_s3: exit 0, valid bpb 2.027505462752405
+01:07:41Z start main/E4a_L4_s2
+01:07:41Z done  main/REF4_s0: exit 0, valid bpb 2.0361611170254528
+01:07:41Z start main/E4a_L4_s3
+02:04:57Z done  main/E4a_L4_s1: exit 0, valid bpb 2.1203671542501286
+02:05:07Z done  main/E4a_L4_s3: exit 0, valid bpb 2.1296790752194372
+02:05:07Z done  main/E4a_L4_s2: exit 0, valid bpb 2.120724988830111
+02:05:17Z done  main/E4a_L4_s0: exit 0, valid bpb 2.1347135819623912
+02:05:17Z stage rot: 4 jobs, 4 workers x 1 thread(s)
+02:05:17Z start rot/E4a_L4rot_s3
+02:05:17Z start rot/E4a_L4rot_s1
+02:05:17Z start rot/E4a_L4rot_s2
+02:05:17Z start rot/E4a_L4rot_s0
+03:01:44Z done  rot/E4a_L4rot_s0: exit 0, valid bpb 2.1292664843100453
+03:01:51Z done  rot/E4a_L4rot_s2: exit 0, valid bpb 2.118658051768646
+03:01:54Z done  rot/E4a_L4rot_s3: exit 0, valid bpb 2.1166801590350524
+03:02:00Z done  rot/E4a_L4rot_s1: exit 0, valid bpb 2.1288157088798383
+03:02:00Z stage pos: 8 jobs, 4 workers x 1 thread(s)
+03:02:01Z start pos/E3b_L4_s0
+03:02:01Z start pos/E3b_L4_s1
+03:02:01Z start pos/E3b_L4_s2
+03:02:01Z start pos/E3b_L4_s3
+03:31:49Z done  pos/E3b_L4_s3: exit 0, valid bpb 2.420151533253247
+03:31:49Z start pos/E3b_L4rot_s0
+03:31:55Z done  pos/E3b_L4_s2: exit 0, valid bpb 2.4149188194343054
+03:31:55Z start pos/E3b_L4rot_s1
+03:31:56Z done  pos/E3b_L4_s0: exit 0, valid bpb 2.4168231726033937
+03:31:56Z start pos/E3b_L4rot_s2
+03:32:04Z done  pos/E3b_L4_s1: exit 0, valid bpb 2.409960102748599
+03:32:04Z start pos/E3b_L4rot_s3
+04:01:35Z done  pos/E3b_L4rot_s0: exit 0, valid bpb 2.4117973311617518
+04:01:43Z done  pos/E3b_L4rot_s2: exit 0, valid bpb 2.4138378686574637
+04:01:54Z done  pos/E3b_L4rot_s1: exit 0, valid bpb 2.409298146873912
+04:01:58Z done  pos/E3b_L4rot_s3: exit 0, valid bpb 2.4078900547937083
+04:01:58Z EXIT 0 

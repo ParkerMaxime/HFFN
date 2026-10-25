@@ -15,5 +15,5 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | IND | done | `ind/runs/run_20261024T211955Z` | 0 | mixing not worth it at L=1: E3b better than IND by +0.0031 bpb median (bound 0.075) — not met |
 | E4a | done | `e4a/runs/run_20261024T214033Z` | 0 | within bound, better than E3b in every seed (median d −0.2264 bpb; wide seed spread) |
 | E4b | done | `e4b/runs/run_20261024T221415Z` | 0 | inconclusive (median d +0.0825, seeds from −0.022 to +0.167; bimodal) |
-| E5 | not started | | | |
+| E5 | done | `e5/runs/run_20261024T225110Z` | 0 | E4a_L4 vs REF4 beyond bound (+0.093); E4a_L4 vs E3b_L4 −0.290; rotation vs fixed within bound (≈ −0.003) |
 | SUMMARY.md | not started | | | |
