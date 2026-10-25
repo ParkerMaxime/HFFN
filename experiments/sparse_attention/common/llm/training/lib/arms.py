@@ -84,7 +84,19 @@ E3B4R = E3B.with_(name="E3b_L4rot", n_layers=4, layer_routing="rotation")
 E4A_L4 = E4A.with_(name="E4a_L4", n_layers=4)
 E4A_L4R = E4A.with_(name="E4a_L4rot", n_layers=4, layer_routing="rotation")
 
-ARMS = {a.name: a for a in (E0, NOATT, E1, E2, E3A, E3B, IND, E4A, E4B, REF4, E3B4, E3B4R, E4A_L4, E4A_L4R)}
+# second series (E6-E9, PLAN section 14): two families by depth, one control, two contexts
+REF1 = E0.with_(name="REF1")  # = E0 under another name
+REF2 = E0.with_(name="REF2", n_layers=2)
+REF3 = E0.with_(name="REF3", n_layers=3)
+E4A_L2 = E4A.with_(name="E4a_L2", n_layers=2)
+E4A_L6 = E4A.with_(name="E4a_L6", n_layers=6)
+IND_L4 = IND.with_(name="IND_L4", n_layers=4, routing="hash")
+
+SERIES = (REF1, REF2, REF3, REF4, E4A_L2, E4A_L4, E4A_L6, IND_L4)
+SERIES_N512 = tuple(a.with_(name=a.name + "_N512", context=512) for a in SERIES)
+
+ARMS = {a.name: a for a in (E0, NOATT, E1, E2, E3A, E3B, IND, E4A, E4B, REF4, E3B4, E3B4R, E4A_L4, E4A_L4R,
+                            REF1, REF2, REF3, E4A_L2, E4A_L6, IND_L4, *SERIES_N512)}
 
 
 def get_arm(name: str, **overrides) -> ArmConfig:

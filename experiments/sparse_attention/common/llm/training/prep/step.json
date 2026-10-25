@@ -1,0 +1,70 @@
+{
+  "step": "prep",
+  "workers": 4,
+  "threads": 1,
+  "run_is_smoke": true,
+  "checks": [
+    "check_model.py",
+    "check_series.py"
+  ],
+  "stages": [
+    {
+      "name": "smoke_arms",
+      "arms": [
+        "REF1",
+        "REF2",
+        "REF3",
+        "REF4",
+        "E4a_L2",
+        "E4a_L4",
+        "E4a_L6",
+        "IND_L4",
+        "REF1_N512",
+        "REF2_N512",
+        "REF3_N512",
+        "REF4_N512",
+        "E4a_L2_N512",
+        "E4a_L4_N512",
+        "E4a_L6_N512",
+        "IND_L4_N512"
+      ],
+      "seeds": [
+        0
+      ],
+      "steps": 40,
+      "lr": {
+        "REF1": 0.002,
+        "REF2": 0.002,
+        "REF3": 0.002,
+        "REF4": 0.002,
+        "E4a_L2": 0.002,
+        "E4a_L4": 0.002,
+        "E4a_L6": 0.002,
+        "IND_L4": 0.002,
+        "REF1_N512": 0.002,
+        "REF2_N512": 0.002,
+        "REF3_N512": 0.002,
+        "REF4_N512": 0.002,
+        "E4a_L2_N512": 0.002,
+        "E4a_L4_N512": 0.002,
+        "E4a_L6_N512": 0.002,
+        "IND_L4_N512": 0.002
+      },
+      "schedule": "wsd",
+      "tokens_per_step": 8192,
+      "mixing": false
+    }
+  ],
+  "smoke": {
+    "eval_every": 1000,
+    "valid_bytes": 131072,
+    "final_windows": 256
+  },
+  "smoke_branch": {
+    "arm": "E4a_L2",
+    "lr": 0.005,
+    "plateau_steps": 24,
+    "horizon": 30,
+    "warmup": 4
+  }
+}

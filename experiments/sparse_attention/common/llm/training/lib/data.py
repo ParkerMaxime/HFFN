@@ -33,14 +33,9 @@ class Enwik8:
 
     def train_batches(self, seed: int, batch: int, context: int):
         """Endless generator of (x, y) int64 tensors; the order depends on the seed only (paired across arms)."""
-        a, b = self.split("train")
-        rng = np.random.RandomState(seed + 7919)
-        hi = b - a - context - 1
+        stream = BatchStream(self, seed, batch, context)
         while True:
-            starts = rng.randint(0, hi, size=batch) + a
-            w = np.stack([np.asarray(self.data[s:s + context + 1]) for s in starts]).astype(np.int64)
-            t = torch.from_numpy(w)
-            yield t[:, :-1], t[:, 1:]
+            yield stream.next()
 
     def eval_windows(self, name: str, context: int, max_windows=None):
         """Non-overlapping windows of the split, in order: (x, y) of shape (n, context)."""
@@ -53,6 +48,28 @@ class Enwik8:
         x = t[:-1].view(n, context)
         y = t[1:].view(n, context)
         return x, y
+
+
+class BatchStream:
+    """The training batches with a restorable position (state of the generator), for checkpoints and branches."""
+
+    def __init__(self, data: "Enwik8", seed: int, batch: int, context: int):
+        a, b = data.split("train")
+        self.data, self.a, self.batch, self.context = data.data, a, batch, context
+        self.hi = b - a - context - 1
+        self.rng = np.random.RandomState(seed + 7919)
+
+    def next(self):
+        starts = self.rng.randint(0, self.hi, size=self.batch) + self.a
+        w = np.stack([np.asarray(self.data[s:s + self.context + 1]) for s in starts]).astype(np.int64)
+        t = torch.from_numpy(w)
+        return t[:, :-1], t[:, 1:]
+
+    def get_state(self):
+        return self.rng.get_state()
+
+    def set_state(self, state):
+        self.rng.set_state(state)
 
 
 def balanced_byte_hash(counts: np.ndarray, groups: int) -> np.ndarray:

@@ -16,6 +16,8 @@ from pathlib import Path
 
 TRAIN = Path(__file__).resolve().parents[1]
 LOCK = threading.Lock()
+STAGE_KEYS = ("impl", "schedule", "horizon", "tokens_per_step", "save_at", "valid_bytes", "warmup", "mixing",
+              "test", "final_windows", "eval_every", "valid_windows")
 
 
 class Log:
@@ -32,14 +34,18 @@ def utc():
     return time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
 
 
-def run_checks(run_dir, log):
-    out = run_dir / "checks.json"
-    with open(run_dir / "checks.log", "w") as f:
-        rc = subprocess.call([sys.executable, "-u", str(TRAIN / "checks" / "check_model.py"), str(out)],
-                             cwd=TRAIN, stdout=f, stderr=subprocess.STDOUT)
-    res = json.loads(out.read_text()) if out.exists() else {"checks": [], "failed": ["crashed"]}
-    log(f"checks: {len(res['checks']) - len(res['failed'])}/{len(res['checks'])} passed (exit {rc})")
-    return rc == 0
+def run_checks(run_dir, log, scripts=("check_model.py",)):
+    ok = True
+    for script in scripts:
+        stem = Path(script).stem
+        out = run_dir / f"{stem}.json" if len(scripts) > 1 else run_dir / "checks.json"
+        with open(run_dir / f"{stem}.log", "w") as f:
+            rc = subprocess.call([sys.executable, "-u", str(TRAIN / "checks" / script), str(out)],
+                                 cwd=TRAIN, stdout=f, stderr=subprocess.STDOUT)
+        res = json.loads(out.read_text()) if out.exists() else {"checks": [], "failed": ["crashed"]}
+        log(f"checks {script}: {len(res['checks']) - len(res['failed'])}/{len(res['checks'])} passed (exit {rc})")
+        ok &= rc == 0
+    return ok
 
 
 def resolve_lr(spec, arm, selection, smoke):
@@ -53,8 +59,15 @@ def resolve_lr(spec, arm, selection, smoke):
 
 def job_cmd(job, threads):
     c = ["-u", "-m", "lib.train", "--arm", job["arm"], "--seed", str(job["seed"]), "--steps", str(job["steps"]),
-         "--lr", repr(job["lr"]), "--out", str(job["dir"]), "--threads", str(threads), "--mixing",
+         "--lr", repr(job["lr"]), "--out", str(job["dir"]), "--threads", str(threads),
          "--eval-every", str(job.get("eval_every", 500)), "--valid-windows", str(job.get("valid_windows", 4096))]
+    if job.get("mixing", True):
+        c += ["--mixing"]
+    for key, flag in (("schedule", "--schedule"), ("horizon", "--horizon"), ("tokens_per_step", "--tokens-per-step"),
+                      ("save_at", "--save-at"), ("resume", "--resume"), ("valid_bytes", "--valid-bytes"),
+                      ("warmup", "--warmup")):
+        if job.get(key) is not None:
+            c += [flag, str(job[key])]
     if job.get("final_windows"):
         c += ["--final-windows", str(job["final_windows"])]
     if job.get("impl"):
@@ -91,7 +104,13 @@ def run_jobs(jobs, run_dir, workers, threads, manifest, log, resume):
         return key, rc
 
     # longest jobs first (more layers, more steps) so that the pool is busy until the end
-    jobs = sorted(jobs, key=lambda j: -(j["steps"] * (4 if "L4" in j["arm"] or j["arm"] == "REF4" else 1)))
+    from .arms import get_arm
+
+    def weight(j):
+        a = get_arm(j["arm"])
+        return j["steps"] * a.n_layers * (1.7 if a.context > 128 else 1.0)
+
+    jobs = sorted(jobs, key=lambda j: -weight(j))
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
         return [r for r in ex.map(one, jobs)]
 
@@ -141,46 +160,65 @@ def main():
         log(f"EXIT {code} {why}")
         return code
 
-    if not run_checks(run_dir, log):
+    if not run_checks(run_dir, log, tuple(spec.get("checks", ["check_model.py"]))):
         return finish(3, "pre-training checks failed (harness)")
     if a.mode == "check":
         return finish(0)
 
     selection = None
     workers, threads = spec.get("workers", 4), spec.get("threads", 1)
-    smoke = a.mode == "smoke"
+    smoke = a.mode == "smoke" or (a.mode == "run" and spec.get("run_is_smoke"))
     rcs = []
     if smoke:
         seen, jobs = set(), []
         for st in spec["stages"]:
+            if st.get("kind") == "branches":
+                continue
             for arm in st["arms"]:
                 if arm in seen:
                     continue
                 seen.add(arm)
                 jobs.append({"arm": arm, "seed": 0, "steps": 40, "lr": 2e-3, "dir": run_dir / "smoke" / f"{arm}_s0",
                              "eval_every": 20, "valid_windows": 256, "final_windows": 512,
-                             **{k: st[k] for k in ("impl", "overrides") if k in st}})
+                             **{k: st[k] for k in STAGE_KEYS if k in st}, **spec.get("smoke", {})})
         rcs += [rc for _, rc in run_jobs(jobs, run_dir, workers, threads, manifest, log, False)]
+        pair = spec.get("smoke_branch")
+        if pair:  # one plateau-and-branch pair
+            plateau = {"arm": pair["arm"], "seed": 0, "steps": pair["plateau_steps"], "lr": pair["lr"],
+                       "dir": run_dir / "smoke_branch" / "plateau", "eval_every": 1000, "valid_windows": 256,
+                       "final_windows": 512, "schedule": "wsd", "horizon": pair["horizon"], "warmup": pair["warmup"],
+                       "tokens_per_step": 8192, "save_at": str(pair["plateau_steps"]), "mixing": False}
+            branch = dict(plateau, steps=pair["horizon"], dir=run_dir / "smoke_branch" / "branch", save_at=None,
+                          resume=str(run_dir / "smoke_branch" / "plateau" / f"ckpt_{pair['plateau_steps']}.pt"))
+            rcs += [rc for _, rc in run_jobs([plateau], run_dir, 1, threads, manifest, log, False)]
+            rcs += [rc for _, rc in run_jobs([branch], run_dir, 1, threads, manifest, log, False)]
         return finish(0 if all(rc == 0 for rc in rcs) else 1)
 
     for st in spec["stages"]:
         stage_dir = run_dir / st["name"]
         jobs = []
+        common = {k: st[k] for k in STAGE_KEYS if k in st}
         if st.get("kind") == "sweep":
             for arm in st["arms"]:
                 for lr in st["lrs"]:
                     for seed in st["seeds"]:
                         jobs.append({"arm": arm, "seed": seed, "steps": st["steps"], "lr": float(lr),
-                                     "dir": stage_dir / f"{arm}_lr{lr:g}_s{seed}", "eval_every": st.get("eval_every", 500),
-                                     **{k: st[k] for k in ("impl", "overrides") if k in st}})
+                                     "dir": stage_dir / f"{arm}_lr{lr:g}_s{seed}", **common})
+        elif st.get("kind") == "branches":
+            for arm in st["arms"]:
+                lr = resolve_lr(st["lr"], arm, selection, False)
+                for seed in st["seeds"]:
+                    for br in st["branches"]:
+                        ck = run_dir / st["from"] / f"{arm}_s{seed}" / f"ckpt_{br['from_step']}.pt"
+                        jobs.append({"arm": arm, "seed": seed, "steps": br["horizon"], "horizon": br["horizon"], "lr": lr,
+                                     "resume": str(ck), "dir": stage_dir / f"{arm}_s{seed}_H{br['horizon']}",
+                                     **{k: v for k, v in common.items() if k not in ("horizon", "save_at")}})
         else:
             for arm in st["arms"]:
                 lr = resolve_lr(st["lr"], arm, selection, False)
                 for seed in st["seeds"]:
                     jobs.append({"arm": arm, "seed": seed, "steps": st["steps"], "lr": lr,
-                                 "dir": stage_dir / f"{arm}_s{seed}", "eval_every": st.get("eval_every", 500),
-                                 "test": st.get("test", False),
-                                 **{k: st[k] for k in ("impl",) if k in st},
+                                 "dir": stage_dir / f"{arm}_s{seed}", **common,
                                  **({"overrides": st["overrides"][arm]} if arm in st.get("overrides", {}) else {})})
         log(f"stage {st['name']}: {len(jobs)} jobs, {workers} workers x {threads} thread(s)")
         rc = [r for _, r in run_jobs(jobs, run_dir, workers, threads, manifest, log, bool(a.resume))]
