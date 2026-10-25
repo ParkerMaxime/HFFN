@@ -1,0 +1,40 @@
+09:39:27Z step prep mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/prep/runs/run_20261025T093927Z
+09:39:37Z checks check_model.py: 179/179 passed (exit 0)
+09:42:19Z checks check_series.py: 44/44 passed (exit 0)
+09:42:19Z start smoke/REF4_N512_s0
+09:42:19Z start smoke/IND_L4_N512_s0
+09:42:19Z start smoke/E4a_L4_N512_s0
+09:42:19Z start smoke/E4a_L6_N512_s0
+09:43:18Z done  smoke/REF4_N512_s0: exit 0, valid bpb 5.418301365361652
+09:43:18Z start smoke/E4a_L6_s0
+09:43:26Z done  smoke/E4a_L4_N512_s0: exit 0, valid bpb 5.949204769636163
+09:43:26Z start smoke/REF3_N512_s0
+09:43:26Z done  smoke/IND_L4_N512_s0: exit 0, valid bpb 6.600206194559553
+09:43:26Z start smoke/REF4_s0
+09:43:55Z done  smoke/E4a_L6_N512_s0: exit 0, valid bpb 5.829390411283069
+09:43:55Z start smoke/E4a_L4_s0
+09:44:06Z done  smoke/REF4_s0: exit 0, valid bpb 5.252448609676266
+09:44:06Z start smoke/IND_L4_s0
+09:44:11Z done  smoke/REF3_N512_s0: exit 0, valid bpb 5.422613632605523
+09:44:11Z start smoke/REF2_N512_s0
+09:44:18Z done  smoke/E4a_L6_s0: exit 0, valid bpb 5.723419943181375
+09:44:18Z start smoke/E4a_L2_N512_s0
+09:44:37Z done  smoke/E4a_L4_s0: exit 0, valid bpb 5.8356295423292
+09:44:37Z start smoke/REF3_s0
+09:44:44Z done  smoke/REF2_N512_s0: exit 0, valid bpb 5.510237592989271
+09:44:44Z start smoke/REF2_s0
+09:44:49Z done  smoke/IND_L4_s0: exit 0, valid bpb 6.536781480243006
+09:44:49Z start smoke/E4a_L2_s0
+09:44:54Z done  smoke/E4a_L2_N512_s0: exit 0, valid bpb 6.089148489396152
+09:44:54Z start smoke/REF1_N512_s0
+09:45:06Z done  smoke/REF2_s0: exit 0, valid bpb 5.346419717559444
+09:45:06Z start smoke/REF1_s0
+09:45:06Z done  smoke/REF3_s0: exit 0, valid bpb 5.259621958744326
+09:45:12Z done  smoke/REF1_N512_s0: exit 0, valid bpb 5.570126906332972
+09:45:15Z done  smoke/E4a_L2_s0: exit 0, valid bpb 6.001090174916193
+09:45:19Z done  smoke/REF1_s0: exit 0, valid bpb 5.436000575245877
+09:45:19Z start smoke_branch/plateau
+09:45:38Z done  smoke_branch/plateau: exit 0, valid bpb 3.8914981156045267
+09:45:38Z start smoke_branch/branch
+09:45:49Z done  smoke_branch/branch: exit 0, valid bpb 3.847069330588448
+09:45:49Z EXIT 0 

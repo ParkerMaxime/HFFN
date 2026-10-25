@@ -1,0 +1,901 @@
+{
+ "checks": [
+  {
+   "check": "params E0",
+   "ok": true,
+   "detail": "93184 (formula 93184, PLAN table 93184)"
+  },
+  {
+   "check": "params E0 equals PLAN section 7 table",
+   "ok": true,
+   "detail": "93184 vs 93184"
+  },
+  {
+   "check": "params NOATT",
+   "ok": true,
+   "detail": "27520 (formula 27520)"
+  },
+  {
+   "check": "params E1",
+   "ok": true,
+   "detail": "93184 (formula 93184, PLAN table 93184)"
+  },
+  {
+   "check": "params E1 equals PLAN section 7 table",
+   "ok": true,
+   "detail": "93184 vs 93184"
+  },
+  {
+   "check": "params E2",
+   "ok": true,
+   "detail": "93184 (formula 93184, PLAN table 93184)"
+  },
+  {
+   "check": "params E2 equals PLAN section 7 table",
+   "ok": true,
+   "detail": "93184 vs 93184"
+  },
+  {
+   "check": "params E3a",
+   "ok": true,
+   "detail": "80896 (formula 80896, PLAN table 80896)"
+  },
+  {
+   "check": "params E3a equals PLAN section 7 table",
+   "ok": true,
+   "detail": "80896 vs 80896"
+  },
+  {
+   "check": "params E3b",
+   "ok": true,
+   "detail": "80896 (formula 80896, PLAN table 80896)"
+  },
+  {
+   "check": "params E3b equals PLAN section 7 table",
+   "ok": true,
+   "detail": "80896 vs 80896"
+  },
+  {
+   "check": "params IND",
+   "ok": true,
+   "detail": "44032 (formula 44032)"
+  },
+  {
+   "check": "params E4a",
+   "ok": true,
+   "detail": "80896 (formula 80896)"
+  },
+  {
+   "check": "params E4b",
+   "ok": true,
+   "detail": "81408 (formula 81408)"
+  },
+  {
+   "check": "params REF4",
+   "ok": true,
+   "detail": "372352 (formula 372352)"
+  },
+  {
+   "check": "params E3b_L4",
+   "ok": true,
+   "detail": "323200 (formula 323200)"
+  },
+  {
+   "check": "params E3b_L4rot",
+   "ok": true,
+   "detail": "323200 (formula 323200)"
+  },
+  {
+   "check": "params E4a_L4",
+   "ok": true,
+   "detail": "323200 (formula 323200)"
+  },
+  {
+   "check": "params E4a_L4rot",
+   "ok": true,
+   "detail": "323200 (formula 323200)"
+  },
+  {
+   "check": "params REF1",
+   "ok": true,
+   "detail": "93184 (formula 93184)"
+  },
+  {
+   "check": "params REF2",
+   "ok": true,
+   "detail": "186240 (formula 186240)"
+  },
+  {
+   "check": "params REF3",
+   "ok": true,
+   "detail": "279296 (formula 279296)"
+  },
+  {
+   "check": "params E4a_L2",
+   "ok": true,
+   "detail": "161664 (formula 161664)"
+  },
+  {
+   "check": "params E4a_L6",
+   "ok": true,
+   "detail": "484736 (formula 484736)"
+  },
+  {
+   "check": "params IND_L4",
+   "ok": true,
+   "detail": "175744 (formula 175744)"
+  },
+  {
+   "check": "params REF1_N512",
+   "ok": true,
+   "detail": "93184 (formula 93184)"
+  },
+  {
+   "check": "params REF2_N512",
+   "ok": true,
+   "detail": "186240 (formula 186240)"
+  },
+  {
+   "check": "params REF3_N512",
+   "ok": true,
+   "detail": "279296 (formula 279296)"
+  },
+  {
+   "check": "params REF4_N512",
+   "ok": true,
+   "detail": "372352 (formula 372352)"
+  },
+  {
+   "check": "params E4a_L2_N512",
+   "ok": true,
+   "detail": "161664 (formula 161664)"
+  },
+  {
+   "check": "params E4a_L4_N512",
+   "ok": true,
+   "detail": "323200 (formula 323200)"
+  },
+  {
+   "check": "params E4a_L6_N512",
+   "ok": true,
+   "detail": "484736 (formula 484736)"
+  },
+  {
+   "check": "params IND_L4_N512",
+   "ok": true,
+   "detail": "175744 (formula 175744)"
+  },
+  {
+   "check": "supports E0: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports NOATT: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E1: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E1: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E2: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E2: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3a: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3a: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3b: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3b: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND: down_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4b: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4b: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF4: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3b_L4: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3b_L4: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3b_L4rot: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E3b_L4rot: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L4: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L4: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L4rot: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L4rot: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF1: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF2: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF3: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L2: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L2: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L6: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L6: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND_L4: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND_L4: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND_L4: down_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF1_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF2_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF3_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports REF4_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L2_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L2_N512: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L4_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L4_N512: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L6_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports E4a_L6_N512: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND_L4_N512: degree 26 per neuron (up fan-in, down fan-out)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND_L4_N512: up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "supports IND_L4_N512: down_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "entries outside the masks stay exactly zero after 3 AdamW steps E0",
+   "ok": true,
+   "detail": "sum|w|=0.0"
+  },
+  {
+   "check": "entries outside the masks stay exactly zero after 3 AdamW steps E3b",
+   "ok": true,
+   "detail": "sum|w|=0.0"
+  },
+  {
+   "check": "entries outside the masks stay exactly zero after 3 AdamW steps IND",
+   "ok": true,
+   "detail": "sum|w|=0.0"
+  },
+  {
+   "check": "entries outside the masks stay exactly zero after 3 AdamW steps E4b",
+   "ok": true,
+   "detail": "sum|w|=0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E3b [selected]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E3b [packed]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g IND [selected]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g IND [packed]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E4a [selected]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E4b [selected]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E3b_L4 [selected]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E3b_L4 [packed]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E3b_L4rot [selected]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "o_t exactly zero outside S_g E3b_L4rot [packed]",
+   "ok": true,
+   "detail": "max|o| outside = 0.0"
+  },
+  {
+   "check": "FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) E2",
+   "ok": true,
+   "detail": "max change 9.54e-07; control (swap inside S_g) changes by 1.80e+00"
+  },
+  {
+   "check": "  control: a swap inside S_g changes the FFN output E2",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) E3a",
+   "ok": true,
+   "detail": "max change 9.54e-07; control (swap inside S_g) changes by 1.80e+00"
+  },
+  {
+   "check": "  control: a swap inside S_g changes the FFN output E3a",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) E3b",
+   "ok": true,
+   "detail": "max change 9.54e-07; control (swap inside S_g) changes by 1.80e+00"
+  },
+  {
+   "check": "  control: a swap inside S_g changes the FFN output E3b",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) IND",
+   "ok": true,
+   "detail": "max change 1.43e-06; control (swap inside S_g) changes by 2.80e+00"
+  },
+  {
+   "check": "  control: a swap inside S_g changes the FFN output IND",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "packed == selected, logits E2",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients E2",
+   "ok": true,
+   "detail": "max|diff| 2.91e-09 (max|grad| 2.03e-02)"
+  },
+  {
+   "check": "packed == selected, logits E3a",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients E3a",
+   "ok": true,
+   "detail": "max|diff| 2.56e-09 (max|grad| 1.95e-02)"
+  },
+  {
+   "check": "packed == selected, logits E3b",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients E3b",
+   "ok": true,
+   "detail": "max|diff| 5.12e-09 (max|grad| 2.21e-02)"
+  },
+  {
+   "check": "packed == selected, logits IND",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients IND",
+   "ok": true,
+   "detail": "max|diff| 5.59e-09 (max|grad| 1.90e-02)"
+  },
+  {
+   "check": "packed == selected, logits E3b_L4",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients E3b_L4",
+   "ok": true,
+   "detail": "max|diff| 6.75e-09 (max|grad| 1.95e-02)"
+  },
+  {
+   "check": "packed == selected, logits E3b_L4rot",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients E3b_L4rot",
+   "ok": true,
+   "detail": "max|diff| 8.38e-09 (max|grad| 1.89e-02)"
+  },
+  {
+   "check": "packed == selected, logits E0",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients E0",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00 (max|grad| 2.15e-02)"
+  },
+  {
+   "check": "packed == selected, logits E1",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00"
+  },
+  {
+   "check": "packed == selected, gradients E1",
+   "ok": true,
+   "detail": "max|diff| 0.00e+00 (max|grad| 2.79e-02)"
+  },
+  {
+   "check": "causality E0 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E0 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality NOATT [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality NOATT [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E1 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E1 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E2 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E2 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3a [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3a [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3b [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3b [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality IND [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality IND [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4b [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF4 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF4 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3b_L4 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3b_L4 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3b_L4rot [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E3b_L4rot [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a_L4 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a_L4rot [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF1 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF1 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF2 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF2 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF3 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF3 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a_L2 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a_L6 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality IND_L4 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF1_N512 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF1_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF2_N512 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF2_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF3_N512 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF3_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF4_N512 [packed]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality REF4_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a_L2_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a_L4_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality E4a_L6_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "causality IND_L4_N512 [selected]",
+   "ok": true,
+   "detail": "max|diff| on positions < 90: 0.00e+00"
+  },
+  {
+   "check": "determinism of the initialisation and forward E0",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "determinism of the initialisation and forward E3b",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "determinism of the initialisation and forward E4b",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "shared tensors (embedding, W_Q, W_K, W_V, norms) identical across arms for a seed",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "E1 and E2 have the same supports and values",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "balanced byte hash: each group receives about a quarter of the training bytes",
+   "ok": true,
+   "detail": "shares [0.25, 0.25, 0.25, 0.25]"
+  },
+  {
+   "check": "learned router: routes in {-1..G-1}, capacity respected",
+   "ok": true,
+   "detail": "capacity 40, max per window [40, 40, 34, 39]"
+  },
+  {
+   "check": "learned router: dropped tokens receive no attention and no FFN contribution",
+   "ok": true,
+   "detail": "dropped fraction 0.008"
+  },
+  {
+   "check": "learned router receives a gradient through the gate",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "balance loss is 1 for a perfectly balanced router, >= 1 otherwise",
+   "ok": true,
+   "detail": "1.000"
+  },
+  {
+   "check": "hash routing: route = table[byte of the token]",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "hash routing with rotation: route at layer l = (table[byte] + l) mod G",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "IND: zeroing the cross-block entries changes nothing (they are zero by construction)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "E3b: the mixing diagnostic does modify the model",
+   "ok": true,
+   "detail": "-0.0149"
+  }
+ ],
+ "failed": [],
+ "wall_s": 7.036973237991333
+}

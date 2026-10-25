@@ -1,0 +1,136 @@
+{
+ "step": "prep",
+ "mode": "run",
+ "started": "20261025T093927Z",
+ "jobs": {
+  "smoke/REF4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094318Z",
+   "final_valid_bpb": 5.418301365361652,
+   "cause": null
+  },
+  "smoke/E4a_L6_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094355Z",
+   "final_valid_bpb": 5.829390411283069,
+   "cause": null
+  },
+  "smoke/E4a_L4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094326Z",
+   "final_valid_bpb": 5.949204769636163,
+   "cause": null
+  },
+  "smoke/IND_L4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094326Z",
+   "final_valid_bpb": 6.600206194559553,
+   "cause": null
+  },
+  "smoke/E4a_L6_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094418Z",
+   "final_valid_bpb": 5.723419943181375,
+   "cause": null
+  },
+  "smoke/REF3_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094411Z",
+   "final_valid_bpb": 5.422613632605523,
+   "cause": null
+  },
+  "smoke/REF4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094406Z",
+   "final_valid_bpb": 5.252448609676266,
+   "cause": null
+  },
+  "smoke/E4a_L4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094437Z",
+   "final_valid_bpb": 5.8356295423292,
+   "cause": null
+  },
+  "smoke/IND_L4_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094449Z",
+   "final_valid_bpb": 6.536781480243006,
+   "cause": null
+  },
+  "smoke/REF2_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094444Z",
+   "final_valid_bpb": 5.510237592989271,
+   "cause": null
+  },
+  "smoke/E4a_L2_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094454Z",
+   "final_valid_bpb": 6.089148489396152,
+   "cause": null
+  },
+  "smoke/REF3_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094506Z",
+   "final_valid_bpb": 5.259621958744326,
+   "cause": null
+  },
+  "smoke/REF2_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094506Z",
+   "final_valid_bpb": 5.346419717559444,
+   "cause": null
+  },
+  "smoke/E4a_L2_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094515Z",
+   "final_valid_bpb": 6.001090174916193,
+   "cause": null
+  },
+  "smoke/REF1_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094512Z",
+   "final_valid_bpb": 5.570126906332972,
+   "cause": null
+  },
+  "smoke/REF1_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094519Z",
+   "final_valid_bpb": 5.436000575245877,
+   "cause": null
+  },
+  "smoke_branch/plateau": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094538Z",
+   "final_valid_bpb": 3.8914981156045267,
+   "cause": null
+  },
+  "smoke_branch/branch": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T094549Z",
+   "final_valid_bpb": 3.847069330588448,
+   "cause": null
+  }
+ },
+ "ended": "20261025T094549Z",
+ "exit": 0,
+ "why": ""
+}

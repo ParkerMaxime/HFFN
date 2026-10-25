@@ -17,3 +17,14 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | E4b | done | `e4b/runs/run_20261024T221415Z` | 0 | inconclusive (median d +0.0825, seeds from −0.022 to +0.167; bimodal) |
 | E5 | done | `e5/runs/run_20261024T225110Z` | 0 | E4a_L4 vs REF4 beyond bound (+0.093); E4a_L4 vs E3b_L4 −0.290; rotation vs fixed within bound (≈ −0.003) |
 | SUMMARY.md | done | `experiments/sparse_attention/SUMMARY.md` | — | all rows of the ladder run; see its "Not run" list |
+
+## Second series (E6-E9; plan: PLAN.md section 14; brief: CLOUD_E6_E9.md)
+
+| Step | Status | Run | Exit | Verdict / what remains |
+|---|---|---|---|---|
+| prep | done | `prep/runs/run_20261025T093927Z` | 0 | 44 new checks + 179 old pass; branch = uninterrupted run bit for bit; re-estimate of the total ≈ 18.5 h (< 24 h) |
+| E6 | not started | | | |
+| E7 | not started | | | |
+| E8 | not started | | | |
+| E9 | not started | | | |
+| SUMMARY_E6_E9.md | not started | | | |
