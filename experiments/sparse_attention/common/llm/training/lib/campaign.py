@@ -138,6 +138,49 @@ def select_lr(stage_dir, stage, log):
     return sel
 
 
+def adaptive_sweep(st, run_dir, stage_dir, common, workers, threads, manifest, log, resume):
+    """Grid of three rates per arm (centre, half, double); an arm whose best rate is at an edge gets the next rate in
+    that direction, at most `max_extensions` times; still at an edge afterwards: the edge is kept (stated as a limit)."""
+    factor, max_ext = st.get("factor", 2.0), st.get("max_extensions", 2)
+    rates = {a: sorted({round(c * factor ** k, 8) for k in (-1, 0, 1)}) for a, c in st["centres"].items()}
+    done, ext = {}, {a: 0 for a in rates}
+    todo = {a: list(r) for a, r in rates.items()}
+    while any(todo.values()):
+        jobs = []
+        for arm, lrs in todo.items():
+            for lr in lrs:
+                for seed in st["seeds"]:
+                    jobs.append({"arm": arm, "seed": seed, "steps": st["steps"], "lr": float(lr),
+                                 "dir": stage_dir / f"{arm}_lr{lr:g}_s{seed}", **common})
+        log(f"stage {st['name']}: round with {len(jobs)} jobs")
+        rcs = [r for _, r in run_jobs(jobs, run_dir, workers, threads, manifest, log, resume)]
+        if any(r != 0 for r in rcs):
+            return None
+        for arm, lrs in todo.items():
+            for lr in lrs:
+                done.setdefault(arm, {})[lr] = json.loads(
+                    (stage_dir / f"{arm}_lr{lr:g}_s{st['seeds'][0]}" / "summary.json").read_text())["final_valid_bpb"]
+        todo = {}
+        for arm, tab in done.items():
+            best = min(tab, key=tab.get)
+            lo, hi = min(tab), max(tab)
+            if ext[arm] < max_ext and best == lo:
+                todo[arm] = [round(lo / factor, 8)]
+                ext[arm] += 1
+            elif ext[arm] < max_ext and best == hi:
+                todo[arm] = [round(hi * factor, 8)]
+                ext[arm] += 1
+        # extensions are counted per arm, in total (at most twice, in either direction)
+    sel = {"best": {a: min(t, key=t.get) for a, t in done.items()},
+           "valid_bpb": {a: {f"{lr:g}": v for lr, v in sorted(t.items())} for a, t in done.items()},
+           "extensions": ext,
+           "at_edge": {a: (min(t, key=t.get) in (min(t), max(t))) for a, t in done.items()},
+           "centres": st["centres"], "factor": factor, "seed": st["seeds"][0]}
+    (stage_dir / "selection.json").write_text(json.dumps(sel, indent=1))
+    log(f"adaptive selection: {sel['best']} (at edge: {sel['at_edge']}, extensions: {ext})")
+    return sel
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--step-dir", required=True)
@@ -174,7 +217,7 @@ def main():
         for st in spec["stages"]:
             if st.get("kind") == "branches":
                 continue
-            for arm in st["arms"]:
+            for arm in (st["arms"] if "arms" in st else list(st["centres"])):
                 if arm in seen:
                     continue
                 seen.add(arm)
@@ -204,6 +247,11 @@ def main():
                     for seed in st["seeds"]:
                         jobs.append({"arm": arm, "seed": seed, "steps": st["steps"], "lr": float(lr),
                                      "dir": stage_dir / f"{arm}_lr{lr:g}_s{seed}", **common})
+        elif st.get("kind") == "adaptive_sweep":
+            selection = adaptive_sweep(st, run_dir, stage_dir, common, workers, threads, manifest, log, bool(a.resume))
+            if selection is None:
+                return finish(1, f"stage {st['name']} has failed jobs")
+            continue
         elif st.get("kind") == "branches":
             for arm in st["arms"]:
                 lr = resolve_lr(st["lr"], arm, selection, False)
