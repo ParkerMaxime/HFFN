@@ -1,0 +1,28 @@
+{
+ "arm": "REF3_N512",
+ "impl": "packed",
+ "seed": 0,
+ "tokens_per_step": 8192,
+ "context": 512,
+ "prefill": {
+  "peak_live_bytes": 54525952,
+  "live_at_end_bytes": 0
+ },
+ "saved": {
+  "saved_total_bytes": 265293444,
+  "saved_weight_side_bytes": 4099584,
+  "saved_token_side_bytes": 261193860,
+  "saved_distinct_storages": 90
+ },
+ "train_step": {
+  "peak_live_bytes": 279412744,
+  "live_at_end_bytes": 2501632
+ },
+ "peak_rss_bytes": 1391013888,
+ "per_token": {
+  "saved_total": 32384.45361328125,
+  "saved_token_side": 31884.01611328125,
+  "train_peak": 34108.0009765625,
+  "prefill_peak": 6656.0
+ }
+}

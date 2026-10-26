@@ -1,0 +1,28 @@
+{
+ "arm": "IND_L4",
+ "impl": "gather",
+ "seed": 0,
+ "tokens_per_step": 8192,
+ "context": 128,
+ "prefill": {
+  "peak_live_bytes": 45382400,
+  "live_at_end_bytes": 0
+ },
+ "saved": {
+  "saved_total_bytes": 288148228,
+  "saved_weight_side_bytes": 5648896,
+  "saved_token_side_bytes": 282499332,
+  "saved_distinct_storages": 304
+ },
+ "train_step": {
+  "peak_live_bytes": 302290696,
+  "live_at_end_bytes": 3291648
+ },
+ "peak_rss_bytes": 1459826688,
+ "per_token": {
+  "saved_total": 35174.34423828125,
+  "saved_token_side": 34484.78173828125,
+  "train_peak": 36900.7197265625,
+  "prefill_peak": 5539.84375
+ }
+}

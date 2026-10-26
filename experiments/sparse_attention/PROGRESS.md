@@ -34,7 +34,7 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | Step | Status | Run | Exit | Verdict / what remains |
 |---|---|---|---|---|
 | prep3 | done | `prep3/runs/run_20261026T205721Z` | 0 | 203 + 44 + 34 checks pass; gather = selected; gate 0.310 passed; dense control = executor; total re-estimate ≈ 12.6 h |
-| E10 | not started | | | |
+| E10 | done | `e10/runs/run_20261026T211323Z` | 0 | counted activation saving (0.50 / 0.25) not reached: measured token-side 1.6-1.9x dense at equal counted MACs, 0.89-1.00 at equal depth; prefill peak 0.78; packed/selected 0.74-0.83 |
 | E11 | not started | | | |
 | E12 | not started | | | |
 | E13 | not started | | | |

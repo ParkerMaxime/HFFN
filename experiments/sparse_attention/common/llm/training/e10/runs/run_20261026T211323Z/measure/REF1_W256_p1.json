@@ -1,0 +1,28 @@
+{
+ "arm": "REF1_W256",
+ "impl": "packed",
+ "seed": 0,
+ "tokens_per_step": 8192,
+ "context": 512,
+ "prefill": {
+  "peak_live_bytes": 109051904,
+  "live_at_end_bytes": 0
+ },
+ "saved": {
+  "saved_total_bytes": 199003268,
+  "saved_weight_side_bytes": 5573632,
+  "saved_token_side_bytes": 193429636,
+  "saved_distinct_storages": 38
+ },
+ "train_step": {
+  "peak_live_bytes": 212403208,
+  "live_at_end_bytes": 3416064
+ },
+ "peak_rss_bytes": 1265455104,
+ "per_token": {
+  "saved_total": 24292.39111328125,
+  "saved_token_side": 23612.01611328125,
+  "train_peak": 25928.1259765625,
+  "prefill_peak": 13312.0
+ }
+}

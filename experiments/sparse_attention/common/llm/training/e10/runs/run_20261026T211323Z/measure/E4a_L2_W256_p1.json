@@ -1,0 +1,28 @@
+{
+ "arm": "E4a_L2_W256",
+ "impl": "gather",
+ "seed": 0,
+ "tokens_per_step": 8192,
+ "context": 512,
+ "prefill": {
+  "peak_live_bytes": 84638560,
+  "live_at_end_bytes": 0
+ },
+ "saved": {
+  "saved_total_bytes": 319149540,
+  "saved_weight_side_bytes": 11342848,
+  "saved_token_side_bytes": 307806692,
+  "saved_distinct_storages": 162
+ },
+ "train_step": {
+  "peak_live_bytes": 329401704,
+  "live_at_end_bytes": 6568960
+ },
+ "peak_rss_bytes": 1542709248,
+ "per_token": {
+  "saved_total": 38958.68408203125,
+  "saved_token_side": 37574.05908203125,
+  "train_peak": 40210.1689453125,
+  "prefill_peak": 10331.85546875
+ }
+}

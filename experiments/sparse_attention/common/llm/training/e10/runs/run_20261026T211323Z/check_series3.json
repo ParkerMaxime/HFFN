@@ -1,0 +1,176 @@
+{
+ "checks": [
+  {
+   "check": "counter E4a_L2_W256 equal to the table of PLAN 15.5",
+   "ok": true,
+   "detail": "(552960, 642816, 1024, 3328)"
+  },
+  {
+   "check": "counter REF1_W256 equal to the table of PLAN 15.5",
+   "ok": true,
+   "detail": "(696320, 370688, 512, 6656)"
+  },
+  {
+   "check": "counter E4a_L4_W256 equal to the table of PLAN 15.5",
+   "ok": true,
+   "detail": "(1040384, 1285376, 2048, 6656)"
+  },
+  {
+   "check": "counter E4a_L4_W256_h16 equal to the table of PLAN 15.5",
+   "ok": true,
+   "detail": "(1040384, 1285376, 2048, 10752)"
+  },
+  {
+   "check": "counter REF2_W256 equal to the table of PLAN 15.5",
+   "ok": true,
+   "detail": "(1327104, 741120, 1024, 13312)"
+  },
+  {
+   "check": "counter REF2_W256_h16 equal to the table of PLAN 15.5",
+   "ok": true,
+   "detail": "(1327104, 741120, 1024, 21504)"
+  },
+  {
+   "check": "the two head layouts of a family have equal parameters and multiply-adds",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "arms of width 256: 8 heads of 32 and 16 heads of 16, N = 512, H = 1024, degree 52",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "width 256: degree 52 per neuron and up_idx of R_g inside S_g",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, E4a_L2",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 3.0e-08"
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 3.0e-08"
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, IND_L4",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 2.2e-08"
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, E4a_L2_N512",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 3.7e-08"
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4_N512",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 3.7e-08"
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, IND_L4_N512",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 3.0e-08"
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4_W256",
+   "ok": true,
+   "detail": "max|logit diff| 1.8e-06, max|grad diff| 6.0e-08"
+  },
+  {
+   "check": "gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4_W256_h16",
+   "ok": true,
+   "detail": "max|logit diff| 1.9e-06, max|grad diff| 4.5e-08"
+  },
+  {
+   "check": "memory (a): saved bytes of a synthetic module equal the hand count (distinct storages, relu result shared)",
+   "ok": true,
+   "detail": "25088 vs 25088; weight-side 4608 vs 4608"
+  },
+  {
+   "check": "memory (b)/(c): peak live bytes of a synthetic allocation pattern equal the hand value (A + B = 6 MiB)",
+   "ok": true,
+   "detail": "{'peak_live_bytes': 6291456, 'live_at_end_bytes': 0}"
+  },
+  {
+   "check": "memory harness: two fresh processes give identical (a) and (b), (c) within 1 %",
+   "ok": true,
+   "detail": "saved 165663492 / 165663492, train peak 180594440 / 180594440, prefill 43326208 / 43326208"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E4a_L2",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E4a_L4",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, IND_L4",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, REF2",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E4a_L2_N512",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, IND_L4_N512",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, REF2_N512",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E4a_L4_W256",
+   "ok": true,
+   "detail": "max|diff| 2.4e-06"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E4a_L4_W256_h16",
+   "ok": true,
+   "detail": "max|diff| 2.1e-06"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, REF2_W256_h16",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "timing harness: 12-slot protocol per window is control, copy, variant, variant, copy, control; every slot lasts >= 0.2 s (0.05 s here)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "timing harness: ratios from raw.jsonl only recover a known variant/control = 1.5 (within 3 %) and copy/control = 1 (within 3 %)",
+   "ok": true,
+   "detail": "r_variant 1.500, r_copy 1.000"
+  },
+  {
+   "check": "timing harness: steal/user time per window, lscpu, torch configuration and load average recorded",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "second series reproducible: the default form under the hash route (selected) gives the bits of the E8 smoke of E4a_L4",
+   "ok": true,
+   "detail": "5.887834514427231 vs 5.887834514427231"
+  }
+ ],
+ "failed": [],
+ "wall_s": 86.90269422531128
+}

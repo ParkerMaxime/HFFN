@@ -1,0 +1,28 @@
+{
+ "arm": "E4a_L4",
+ "impl": "selected",
+ "seed": 0,
+ "tokens_per_step": 8192,
+ "context": 128,
+ "prefill": {
+  "peak_live_bytes": 75825152,
+  "live_at_end_bytes": 0
+ },
+ "saved": {
+  "saved_total_bytes": 415020036,
+  "saved_weight_side_bytes": 5648896,
+  "saved_token_side_bytes": 409371140,
+  "saved_distinct_storages": 128
+ },
+ "train_step": {
+  "peak_live_bytes": 428376072,
+  "live_at_end_bytes": 3291648
+ },
+ "peak_rss_bytes": 1899315200,
+ "per_token": {
+  "saved_total": 50661.62548828125,
+  "saved_token_side": 49972.06298828125,
+  "train_peak": 52292.0009765625,
+  "prefill_peak": 9256.0
+ }
+}

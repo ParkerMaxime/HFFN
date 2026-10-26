@@ -1,0 +1,28 @@
+{
+ "arm": "REF3",
+ "impl": "packed",
+ "seed": 0,
+ "tokens_per_step": 8192,
+ "context": 128,
+ "prefill": {
+  "peak_live_bytes": 54525952,
+  "live_at_end_bytes": 0
+ },
+ "saved": {
+  "saved_total_bytes": 265269252,
+  "saved_weight_side_bytes": 4075008,
+  "saved_token_side_bytes": 261194244,
+  "saved_distinct_storages": 90
+ },
+ "train_step": {
+  "peak_live_bytes": 279412744,
+  "live_at_end_bytes": 2501632
+ },
+ "peak_rss_bytes": 1409290240,
+ "per_token": {
+  "saved_total": 32381.50048828125,
+  "saved_token_side": 31884.06298828125,
+  "train_peak": 34108.0009765625,
+  "prefill_peak": 6656.0
+ }
+}
