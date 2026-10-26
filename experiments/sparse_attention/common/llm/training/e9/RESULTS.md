@@ -22,7 +22,7 @@ E4a_L4 2.0941/2.1076/2.1224; E4a_L6 2.0368/2.0231/2.0330; IND_L4 2.2372/2.2377/2
 
 Bits per byte by position range (median over seeds, validation): the first 128 positions against positions 256-511 —
 REF1 2.3962 → 2.3341; REF2 2.1989 → 2.1215; REF3 2.1074 → 1.9805; REF4 2.0550 → 1.9255; E4a_L2 2.3322 → 2.2749; E4a_L4 2.1578 → 2.0908; E4a_L6 2.0879 → 2.0144;
-IND_L4 2.2880 → 2.2200. The ranges 128-255 and 256-511 are within 0.007 of each other in every arm (full table in `analysis.md`).
+IND_L4 2.2880 → 2.2200. The ranges 128-255 and 256-511 are within 0.009 of each other in every arm (full table in `analysis.md`).
 
 ## Measured: the registered readings
 
@@ -53,7 +53,7 @@ same interpolation.
 - **The loss of quality at equal depth** is beyond `τ` for both pairs (measured): +0.145 (`E4a_L2`/`REF2`) and +0.162 (`E4a_L4`/`REF4`).
 - **Coupling at depth**: `IND_L4` is worse than `E4a_L4` beyond `τ` (+0.130), as in E8: the frontier is not only the conditional computation of four separated models.
 - **Is the longer context used?** Yes, by every arm, mostly between the first 128 positions and the later ones (all arms gain 0.057-0.130 bpb between positions 0-127 and 256-511); positions 128-255 and 256-511
-  are nearly equal (within 0.007) in every arm: a window of 128 bytes of context is nearly all that the models exploit. The gain from the first range to the last is **larger in the deepest dense
+  are nearly equal (within 0.009) in every arm: a window of 128 bytes of context is nearly all that the models exploit. The gain from the first range to the last is **larger in the deepest dense
   models** (`REF3` −0.127, `REF4` −0.130) than in the constrained models of the same depth or compute (`E4a_L6` −0.073, `E4a_L4` −0.067; `REF2` −0.077). Within this campaign, read at the
   level of the position ranges: the dense models use the longer context more, which agrees with the weaker result of the deepest constrained pair (hypothesis for the cause: a token sees through 2
   heads of 8 on the query side, PLAN section 10).
