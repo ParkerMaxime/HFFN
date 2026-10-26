@@ -17,7 +17,7 @@ route depends on the bytes), float32, one intra-op thread:
 Weights, AdamW states and the KV cache are **counted** (`lib/count.py`), not measured: the harness stores dense masked weights, so their measured size would be
 the dense one. Memory of this PyTorch harness on this machine: it says nothing of the HFFN runtime (the FFN is a masked dense matrix in every arm).
 
-## Arms (26 configurations, each in two fresh processes)
+## Arms (24 configurations, each in two fresh processes)
 
 The eight arms of E8 at `N = 128` (`REF1`-`REF4`, `E4a_L2`, `E4a_L4`, `E4a_L6`, `IND_L4`) and the eight of E9 at `N = 512`, the hash-routed arms in the packed form
 (`--impl gather`, tokens of each group gathered, `E4a_L4` and `E4a_L4_N512` **also in the `selected` form**, keys `E4a_L4:selected` and `E4a_L4_N512:selected`), and the six arms of E13
@@ -44,4 +44,4 @@ count of the batch. (d) depends on the allocator. Garbage collection and the pro
 
 ## Launch
 
-`./run.sh check | smoke | run`: 52 measurement processes, 2 at a time. Estimated 0.6 h.
+`./run.sh check | smoke | run`: 48 measurement processes, 2 at a time. Estimated 0.6 h.
