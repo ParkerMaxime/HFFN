@@ -46,10 +46,9 @@ of a model cell: the inference count of the two arms (logits included).
   multiply-adds is carried into time at the level of one layer. Time follows the count approximately: `r` / counted is 0.96 (a3, the wide layer, where the products are large) to 1.56 (a2): the constrained
   layer is slower than its count in the small cells (1.4-1.6 times), where the plan, the gathers and the barrier weigh (hypothesis; the phase pass shows the plan at 4-5 % and the barrier plus launch at 6-30 % of the fork-join).
 - **Model (b): the constrained model is slower than the dense model at equal counted multiply-adds** (`E4a_L4`/`REF2`: 1.29 at `N` 128, 1.13 at 512, both beyond `delta`), although the count says 0.86 and 0.71.
-  Reading (hypothesis): a 4-layer model has four fork-joins and four plans against two layers' worth for the dense model of the same count; the logits, the embedding and the route of the byte are paid in both; the counted
-  saving of the layer is spent on twice the number of layers and barriers (the executor has one fork-join per layer for the constrained arm and two for the dense one, so the dense model of 2 layers has 4 fork-joins and the
-  constrained of 4 layers has 4: equal). The gap closes with the context (1.29 → 1.13), as the count says (0.86 → 0.71). The factor between time and count (1.5-1.6) is what this executor does to a deeper model of
-  routed layers on this machine.
+  Reading (hypothesis, not isolated): the two models have the same number of joins (four: one per layer for the 4-layer constrained model, two per layer for the 2-layer dense one), but the constrained model pays the plan of
+  the routed tokens, the gathers and the padding at each of its four layers, and its eight-fold smaller per-layer work leaves less to hide them behind; the logits, embedding and route are paid in both. The gap closes
+  with the context (1.29 → 1.13), as the count says (0.86 → 0.71). The factor between time and count (1.5-1.6) is what this executor does to a deeper model of routed layers on this machine.
 - **`IND_L4` against `E4a_L4` (c):** faster at `N` 128 (0.85, beyond `delta`), not resolved at 512 (0.92, `delta` 0.098), at 0.55 and 0.68 of the counted multiply-adds. The exchange of the residual (the volume read by the
   keys and values, a quarter for `IND`) is part of this difference with the cheaper keys, values and queries of `IND`; the two are not separated (README: `IND` keeps its barrier). So the barrier common to both is not what
   separates them.
