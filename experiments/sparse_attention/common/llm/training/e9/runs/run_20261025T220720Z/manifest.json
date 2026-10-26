@@ -1,0 +1,178 @@
+{
+ "step": "e9",
+ "mode": "run",
+ "started": "20261025T220720Z",
+ "jobs": {
+  "final/E4a_L6_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T001930Z",
+   "final_valid_bpb": 2.0231407017993757,
+   "cause": null
+  },
+  "final/E4a_L6_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T002149Z",
+   "final_valid_bpb": 2.0368227734595186,
+   "cause": null
+  },
+  "final/E4a_L6_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T002138Z",
+   "final_valid_bpb": 2.0329748925387694,
+   "cause": null
+  },
+  "final/REF4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T233058Z",
+   "final_valid_bpb": 1.9280706777254593,
+   "cause": null
+  },
+  "final/REF4_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T005212Z",
+   "final_valid_bpb": 1.976278306118198,
+   "cause": null
+  },
+  "final/REF4_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T014157Z",
+   "final_valid_bpb": 1.9601299178237024,
+   "cause": null
+  },
+  "final/E4a_L4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T015043Z",
+   "final_valid_bpb": 2.0940511977803733,
+   "cause": null
+  },
+  "final/E4a_L4_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T014937Z",
+   "final_valid_bpb": 2.107573428087512,
+   "cause": null
+  },
+  "final/E4a_L4_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T022110Z",
+   "final_valid_bpb": 2.122367160334364,
+   "cause": null
+  },
+  "final/IND_L4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T030858Z",
+   "final_valid_bpb": 2.237242083958702,
+   "cause": null
+  },
+  "final/IND_L4_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T031735Z",
+   "final_valid_bpb": 2.2377432870302414,
+   "cause": null
+  },
+  "final/IND_L4_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T031859Z",
+   "final_valid_bpb": 2.2365588385541137,
+   "cause": null
+  },
+  "final/REF3_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T032228Z",
+   "final_valid_bpb": 2.027994997041506,
+   "cause": null
+  },
+  "final/REF3_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T041004Z",
+   "final_valid_bpb": 2.013897859761795,
+   "cause": null
+  },
+  "final/REF3_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T041843Z",
+   "final_valid_bpb": 2.010064069007251,
+   "cause": null
+  },
+  "final/REF2_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T040043Z",
+   "final_valid_bpb": 2.1438169823127655,
+   "cause": null
+  },
+  "final/REF2_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T040415Z",
+   "final_valid_bpb": 2.1354436301730644,
+   "cause": null
+  },
+  "final/REF2_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T044302Z",
+   "final_valid_bpb": 2.141613350743895,
+   "cause": null
+  },
+  "final/E4a_L2_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T045010Z",
+   "final_valid_bpb": 2.28892211773726,
+   "cause": null
+  },
+  "final/E4a_L2_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T045530Z",
+   "final_valid_bpb": 2.304095546958718,
+   "cause": null
+  },
+  "final/E4a_L2_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T050433Z",
+   "final_valid_bpb": 2.282435773650103,
+   "cause": null
+  },
+  "final/REF1_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T050534Z",
+   "final_valid_bpb": 2.34980623818994,
+   "cause": null
+  },
+  "final/REF1_N512_s1": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T051248Z",
+   "final_valid_bpb": 2.3538012966596114,
+   "cause": null
+  },
+  "final/REF1_N512_s2": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T051817Z",
+   "final_valid_bpb": 2.3477601839983695,
+   "cause": null
+  }
+ },
+ "ended": "20261026T051817Z",
+ "exit": 0,
+ "why": ""
+}

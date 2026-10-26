@@ -1,0 +1,50 @@
+{
+ "arm": "REF3_N512",
+ "seed": 0,
+ "lr": 0.002,
+ "steps_done": 40,
+ "steps": 40,
+ "start_step": 0,
+ "horizon": 40,
+ "schedule": "wsd",
+ "status": "passed",
+ "cause": null,
+ "params_outside_embedding": 279296,
+ "train_wall_s": 32.61110019683838,
+ "final_eval_wall_s": 11.398114442825317,
+ "final_eval_windows": 512,
+ "final_valid": {
+  "bpb": 5.3820012980572285,
+  "bpb_by_class": [
+   5.380732397416852,
+   5.380489545999753,
+   5.394965571740783,
+   5.371817677071525
+  ],
+  "windows": 512,
+  "range_names": [
+   "0-127",
+   "128-255",
+   "256-511"
+  ],
+  "range_lengths": [
+   128,
+   128,
+   256
+  ],
+  "bpb_by_range": [
+   5.401675959182098,
+   5.372760691470961,
+   5.376784270787926
+  ]
+ },
+ "final_valid_bpb": 5.3820012980572285,
+ "train_bpb_ema_last": 7.316136633675226,
+ "mixing": {
+  "base_bpb": 5.450647149713785,
+  "delta_q": 0.06921525968045827,
+  "delta_kv": 0.9564730973362883,
+  "delta_down": 0.48862910390311587,
+  "delta_all": 1.719693133713303
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "step": "e9",
+ "mode": "smoke",
+ "started": "20261025T215815Z",
+ "jobs": {
+  "smoke/REF4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220405Z",
+   "final_valid_bpb": 5.376878592284203,
+   "cause": null
+  },
+  "smoke/E4a_L6_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220617Z",
+   "final_valid_bpb": 5.797143901715715,
+   "cause": null
+  },
+  "smoke/E4a_L4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220447Z",
+   "final_valid_bpb": 5.9172438922182025,
+   "cause": null
+  },
+  "smoke/IND_L4_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220447Z",
+   "final_valid_bpb": 6.582866708349306,
+   "cause": null
+  },
+  "smoke/REF3_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220644Z",
+   "final_valid_bpb": 5.3820012980572285,
+   "cause": null
+  },
+  "smoke/REF2_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220643Z",
+   "final_valid_bpb": 5.472212186165355,
+   "cause": null
+  },
+  "smoke/E4a_L2_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220647Z",
+   "final_valid_bpb": 6.063738944647119,
+   "cause": null
+  },
+  "smoke/REF1_N512_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261025T220720Z",
+   "final_valid_bpb": 5.530302153470245,
+   "cause": null
+  }
+ },
+ "ended": "20261025T220720Z",
+ "exit": 0,
+ "why": ""
+}

@@ -1,0 +1,50 @@
+{
+ "arm": "REF1_N512",
+ "seed": 0,
+ "lr": 0.002,
+ "steps_done": 40,
+ "steps": 40,
+ "start_step": 0,
+ "horizon": 40,
+ "schedule": "wsd",
+ "status": "passed",
+ "cause": null,
+ "params_outside_embedding": 93184,
+ "train_wall_s": 11.136518001556396,
+ "final_eval_wall_s": 4.691143751144409,
+ "final_eval_windows": 512,
+ "final_valid": {
+  "bpb": 5.530302153470245,
+  "bpb_by_class": [
+   5.532887853935996,
+   5.529178248538185,
+   5.539618813707611,
+   5.519523697699191
+  ],
+  "windows": 512,
+  "range_names": [
+   "0-127",
+   "128-255",
+   "256-511"
+  ],
+  "range_lengths": [
+   128,
+   128,
+   256
+  ],
+  "bpb_by_range": [
+   5.602753016153744,
+   5.509641811584233,
+   5.504406893071502
+  ]
+ },
+ "final_valid_bpb": 5.530302153470245,
+ "train_bpb_ema_last": 7.45358175979641,
+ "mixing": {
+  "base_bpb": 5.597910877441799,
+  "delta_q": 0.09512972452928459,
+  "delta_kv": 0.8983539298799608,
+  "delta_down": 0.7293912464324634,
+  "delta_all": 1.5451904034885553
+ }
+}

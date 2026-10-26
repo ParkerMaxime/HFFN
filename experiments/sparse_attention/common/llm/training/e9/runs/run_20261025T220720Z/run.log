@@ -1,0 +1,53 @@
+22:07:20Z step e9 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e9/runs/run_20261025T220720Z
+22:07:30Z checks check_model.py: 179/179 passed (exit 0)
+22:09:55Z checks check_series.py: 44/44 passed (exit 0)
+22:09:55Z stage final: 24 jobs, 4 workers x 1 thread(s)
+22:09:55Z start final/E4a_L6_N512_s1
+22:09:55Z start final/E4a_L6_N512_s0
+22:09:55Z start final/E4a_L6_N512_s2
+22:09:55Z start final/REF4_N512_s0
+23:30:58Z done  final/REF4_N512_s0: exit 0, valid bpb 1.9280706777254593
+23:30:58Z start final/REF4_N512_s1
+00:19:30Z done  final/E4a_L6_N512_s1: exit 0, valid bpb 2.0231407017993757
+00:19:30Z start final/REF4_N512_s2
+00:21:38Z done  final/E4a_L6_N512_s2: exit 0, valid bpb 2.0329748925387694
+00:21:38Z start final/E4a_L4_N512_s0
+00:21:49Z done  final/E4a_L6_N512_s0: exit 0, valid bpb 2.0368227734595186
+00:21:49Z start final/E4a_L4_N512_s1
+00:52:12Z done  final/REF4_N512_s1: exit 0, valid bpb 1.976278306118198
+00:52:12Z start final/E4a_L4_N512_s2
+01:41:57Z done  final/REF4_N512_s2: exit 0, valid bpb 1.9601299178237024
+01:41:57Z start final/IND_L4_N512_s0
+01:49:37Z done  final/E4a_L4_N512_s1: exit 0, valid bpb 2.107573428087512
+01:49:37Z start final/IND_L4_N512_s1
+01:50:43Z done  final/E4a_L4_N512_s0: exit 0, valid bpb 2.0940511977803733
+01:50:43Z start final/IND_L4_N512_s2
+02:21:10Z done  final/E4a_L4_N512_s2: exit 0, valid bpb 2.122367160334364
+02:21:10Z start final/REF3_N512_s0
+03:08:58Z done  final/IND_L4_N512_s0: exit 0, valid bpb 2.237242083958702
+03:08:58Z start final/REF3_N512_s1
+03:17:35Z done  final/IND_L4_N512_s1: exit 0, valid bpb 2.2377432870302414
+03:17:35Z start final/REF3_N512_s2
+03:18:59Z done  final/IND_L4_N512_s2: exit 0, valid bpb 2.2365588385541137
+03:18:59Z start final/REF2_N512_s0
+03:22:28Z done  final/REF3_N512_s0: exit 0, valid bpb 2.027994997041506
+03:22:28Z start final/REF2_N512_s1
+04:00:43Z done  final/REF2_N512_s0: exit 0, valid bpb 2.1438169823127655
+04:00:43Z start final/REF2_N512_s2
+04:04:15Z done  final/REF2_N512_s1: exit 0, valid bpb 2.1354436301730644
+04:04:15Z start final/E4a_L2_N512_s0
+04:10:04Z done  final/REF3_N512_s1: exit 0, valid bpb 2.013897859761795
+04:10:04Z start final/E4a_L2_N512_s1
+04:18:43Z done  final/REF3_N512_s2: exit 0, valid bpb 2.010064069007251
+04:18:43Z start final/E4a_L2_N512_s2
+04:43:02Z done  final/REF2_N512_s2: exit 0, valid bpb 2.141613350743895
+04:43:02Z start final/REF1_N512_s0
+04:50:10Z done  final/E4a_L2_N512_s0: exit 0, valid bpb 2.28892211773726
+04:50:10Z start final/REF1_N512_s1
+04:55:30Z done  final/E4a_L2_N512_s1: exit 0, valid bpb 2.304095546958718
+04:55:30Z start final/REF1_N512_s2
+05:04:33Z done  final/E4a_L2_N512_s2: exit 0, valid bpb 2.282435773650103
+05:05:34Z done  final/REF1_N512_s0: exit 0, valid bpb 2.34980623818994
+05:12:48Z done  final/REF1_N512_s1: exit 0, valid bpb 2.3538012966596114
+05:18:17Z done  final/REF1_N512_s2: exit 0, valid bpb 2.3477601839983695
+05:18:17Z EXIT 0 
