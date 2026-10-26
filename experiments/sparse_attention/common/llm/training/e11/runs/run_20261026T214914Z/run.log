@@ -1,0 +1,57 @@
+21:49:39Z checks check_model.py: 203/203 passed (exit 0)
+21:52:25Z checks check_series.py: 44/44 passed (exit 0)
+21:54:05Z checks check_series3.py: 34/34 passed (exit 0)
+21:54:14Z concurrency gate at the start of the run: median ratio 0.324 -> PASSED
+21:54:54Z a1 process 0: {"cell": "a1", "process": 0, "r_variant": 0.6690638453111784, "r_copy": 1.0632534515730119}
+21:55:29Z a1 process 1: {"cell": "a1", "process": 1, "r_variant": 0.5593421947064061, "r_copy": 0.9024788969603802}
+21:56:04Z a1 process 2: {"cell": "a1", "process": 2, "r_variant": 0.5975104054143989, "r_copy": 0.9502091872678499}
+21:56:39Z a1 process 3: {"cell": "a1", "process": 3, "r_variant": 0.6053492368234564, "r_copy": 1.0699021169162517}
+21:57:15Z a1 process 4: {"cell": "a1", "process": 4, "r_variant": 0.6007509666393327, "r_copy": 0.9328099972088062}
+21:57:56Z a2 process 0: {"cell": "a2", "process": 0, "r_variant": 0.5558483952269015, "r_copy": 0.9443899845819128}
+21:58:30Z a2 process 1: {"cell": "a2", "process": 1, "r_variant": 0.5401266766318013, "r_copy": 0.9954366660191982}
+21:59:04Z a2 process 2: {"cell": "a2", "process": 2, "r_variant": 0.5367734633244399, "r_copy": 1.0228438339244494}
+21:59:39Z a2 process 3: {"cell": "a2", "process": 3, "r_variant": 0.5410326533249816, "r_copy": 0.9868308575362331}
+22:00:14Z a2 process 4: {"cell": "a2", "process": 4, "r_variant": 0.5653551787038988, "r_copy": 1.013081594055374}
+22:01:11Z a3 process 0: {"cell": "a3", "process": 0, "r_variant": 0.4109437132379218, "r_copy": 0.9903864497441058}
+22:01:55Z a3 process 1: {"cell": "a3", "process": 1, "r_variant": 0.39368299473655544, "r_copy": 0.967248159929007}
+22:02:40Z a3 process 2: {"cell": "a3", "process": 2, "r_variant": 0.3977848098611149, "r_copy": 0.966222184099407}
+22:03:24Z a3 process 3: {"cell": "a3", "process": 3, "r_variant": 0.4455972131953305, "r_copy": 1.0524087220637894}
+22:04:10Z a3 process 4: {"cell": "a3", "process": 4, "r_variant": 0.40485660357027164, "r_copy": 1.0152974695426753}
+22:05:05Z a4 process 0: {"cell": "a4", "process": 0, "r_variant": 0.4621056505005765, "r_copy": 0.9798264402647726}
+22:05:48Z a4 process 1: {"cell": "a4", "process": 1, "r_variant": 0.4958456269530149, "r_copy": 1.03176169221099}
+22:06:30Z a4 process 2: {"cell": "a4", "process": 2, "r_variant": 0.5028109746600777, "r_copy": 0.9666805531720355}
+22:07:13Z a4 process 3: {"cell": "a4", "process": 3, "r_variant": 0.5081920110995971, "r_copy": 1.0247591129933855}
+22:07:54Z a4 process 4: {"cell": "a4", "process": 4, "r_variant": 0.4811097909685776, "r_copy": 1.006284268813408}
+22:08:39Z b1 process 0: {"cell": "b1", "process": 0, "r_variant": 1.289568669412957, "r_copy": 1.0198553489677358}
+22:09:17Z b1 process 1: {"cell": "b1", "process": 1, "r_variant": 1.2387608900232923, "r_copy": 0.9830485957531653}
+22:09:56Z b1 process 2: {"cell": "b1", "process": 2, "r_variant": 1.260139524273995, "r_copy": 1.0123811491998063}
+22:10:35Z b1 process 3: {"cell": "b1", "process": 3, "r_variant": 1.3143767920010627, "r_copy": 1.0464051183227938}
+22:11:12Z b1 process 4: {"cell": "b1", "process": 4, "r_variant": 1.3250071163522459, "r_copy": 0.9801827441438415}
+22:11:55Z b2 process 0: {"cell": "b2", "process": 0, "r_variant": 1.1250679750268255, "r_copy": 0.9959759226513532}
+22:12:31Z b2 process 1: {"cell": "b2", "process": 1, "r_variant": 1.1439319891294626, "r_copy": 1.0051869721055584}
+22:13:12Z b2 process 2: {"cell": "b2", "process": 2, "r_variant": 1.1344834778105382, "r_copy": 0.9794284769168977}
+22:13:50Z b2 process 3: {"cell": "b2", "process": 3, "r_variant": 1.0909307486891757, "r_copy": 0.9499935499649914}
+22:14:27Z b2 process 4: {"cell": "b2", "process": 4, "r_variant": 1.2284004470744743, "r_copy": 1.0259455739725536}
+22:15:07Z c1 process 0: {"cell": "c1", "process": 0, "r_variant": 0.8253144903994198, "r_copy": 0.971257051183429}
+22:15:43Z c1 process 1: {"cell": "c1", "process": 1, "r_variant": 0.8504516436285718, "r_copy": 1.0042214474932996}
+22:16:20Z c1 process 2: {"cell": "c1", "process": 2, "r_variant": 0.8707453997054755, "r_copy": 1.009027464640509}
+22:16:57Z c1 process 3: {"cell": "c1", "process": 3, "r_variant": 0.8524399398879146, "r_copy": 0.9997216472211246}
+22:17:35Z c1 process 4: {"cell": "c1", "process": 4, "r_variant": 0.8950863245832793, "r_copy": 0.9759069951938852}
+22:18:16Z c2 process 0: {"cell": "c2", "process": 0, "r_variant": 0.9009655693284158, "r_copy": 0.9852099492913502}
+22:18:53Z c2 process 1: {"cell": "c2", "process": 1, "r_variant": 0.8714995781757887, "r_copy": 1.0045840286145447}
+22:19:30Z c2 process 2: {"cell": "c2", "process": 2, "r_variant": 0.9539199734846598, "r_copy": 1.0033431914818052}
+22:20:07Z c2 process 3: {"cell": "c2", "process": 3, "r_variant": 0.9156343208597938, "r_copy": 1.022251911630668}
+22:20:44Z c2 process 4: {"cell": "c2", "process": 4, "r_variant": 0.9427052052254469, "r_copy": 1.0006773157334274}
+22:20:46Z # E11 analysis (delta of the run = 0.0975)
+
+| cell | r median [min–max] | outcome | counted ratio | r / counted | steal fraction |
+|---|---|---|---|---|---|
+| a1 | 0.601 [0.559–0.669] | faster | 0.422 | 1.42 | 0.0106 |
+| a2 | 0.541 [0.537–0.565] | faster | 0.346 | 1.56 | 0.0102 |
+| a3 | 0.405 [0.394–0.446] | faster | 0.422 | 0.96 | 0.0109 |
+| a4 | 0.496 [0.462–0.508] | faster | 0.346 | 1.43 | 0.0106 |
+| b1 | 1.290 [1.239–1.325] | slower | 0.862 | 1.50 | 0.0098 |
+| b2 | 1.134 [1.091–1.228] | slower | 0.714 | 1.59 | 0.0090 |
+| c1 | 0.852 [0.825–0.895] | faster | 0.546 | 1.56 | 0.0093 |
+| c2 | 0.916 [0.871–0.954] | not resolved | 0.677 | 1.35 | 0.0094 |
+22:20:46Z EXIT 0 

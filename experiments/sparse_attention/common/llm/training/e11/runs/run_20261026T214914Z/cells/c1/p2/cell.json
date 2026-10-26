@@ -1,0 +1,11 @@
+{
+ "cell": "c1",
+ "level": "model",
+ "variant": "IND_L4",
+ "control": "E4a_L4",
+ "control_kind": "e4a",
+ "variant_kind": "ind",
+ "dense_exec": "executor",
+ "tokens": 8192,
+ "context": 128
+}

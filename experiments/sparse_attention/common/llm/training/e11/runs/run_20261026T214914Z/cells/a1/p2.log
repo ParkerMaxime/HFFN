@@ -1,0 +1,3 @@
+{"cell": "a1", "process": 2, "r_variant": 0.5975104054143989, "r_copy": 0.9502091872678499}
+/usr/local/lib/python3.13/dist-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(

@@ -1,0 +1,29 @@
+21:28:11Z checks check_model.py: 203/203 passed (exit 0)
+21:30:29Z checks check_series.py: 44/44 passed (exit 0)
+21:31:44Z checks check_series3.py: 34/34 passed (exit 0)
+21:31:51Z concurrency gate at the start of the run: median ratio 0.305 -> PASSED
+21:32:29Z a1 process 0: {"cell": "a1", "process": 0, "r_variant": 0.611646981560424, "r_copy": 1.0092248925343938}
+21:33:04Z a1 process 1: {"cell": "a1", "process": 1, "r_variant": 0.6294563474061711, "r_copy": 1.018720147526858}
+21:33:37Z a1 process 2: {"cell": "a1", "process": 2, "r_variant": 0.5609962092714547, "r_copy": 0.9998934136747969}
+21:34:11Z a1 process 3: {"cell": "a1", "process": 3, "r_variant": 0.5990857197628584, "r_copy": 0.9832661008429843}
+21:34:45Z a1 process 4: {"cell": "a1", "process": 4, "r_variant": 0.5908678881066876, "r_copy": 0.9957927099624904}
+21:35:26Z a2 process 0: {"cell": "a2", "process": 0, "r_variant": 0.6476580693979277, "r_copy": 1.0015061226699724}
+21:36:00Z a2 process 1: {"cell": "a2", "process": 1, "r_variant": 0.5769266362024454, "r_copy": 0.9417209540680798}
+21:36:35Z a2 process 2: {"cell": "a2", "process": 2, "r_variant": 0.6001600400274676, "r_copy": 1.0199395128837438}
+21:37:08Z a2 process 3: {"cell": "a2", "process": 3, "r_variant": 0.61389437925924, "r_copy": 1.0200059494206632}
+21:37:45Z a2 process 4: {"cell": "a2", "process": 4, "r_variant": 0.6015850397906912, "r_copy": 0.9760186151349499}
+21:38:30Z a3 process 0: {"cell": "a3", "process": 0, "r_variant": 0.4253723962465973, "r_copy": 0.9811410853339928}
+21:39:07Z a3 process 1: {"cell": "a3", "process": 1, "r_variant": 0.41281605572136126, "r_copy": 0.9985957102057824}
+21:39:45Z a3 process 2: {"cell": "a3", "process": 2, "r_variant": 0.4172445040555394, "r_copy": 0.9785862618527768}
+21:40:23Z a3 process 3: {"cell": "a3", "process": 3, "r_variant": 0.4172158965404584, "r_copy": 0.9866507358210288}
+21:41:00Z a3 process 4: {"cell": "a3", "process": 4, "r_variant": 0.42015252303249995, "r_copy": 1.0038408296426253}
+21:41:48Z a4 process 0: {"cell": "a4", "process": 0, "r_variant": 0.46741553740940783, "r_copy": 1.0013200067081995}
+21:42:28Z a4 process 1: {"cell": "a4", "process": 1, "r_variant": 0.45744692505597884, "r_copy": 0.9891590855271826}
+21:43:08Z a4 process 2: {"cell": "a4", "process": 2, "r_variant": 0.4904476239287988, "r_copy": 0.9773787548679598}
+21:43:49Z a4 process 3: {"cell": "a4", "process": 3, "r_variant": 0.47367151398276497, "r_copy": 0.9633964569608368}
+21:44:29Z a4 process 4: {"cell": "a4", "process": 4, "r_variant": 0.4696991399943158, "r_copy": 1.0102186266964983}
+21:45:08Z b1 process 0: {"cell": "b1", "process": 0, "r_variant": 1.3382078160468351, "r_copy": 1.0275016620086985}
+21:45:45Z b1 process 1: {"cell": "b1", "process": 1, "r_variant": 1.3012554141157056, "r_copy": 0.9694712277223734}
+21:46:22Z b1 process 2: {"cell": "b1", "process": 2, "r_variant": 1.3367117584721742, "r_copy": 1.0160407937204854}
+21:46:58Z b1 process 3: {"cell": "b1", "process": 3, "r_variant": 1.3882953182304272, "r_copy": 1.058476115135818}
+21:47:33Z b1 process 4: {"cell": "b1", "process": 4, "r_variant": 1.367515467745811, "r_copy": 1.0173903726936968}

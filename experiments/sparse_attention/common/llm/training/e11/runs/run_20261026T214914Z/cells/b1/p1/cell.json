@@ -1,0 +1,11 @@
+{
+ "cell": "b1",
+ "level": "model",
+ "variant": "E4a_L4",
+ "control": "REF2",
+ "control_kind": "dense",
+ "variant_kind": "e4a",
+ "dense_exec": "executor",
+ "tokens": 8192,
+ "context": 128
+}

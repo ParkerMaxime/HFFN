@@ -1,0 +1,13 @@
+21:22:28Z checks check_model.py: 203/203 passed (exit 0)
+21:24:53Z checks check_series.py: 44/44 passed (exit 0)
+21:26:18Z checks check_series3.py: 34/34 passed (exit 0)
+21:26:27Z concurrency gate at the start of the run: median ratio 0.283 -> PASSED
+21:26:52Z a1 process 0: {"cell": "a1", "process": 0, "r_variant": 0.5669481086393928, "r_copy": 1.0280407854166431}
+21:27:18Z c1 process 0: {"cell": "c1", "process": 0, "r_variant": 0.9323250584742913, "r_copy": 1.0790060787739535}
+21:27:19Z # E11 analysis (delta of the run = 0.0790)
+
+| cell | r median [min–max] | outcome | counted ratio | r / counted | steal fraction |
+|---|---|---|---|---|---|
+| a1 | 0.567 [0.567–0.567] | faster | 0.422 | 1.34 | 0.0094 |
+| c1 | 0.932 [0.932–0.932] | not resolved | 0.546 | 1.71 | 0.0160 |
+21:27:19Z EXIT 0 
