@@ -1,0 +1,32 @@
+{
+  "step": "e12",
+  "workers": 4,
+  "threads": 1,
+  "checks": [
+    "check_model.py",
+    "check_series.py",
+    "check_series3.py"
+  ],
+  "stages": [
+    {
+      "name": "sweep",
+      "kind": "adaptive_sweep",
+      "centres": {
+        "REF2_W256": 0.008,
+        "E4a_L4_W256": 0.004
+      },
+      "seeds": [
+        100
+      ],
+      "steps": 4000,
+      "schedule": "wsd",
+      "tokens_per_step": 8192,
+      "valid_bytes": 524288,
+      "mixing": false,
+      "eval_every": 1000,
+      "impl": "gather",
+      "factor": 2,
+      "max_extensions": 2
+    }
+  ]
+}
