@@ -1,0 +1,143 @@
+{
+ "step": "e10",
+ "workers": 2,
+ "checks": [
+  "check_model.py",
+  "check_series.py",
+  "check_series3.py"
+ ],
+ "configs": [
+  {
+   "key": "REF1",
+   "arm": "REF1",
+   "impl": "packed"
+  },
+  {
+   "key": "REF2",
+   "arm": "REF2",
+   "impl": "packed"
+  },
+  {
+   "key": "REF3",
+   "arm": "REF3",
+   "impl": "packed"
+  },
+  {
+   "key": "REF4",
+   "arm": "REF4",
+   "impl": "packed"
+  },
+  {
+   "key": "E4a_L2",
+   "arm": "E4a_L2",
+   "impl": "gather"
+  },
+  {
+   "key": "E4a_L4",
+   "arm": "E4a_L4",
+   "impl": "gather"
+  },
+  {
+   "key": "E4a_L6",
+   "arm": "E4a_L6",
+   "impl": "gather"
+  },
+  {
+   "key": "IND_L4",
+   "arm": "IND_L4",
+   "impl": "gather"
+  },
+  {
+   "key": "REF1_N512",
+   "arm": "REF1_N512",
+   "impl": "packed"
+  },
+  {
+   "key": "REF2_N512",
+   "arm": "REF2_N512",
+   "impl": "packed"
+  },
+  {
+   "key": "REF3_N512",
+   "arm": "REF3_N512",
+   "impl": "packed"
+  },
+  {
+   "key": "REF4_N512",
+   "arm": "REF4_N512",
+   "impl": "packed"
+  },
+  {
+   "key": "E4a_L2_N512",
+   "arm": "E4a_L2_N512",
+   "impl": "gather"
+  },
+  {
+   "key": "E4a_L4_N512",
+   "arm": "E4a_L4_N512",
+   "impl": "gather"
+  },
+  {
+   "key": "E4a_L6_N512",
+   "arm": "E4a_L6_N512",
+   "impl": "gather"
+  },
+  {
+   "key": "IND_L4_N512",
+   "arm": "IND_L4_N512",
+   "impl": "gather"
+  },
+  {
+   "key": "REF1_W256",
+   "arm": "REF1_W256",
+   "impl": "packed"
+  },
+  {
+   "key": "REF2_W256",
+   "arm": "REF2_W256",
+   "impl": "packed"
+  },
+  {
+   "key": "E4a_L2_W256",
+   "arm": "E4a_L2_W256",
+   "impl": "gather"
+  },
+  {
+   "key": "E4a_L4_W256",
+   "arm": "E4a_L4_W256",
+   "impl": "gather"
+  },
+  {
+   "key": "REF2_W256_h16",
+   "arm": "REF2_W256_h16",
+   "impl": "packed"
+  },
+  {
+   "key": "E4a_L4_W256_h16",
+   "arm": "E4a_L4_W256_h16",
+   "impl": "gather"
+  },
+  {
+   "key": "E4a_L4:selected",
+   "arm": "E4a_L4",
+   "impl": "selected"
+  },
+  {
+   "key": "E4a_L4_N512:selected",
+   "arm": "E4a_L4_N512",
+   "impl": "selected"
+  }
+ ],
+ "smoke_configs": [
+  {
+   "key": "E4a_L4",
+   "arm": "E4a_L4",
+   "impl": "gather"
+  },
+  {
+   "key": "REF2",
+   "arm": "REF2",
+   "impl": "packed"
+  }
+ ]
+}

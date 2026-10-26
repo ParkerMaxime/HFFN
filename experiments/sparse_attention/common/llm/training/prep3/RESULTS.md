@@ -23,7 +23,7 @@ Training smoke of the six arms of E13 (40 steps WSD, hash arms `gather`, 4 jobs 
 windows each; the ratios of a smoke are not results). The dense control of E11 is the executor (README addendum). Phase pass of the variant (descriptive, smoke) works for the three kinds.
 Re-estimate from the measured step times (4 workers, LPT; wall): **E13 ≈ 7.6 h, E12 ≈ 3.5 h (3 rates plus one extension per arm), E10 ≈ 0.6 h, E11 ≈ 1.0 h: total ≈ 12.6 h**, under the 24 h of the
 brief; the series goes on to E12-E13 after E11. The packed form makes the hash-constrained training arms cost about as much per step as the dense arm of the same depth at width 256
-(`E4a_L4_W256` against `REF2_W256`: 1.1 times), against 1.5-2 times in the `selected` form (hypothesis on cause: only the routed tokens are computed); not a result.
+(`E4a_L4_W256` against `REF2_W256`: 1.1 times), against 1.3 to 2.7 times in the `selected` form (development timings, 1 thread: E4a_L4 0.90 against REF4 0.70 s/step at width 128, 3.1 against 1.1 at width 256; hypothesis on cause: only the routed tokens are computed); not a result.
 
 ## Limits
 
