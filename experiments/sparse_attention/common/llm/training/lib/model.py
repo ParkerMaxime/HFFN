@@ -225,12 +225,90 @@ class Layer(nn.Module):
             y[:, start::G] = h @ w_down[:, ns].t()
         return y
 
+    # ---------------------------------------------------------------- packed form under the hash route ("gather")
+    def group_plan(self, tokens, hash_table):
+        """For each group g: the positions (B, P_g) of its tokens in every window (routed first, increasing position,
+        padded to the largest count of the batch) and the validity mask. Gathered once per forward when the route is
+        the same at every layer (a byte has one group)."""
+        G = self.cfg.groups
+        route = (hash_table[tokens] + self.shift()) % G
+        plan = []
+        for g in range(G):
+            sel = route == g
+            count = sel.sum(1)
+            P = int(count.max())
+            order = torch.argsort((~sel).to(torch.int8), dim=1, stable=True)
+            pos = order[:, :P]
+            valid = torch.arange(P)[None, :] < count[:, None]
+            plan.append((pos, valid))
+        return plan, route
+
+    def parts_gather(self, x, tokens, cos, sin, hash_table, plan):
+        """Constraint (C2) computed for the routed tokens only. Worker g: keys and values of its heads H_g for every
+        token, then queries, scores (causal mask on the original positions), outputs, W_O^g and the FFN group R_g for
+        the tokens routed to g, scattered back to their rows. Same function and gradients as the selected form."""
+        cfg = self.cfg
+        B, N, M = x.shape
+        G, m, n, dh = cfg.groups, cfg.m, cfg.n, cfg.d_head
+        hpg = cfg.n_heads // G
+        if plan is None:
+            plan, route = self.group_plan(tokens, hash_table)
+        else:
+            route = (hash_table[tokens] + self.shift()) % G
+        plan_g = plan
+        xi = rms_norm(x) * self.g1
+        wq, wk, wv, wo = self.eff("wq"), self.eff("wk"), self.eff("wv"), self.eff("wo")
+        w_up, w_down = self.eff("w_up"), self.eff("w_down")
+        keys = torch.arange(N)
+        ind = cfg.qkv_blockdiag
+        o_blocks, groups_out = [], []
+        for g, (pos, valid) in enumerate(plan_g):
+            rows, cols = slice(g * m, (g + 1) * m), (slice(g * m, (g + 1) * m) if ind else slice(None))
+            P = pos.shape[1]
+            if P == 0:
+                o_blocks.append(x.new_zeros(B, N, m))
+                continue
+            xs = xi[..., cols]
+            k = apply_rope((xs @ wk[rows, cols].t()).view(B, N, hpg, dh).transpose(1, 2), cos, sin)
+            v = (xs @ wv[rows, cols].t()).view(B, N, hpg, dh).transpose(1, 2)
+            idx = pos[..., None].expand(-1, -1, xs.shape[-1])
+            q = (xs.gather(1, idx) @ wq[rows, cols].t()).view(B, P, hpg, dh).transpose(1, 2)
+            q = apply_rope(q, cos[pos][:, None], sin[pos][:, None])
+            mask = (keys[None, None, :] <= pos[:, :, None])[:, None]
+            a = F.scaled_dot_product_attention(q, k, v, attn_mask=mask).transpose(1, 2).reshape(B, P, m)
+            og = (a @ wo[rows, rows].t()) * valid[..., None]
+            o_blocks.append(x.new_zeros(B, N, m).scatter_add(1, pos[..., None].expand(-1, -1, m), og))
+        o = torch.cat(o_blocks, -1)
+        u = x + o
+        z = rms_norm(u) * self.g2
+        y = x.new_zeros(B, N, M)
+        y_blocks = []
+        for g, (pos, valid) in enumerate(plan_g):
+            ns, ms = slice(g * n, (g + 1) * n), slice(g * m, (g + 1) * m)
+            P = pos.shape[1]
+            if P == 0:
+                y_blocks.append(x.new_zeros(B, N, m))
+                continue
+            zg = z[..., ms].gather(1, pos[..., None].expand(-1, -1, m))
+            h = F.gelu(zg @ w_up[ns, ms].t() + self.b_up[ns])
+            if cfg.ffn_support == "ind":
+                yg = (h @ w_down[ms, ns].t()) * valid[..., None]
+                y_blocks.append(x.new_zeros(B, N, m).scatter_add(1, pos[..., None].expand(-1, -1, m), yg))
+            else:
+                yg = (h @ w_down[:, ns].t()) * valid[..., None]
+                y = y.scatter_add(1, pos[..., None].expand(-1, -1, M), yg)
+        if cfg.ffn_support == "ind":
+            y = torch.cat(y_blocks, -1)
+        return {"u": u, "o": o, "y": y, "route": route, "gate": None, "stats": {}}
+
     # ---------------------------------------------------------------- layer
-    def parts(self, x, tokens, cos, sin, hash_table, impl):
+    def parts(self, x, tokens, cos, sin, hash_table, impl, plan=None):
         """One layer, with its intermediate quantities: u = x + o (attention), y (FFN), route, gate, router stats."""
         cfg = self.cfg
         stats = {}
-        packed = impl == "packed" and cfg.routing == "position"
+        if impl == "gather" and cfg.routing == "hash" and cfg.attn == "routed":
+            return self.parts_gather(x, tokens, cos, sin, hash_table, plan)
+        packed = impl in ("packed", "gather") and cfg.routing == "position"
         route = gate = None
         xi = rms_norm(x) * self.g1 if cfg.attn != "none" else None
         if cfg.ffn_routed and not packed:
@@ -257,8 +335,8 @@ class Layer(nn.Module):
                 y = y * gate[..., None]
         return {"u": u, "o": o, "y": y, "route": route, "gate": gate, "stats": stats}
 
-    def forward(self, x, tokens, cos, sin, hash_table, impl):
-        p = self.parts(x, tokens, cos, sin, hash_table, impl)
+    def forward(self, x, tokens, cos, sin, hash_table, impl, plan=None):
+        p = self.parts(x, tokens, cos, sin, hash_table, impl, plan)
         return p["u"] + p["y"] + self.b_down, p["stats"]
 
 
@@ -281,8 +359,11 @@ class SparseAttnLM(nn.Module):
         N = tokens.shape[1]
         x = self.emb(tokens)
         stats = []
+        plan = None
+        if self.impl == "gather" and self.cfg.routing == "hash" and self.cfg.layer_routing == "fixed":
+            plan, _ = self.layers[0].group_plan(tokens, self.hash_table)  # one gather for the whole forward
         for layer in self.layers:
-            x, s = layer(x, tokens, self.cos[:N], self.sin[:N], self.hash_table, self.impl)
+            x, s = layer(x, tokens, self.cos[:N], self.sin[:N], self.hash_table, self.impl, plan)
             stats.append(s)
         logits = rms_norm(x) * self.g_final @ self.emb.weight.t()
         return logits, stats

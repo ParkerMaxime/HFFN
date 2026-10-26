@@ -95,8 +95,18 @@ IND_L4 = IND.with_(name="IND_L4", n_layers=4, routing="hash")
 SERIES = (REF1, REF2, REF3, REF4, E4A_L2, E4A_L4, E4A_L6, IND_L4)
 SERIES_N512 = tuple(a.with_(name=a.name + "_N512", context=512) for a in SERIES)
 
+# third series (E10-E13, PLAN section 15): width 256 at N = 512, two head layouts
+_W256 = dict(d_model=256, hidden=1024, degree=52, context=512)
+REF1_W256 = REF1.with_(name="REF1_W256", **_W256)
+REF2_W256 = REF2.with_(name="REF2_W256", **_W256)
+E4A_L2_W256 = E4A_L2.with_(name="E4a_L2_W256", **_W256)
+E4A_L4_W256 = E4A_L4.with_(name="E4a_L4_W256", **_W256)
+REF2_W256_H16 = REF2_W256.with_(name="REF2_W256_h16", n_heads=16)
+E4A_L4_W256_H16 = E4A_L4_W256.with_(name="E4a_L4_W256_h16", n_heads=16)
+SERIES_W256 = (REF1_W256, REF2_W256, E4A_L2_W256, E4A_L4_W256, REF2_W256_H16, E4A_L4_W256_H16)
+
 ARMS = {a.name: a for a in (E0, NOATT, E1, E2, E3A, E3B, IND, E4A, E4B, REF4, E3B4, E3B4R, E4A_L4, E4A_L4R,
-                            REF1, REF2, REF3, E4A_L2, E4A_L6, IND_L4, *SERIES_N512)}
+                            REF1, REF2, REF3, E4A_L2, E4A_L6, IND_L4, *SERIES_N512, *SERIES_W256)}
 
 
 def get_arm(name: str, **overrides) -> ArmConfig:

@@ -271,7 +271,8 @@ def build_parser():
     p.add_argument("--lr", type=float, required=True)
     p.add_argument("--out", required=True)
     p.add_argument("--threads", type=int, default=1)
-    p.add_argument("--impl", default="packed", choices=["packed", "selected"])
+    p.add_argument("--impl", default="packed", choices=["packed", "selected", "gather"],
+                   help="gather = the packed form under the hash route (default under the hash route: selected)")
     p.add_argument("--warmup", type=int, default=None)
     p.add_argument("--weight-decay", type=float, default=0.1)
     p.add_argument("--eval-every", type=int, default=500)
