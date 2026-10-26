@@ -1,0 +1,52 @@
+{
+ "step": "prep3",
+ "mode": "run",
+ "started": "20261026T205721Z",
+ "jobs": {
+  "smoke/E4a_L4_W256_h16_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T210306Z",
+   "final_valid_bpb": 4.497238592924506,
+   "cause": null
+  },
+  "smoke/E4a_L4_W256_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T210259Z",
+   "final_valid_bpb": 4.519536806727217,
+   "cause": null
+  },
+  "smoke/REF2_W256_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T210248Z",
+   "final_valid_bpb": 4.5142879926925,
+   "cause": null
+  },
+  "smoke/E4a_L2_W256_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T210223Z",
+   "final_valid_bpb": 4.670651549087953,
+   "cause": null
+  },
+  "smoke/REF2_W256_h16_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T210334Z",
+   "final_valid_bpb": 4.5227254669599475,
+   "cause": null
+  },
+  "smoke/REF1_W256_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T210324Z",
+   "final_valid_bpb": 4.515400231491915,
+   "cause": null
+  }
+ },
+ "ended": "20261026T210710Z",
+ "exit": 0,
+ "why": ""
+}

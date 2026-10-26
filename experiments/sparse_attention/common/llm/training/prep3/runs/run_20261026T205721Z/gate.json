@@ -1,0 +1,17 @@
+{
+ "cell": "a4 (M=512, N=2048)",
+ "tasks": 4,
+ "repetitions": 5,
+ "threshold": 0.4,
+ "ratio_per_repetition": [
+  0.3906402620262917,
+  0.3103821000472549,
+  0.2872179040767567,
+  0.3061102864420004,
+  0.3391531699361498
+ ],
+ "median_ratio": 0.3103821000472549,
+ "passed": true,
+ "interop_threads": 4,
+ "intraop_threads": 1
+}

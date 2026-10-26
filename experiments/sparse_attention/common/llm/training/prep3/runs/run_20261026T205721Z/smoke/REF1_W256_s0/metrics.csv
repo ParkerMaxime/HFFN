@@ -1,0 +1,2 @@
+step,lr,train_bpb,valid_bpb,wall_s
+40,0.0004,7.25201,4.51540,32.3

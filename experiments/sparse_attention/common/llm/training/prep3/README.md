@@ -80,3 +80,14 @@ known ratio (variant 1.5 times the control) are recovered from `raw.jsonl` alone
 `gather` form, 4 jobs in parallel, 1 thread each); E10 on two arms (two fresh processes each); the eight cells of E11 (one process,
 2 windows) and the dense control under both executions; the re-estimate of the total from the measured step times (4 workers, LPT).
 It proves nothing about quality or time.
+
+## Addendum, written after the smoke (`runs/run_20261026T205721Z`): gate and choices that the run fixes
+
+- **Concurrency gate: passed.** Median of five repetitions of `parallel / sequential` = 0.310 (threshold 0.4; `gate.json`; three earlier
+  development repetitions of five gave 0.29-0.32). E11 runs.
+- **Dense control of E11: the executor** (the same fork-join executor as the constrained arms). Rule above: geometric mean over the six
+  dense-control cells of the control's per-call time in the smoke, intra-op / executor = 1.08 (the executor is the faster by 8 %; per cell the
+  intra-op execution was faster in a1, b1 and b2 and slower in a2, a3, a4 by up to 33 %, 2 windows each). The intra-op execution is not used in E11.
+- **Harness events:** none after the checks passed. During construction (before any README was written): a first executor ran its forks
+  from Python and its threads in oversubscribed OpenMP teams (the two findings above), found by a micro-benchmark of four equal matmul
+  tasks; fixed by the scripted driver and by `OMP_NUM_THREADS=1`.

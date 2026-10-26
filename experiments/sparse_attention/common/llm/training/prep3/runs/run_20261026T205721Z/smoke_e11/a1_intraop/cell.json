@@ -1,0 +1,13 @@
+{
+ "cell": "a1",
+ "level": "layer",
+ "M": 128,
+ "N": 128,
+ "variant": "e4a",
+ "control": "dense",
+ "control_kind": "dense",
+ "variant_kind": "e4a",
+ "dense_exec": "intraop",
+ "tokens": 8192,
+ "context": 128
+}

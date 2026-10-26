@@ -1,0 +1,35 @@
+20:57:31Z checks check_model.py: 203/203 passed (exit 0)
+21:00:00Z checks check_series.py: 44/44 passed (exit 0)
+21:01:29Z checks check_series3.py: 34/34 passed (exit 0)
+21:01:38Z concurrency gate: median ratio 0.310 (threshold 0.4) -> PASSED
+21:01:38Z start smoke/E4a_L4_W256_h16_s0
+21:01:38Z start smoke/E4a_L2_W256_s0
+21:01:38Z start smoke/REF2_W256_s0
+21:01:38Z start smoke/E4a_L4_W256_s0
+21:02:23Z done  smoke/E4a_L2_W256_s0: exit 0, valid bpb 4.670651549087953
+21:02:23Z start smoke/REF2_W256_h16_s0
+21:02:48Z done  smoke/REF2_W256_s0: exit 0, valid bpb 4.5142879926925
+21:02:48Z start smoke/REF1_W256_s0
+21:02:59Z done  smoke/E4a_L4_W256_s0: exit 0, valid bpb 4.519536806727217
+21:03:06Z done  smoke/E4a_L4_W256_h16_s0: exit 0, valid bpb 4.497238592924506
+21:03:24Z done  smoke/REF1_W256_s0: exit 0, valid bpb 4.515400231491915
+21:03:34Z done  smoke/REF2_W256_h16_s0: exit 0, valid bpb 4.5227254669599475
+21:03:49Z E10 smoke E4a_L4 [gather]: saved 309775108 B identical in two processes: True
+21:03:58Z E10 smoke REF2 [packed]: saved 183938052 B identical in two processes: True
+21:04:12Z E11 smoke a1 [executor]: {"cell": "a1", "process": 0, "r_variant": 0.6743848534690471, "r_copy": 0.9472824893582757}
+21:04:22Z E11 smoke a1 [intraop]: {"cell": "a1", "process": 0, "r_variant": 0.618107879267191, "r_copy": 0.9777699806646303}
+21:04:35Z E11 smoke a2 [executor]: {"cell": "a2", "process": 0, "r_variant": 0.5832335492222753, "r_copy": 1.0388505442151672}
+21:04:44Z E11 smoke a2 [intraop]: {"cell": "a2", "process": 0, "r_variant": 0.5612945478736988, "r_copy": 0.9938837404648106}
+21:05:04Z E11 smoke a3 [executor]: {"cell": "a3", "process": 0, "r_variant": 0.4116101831894837, "r_copy": 0.9555240912196747}
+21:05:17Z E11 smoke a3 [intraop]: {"cell": "a3", "process": 0, "r_variant": 0.3517719690157173, "r_copy": 0.9881394465591111}
+21:05:42Z E11 smoke a4 [executor]: {"cell": "a4", "process": 0, "r_variant": 0.47858090772683093, "r_copy": 0.93053507178695}
+21:05:56Z E11 smoke a4 [intraop]: {"cell": "a4", "process": 0, "r_variant": 0.38890407223704737, "r_copy": 0.9980681888002411}
+21:06:09Z E11 smoke b1 [executor]: {"cell": "b1", "process": 0, "r_variant": 1.3393168365800392, "r_copy": 0.9615904926046666}
+21:06:18Z E11 smoke b1 [intraop]: {"cell": "b1", "process": 0, "r_variant": 1.2570095750951618, "r_copy": 0.971048102910074}
+21:06:33Z E11 smoke b2 [executor]: {"cell": "b2", "process": 0, "r_variant": 1.1550146603113733, "r_copy": 1.0055157376920958}
+21:06:43Z E11 smoke b2 [intraop]: {"cell": "b2", "process": 0, "r_variant": 1.2457757653525916, "r_copy": 1.0275091144893196}
+21:06:57Z E11 smoke c1 [executor]: {"cell": "c1", "process": 0, "r_variant": 0.8539879984434267, "r_copy": 0.9488669769761489}
+21:07:10Z E11 smoke c2 [executor]: {"cell": "c2", "process": 0, "r_variant": 0.9349391425285014, "r_copy": 1.002817064705499}
+21:07:10Z dense control of E11: geometric mean {'executor': 0.06794417457923606, 'intraop': 0.07314304159542144} -> executor
+21:07:10Z re-estimate (hours): {"E13_h": 7.57, "E12_h": 3.47, "E10_h": 0.6, "E11_h": 1.0, "total_h": 12.64}
+21:07:10Z EXIT 0 

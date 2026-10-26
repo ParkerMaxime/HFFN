@@ -28,3 +28,14 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | E8 | done | `e8/runs/run_20261025T163405Z` | 0 | E4a dominates the dense model at 12-14 % more compute in 3/3 pairs and 3/3 seeds (valid and test); beyond bound at equal depth (+0.145, +0.090); IND_L4 worse than E4a_L4 by 0.123 |
 | E9 | done | `e9/runs/run_20261025T220720Z` | 0 | N=512: E4a_L2 and E4a_L4 dominate REF1 and REF2; E4a_L6 equivalent within tau to REF3 at -29 % compute (worse in 3/3 seeds); equal-depth loss beyond; IND_L4 worse than E4a_L4 |
 | SUMMARY_E6_E9.md | done | `experiments/sparse_attention/SUMMARY_E6_E9.md` | — | series complete: prep, E6, E7, E8, E9 |
+
+## Third series (E10-E13; plan: PLAN.md section 15; brief: CLOUD_E10_E13.md)
+
+| Step | Status | Run | Exit | Verdict / what remains |
+|---|---|---|---|---|
+| prep3 | done | `prep3/runs/run_20261026T205721Z` | 0 | 203 + 44 + 34 checks pass; gather = selected; gate 0.310 passed; dense control = executor; total re-estimate ≈ 12.6 h |
+| E10 | not started | | | |
+| E11 | not started | | | |
+| E12 | not started | | | |
+| E13 | not started | | | |
+| SUMMARY_E10_E13.md | not started | | | |
