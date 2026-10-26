@@ -1,0 +1,25 @@
+{
+ "step": "e11",
+ "checks": [
+  "check_model.py",
+  "check_series.py",
+  "check_series3.py"
+ ],
+ "cells": [
+  "a1",
+  "a2",
+  "a3",
+  "a4",
+  "b1",
+  "b2",
+  "c1",
+  "c2"
+ ],
+ "smoke_cells": [
+  "a1",
+  "c1"
+ ],
+ "processes": 5,
+ "windows": 12,
+ "dense_execution": "executor"
+}
