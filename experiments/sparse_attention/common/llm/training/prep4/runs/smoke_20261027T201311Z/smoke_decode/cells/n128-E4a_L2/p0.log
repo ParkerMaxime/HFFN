@@ -1,0 +1,3 @@
+{"cell": "n128-E4a_L2", "mode": "decode", "process": 0, "r_variant": 0.8619266428337766, "r_copy": 0.9631788026137911}
+/usr/local/lib/python3.13/dist-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(

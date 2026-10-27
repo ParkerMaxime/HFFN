@@ -1,0 +1,138 @@
+{
+ "operators": {
+  "REF2": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "E4a_L4": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "IND_L4": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "E2h_L4": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "REF2_N512": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "E4a_L4_N512": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "E2h_L4_N512": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "REF2_W256": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "E4a_L4_W256": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "E2h_L4_W256": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "E4a_L4_W256_h16": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  },
+  "REF2_W256_h16": {
+   "prefill": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ],
+   "decode": [
+    "aten::_scaled_dot_product_flash_attention_for_cpu",
+    "aten::scaled_dot_product_attention"
+   ]
+  }
+ },
+ "causal_flag_vs_explicit_mask_ms": {
+  "N 128, 16 windows, 2 heads of 16": {
+   "is_causal": 3.4079889999247825,
+   "explicit_mask": 3.458153999872593
+  },
+  "N 512, 16 windows, 2 heads of 16": {
+   "is_causal": 10.446694999927786,
+   "explicit_mask": 12.107068999966941
+  },
+  "N 512, 16 windows, 2 heads of 32": {
+   "is_causal": 14.316213000029165,
+   "explicit_mask": 17.397805999962657
+  }
+ }
+}

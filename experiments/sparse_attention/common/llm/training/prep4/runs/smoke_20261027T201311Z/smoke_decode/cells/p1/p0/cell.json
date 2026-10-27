@@ -1,0 +1,41 @@
+{
+ "cell": "p1",
+ "group": "pair",
+ "campaign": "p1",
+ "variant": "E4a_L4",
+ "control": "E2h_L4",
+ "isolates": "the attention alone",
+ "mode": "decode",
+ "context": 128,
+ "d_model": 128,
+ "variant_kind": "e4a",
+ "control_kind": "e2h",
+ "batch": 64,
+ "cache_positions": 64,
+ "position": 64,
+ "group_counts_of_the_step": {
+  "control": [
+   14,
+   21,
+   13,
+   16
+  ],
+  "copy": [
+   14,
+   21,
+   13,
+   16
+  ],
+  "variant": [
+   14,
+   21,
+   13,
+   16
+  ]
+ },
+ "reps": {
+  "control": 15,
+  "copy": 24,
+  "variant": 26
+ }
+}

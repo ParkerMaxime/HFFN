@@ -1,0 +1,30 @@
+{
+ "cell": "w256-E4a_L4_W256_h16",
+ "group": "frontier",
+ "campaign": "w256",
+ "variant": "E4a_L4_W256_h16",
+ "control": "REF2_W256",
+ "mode": "decode",
+ "context": 512,
+ "d_model": 256,
+ "variant_kind": "e4a",
+ "control_kind": "dense",
+ "batch": 64,
+ "cache_positions": 256,
+ "position": 256,
+ "group_counts_of_the_step": {
+  "control": null,
+  "copy": null,
+  "variant": [
+   19,
+   17,
+   17,
+   11
+  ]
+ },
+ "reps": {
+  "control": 23,
+  "copy": 24,
+  "variant": 16
+ }
+}

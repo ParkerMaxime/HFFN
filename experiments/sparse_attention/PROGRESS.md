@@ -39,3 +39,14 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | E12 | done | `e12/runs/run_20261026T222859Z` | 0 | rates 0.004 (`REF2_W256`, one extension) and 0.004 (`E4a_L4_W256`); none at an edge |
 | E13 | done | `e13/runs/run_20261027T040908Z` | 0 | width 256: within τ at equal counted MACs with 2 heads/group (not dominating); with 4 heads/group dominates (-0.042); equal depth beyond (+0.21); i_s favours four heads/group |
 | SUMMARY_E10_E13.md | done | | | summary of the third series |
+
+## Fourth step (E14; plan: PLAN.md section 17; brief: CLOUD_E14.md)
+
+| Step | Status | Run | Exit | Verdict / what remains |
+|---|---|---|---|---|
+| prep4 | done | `prep4/runs/smoke_20261027T201311Z` | 0 | 219 + 44 + 34 + 82 checks pass; E2h packed = selected; decoded step = full forward (26 arms); gate 0.377 passed; SDPA = flash CPU kernel in all arms; total re-estimate ≈ 3.1 h, no cut |
+| E14 prefill | not started | | | |
+| E14 decoding | not started | | | |
+| E14 memory | not started | | | |
+| E14 analysis / RESULTS.md | not started | | | |
+| SUMMARY_E14.md | not started | | | |

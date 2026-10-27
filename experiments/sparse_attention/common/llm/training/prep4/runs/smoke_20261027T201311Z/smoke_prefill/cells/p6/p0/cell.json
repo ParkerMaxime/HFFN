@@ -1,0 +1,19 @@
+{
+ "cell": "p6",
+ "group": "pair",
+ "campaign": "p6",
+ "variant": "E2h_L4_W256",
+ "control": "REF4_W256",
+ "isolates": "the routing of the FFN alone, at width",
+ "mode": "prefill",
+ "context": 512,
+ "d_model": 256,
+ "variant_kind": "e2h",
+ "control_kind": "dense",
+ "tokens_per_call": 8192,
+ "reps": {
+  "control": 1,
+  "copy": 1,
+  "variant": 1
+ }
+}

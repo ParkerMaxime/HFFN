@@ -1,0 +1,233 @@
+--- check_params
+[ok] params E0 93184 (formula 93184, PLAN table 93184)
+[ok] params E0 equals PLAN section 7 table 93184 vs 93184
+[ok] params NOATT 27520 (formula 27520)
+[ok] params E1 93184 (formula 93184, PLAN table 93184)
+[ok] params E1 equals PLAN section 7 table 93184 vs 93184
+[ok] params E2 93184 (formula 93184, PLAN table 93184)
+[ok] params E2 equals PLAN section 7 table 93184 vs 93184
+[ok] params E3a 80896 (formula 80896, PLAN table 80896)
+[ok] params E3a equals PLAN section 7 table 80896 vs 80896
+[ok] params E3b 80896 (formula 80896, PLAN table 80896)
+[ok] params E3b equals PLAN section 7 table 80896 vs 80896
+[ok] params IND 44032 (formula 44032)
+[ok] params E4a 80896 (formula 80896)
+[ok] params E4b 81408 (formula 81408)
+[ok] params REF4 372352 (formula 372352)
+[ok] params E3b_L4 323200 (formula 323200)
+[ok] params E3b_L4rot 323200 (formula 323200)
+[ok] params E4a_L4 323200 (formula 323200)
+[ok] params E4a_L4rot 323200 (formula 323200)
+[ok] params REF1 93184 (formula 93184)
+[ok] params REF2 186240 (formula 186240)
+[ok] params REF3 279296 (formula 279296)
+[ok] params E4a_L2 161664 (formula 161664)
+[ok] params E4a_L6 484736 (formula 484736)
+[ok] params IND_L4 175744 (formula 175744)
+[ok] params REF1_N512 93184 (formula 93184)
+[ok] params REF2_N512 186240 (formula 186240)
+[ok] params REF3_N512 279296 (formula 279296)
+[ok] params REF4_N512 372352 (formula 372352)
+[ok] params E4a_L2_N512 161664 (formula 161664)
+[ok] params E4a_L4_N512 323200 (formula 323200)
+[ok] params E4a_L6_N512 484736 (formula 484736)
+[ok] params IND_L4_N512 175744 (formula 175744)
+[ok] params REF1_W256 370688 (formula 370688)
+[ok] params REF2_W256 741120 (formula 741120)
+[ok] params E4a_L2_W256 642816 (formula 642816)
+[ok] params E4a_L4_W256 1285376 (formula 1285376)
+[ok] params REF2_W256_h16 741120 (formula 741120)
+[ok] params E4a_L4_W256_h16 1285376 (formula 1285376)
+[ok] params E2h_L4 372352 (formula 372352)
+[ok] params E2h_L4_N512 372352 (formula 372352)
+[ok] params E2h_L4_W256 1481984 (formula 1481984)
+[ok] params REF4_W256 1481984 (formula 1481984)
+--- check_supports
+[ok] supports E0: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports NOATT: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E1: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E1: up_idx of R_g inside S_g 
+[ok] supports E2: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E2: up_idx of R_g inside S_g 
+[ok] supports E3a: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E3a: up_idx of R_g inside S_g 
+[ok] supports E3b: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E3b: up_idx of R_g inside S_g 
+[ok] supports IND: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports IND: up_idx of R_g inside S_g 
+[ok] supports IND: down_idx of R_g inside S_g 
+[ok] supports E4a: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a: up_idx of R_g inside S_g 
+[ok] supports E4b: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4b: up_idx of R_g inside S_g 
+[ok] supports REF4: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E3b_L4: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E3b_L4: up_idx of R_g inside S_g 
+[ok] supports E3b_L4rot: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E3b_L4rot: up_idx of R_g inside S_g 
+[ok] supports E4a_L4: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L4: up_idx of R_g inside S_g 
+[ok] supports E4a_L4rot: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L4rot: up_idx of R_g inside S_g 
+[ok] supports REF1: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports REF2: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports REF3: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L2: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L2: up_idx of R_g inside S_g 
+[ok] supports E4a_L6: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L6: up_idx of R_g inside S_g 
+[ok] supports IND_L4: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports IND_L4: up_idx of R_g inside S_g 
+[ok] supports IND_L4: down_idx of R_g inside S_g 
+[ok] supports REF1_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports REF2_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports REF3_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports REF4_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L2_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L2_N512: up_idx of R_g inside S_g 
+[ok] supports E4a_L4_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L4_N512: up_idx of R_g inside S_g 
+[ok] supports E4a_L6_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L6_N512: up_idx of R_g inside S_g 
+[ok] supports IND_L4_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports IND_L4_N512: up_idx of R_g inside S_g 
+[ok] supports IND_L4_N512: down_idx of R_g inside S_g 
+[ok] supports REF1_W256: degree 52 per neuron (up fan-in, down fan-out) 
+[ok] supports REF2_W256: degree 52 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L2_W256: degree 52 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L2_W256: up_idx of R_g inside S_g 
+[ok] supports E4a_L4_W256: degree 52 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L4_W256: up_idx of R_g inside S_g 
+[ok] supports REF2_W256_h16: degree 52 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L4_W256_h16: degree 52 per neuron (up fan-in, down fan-out) 
+[ok] supports E4a_L4_W256_h16: up_idx of R_g inside S_g 
+[ok] supports E2h_L4: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E2h_L4: up_idx of R_g inside S_g 
+[ok] supports E2h_L4_N512: degree 26 per neuron (up fan-in, down fan-out) 
+[ok] supports E2h_L4_N512: up_idx of R_g inside S_g 
+[ok] supports E2h_L4_W256: degree 52 per neuron (up fan-in, down fan-out) 
+[ok] supports E2h_L4_W256: up_idx of R_g inside S_g 
+[ok] supports REF4_W256: degree 52 per neuron (up fan-in, down fan-out) 
+--- check_zero_outside_masks
+[ok] entries outside the masks stay exactly zero after 3 AdamW steps E0 sum|w|=0.0
+[ok] entries outside the masks stay exactly zero after 3 AdamW steps E3b sum|w|=0.0
+[ok] entries outside the masks stay exactly zero after 3 AdamW steps IND sum|w|=0.0
+[ok] entries outside the masks stay exactly zero after 3 AdamW steps E4b sum|w|=0.0
+--- check_o_support
+[ok] o_t exactly zero outside S_g E3b [selected] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g E3b [packed] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g IND [selected] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g IND [packed] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g E4a [selected] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g E4b [selected] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g E3b_L4 [selected] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g E3b_L4 [packed] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g E3b_L4rot [selected] max|o| outside = 0.0
+[ok] o_t exactly zero outside S_g E3b_L4rot [packed] max|o| outside = 0.0
+--- check_ffn_independence
+/home/user/HFFN/experiments/sparse_attention/common/llm/training/checks/check_model.py:163: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  worst_out = max(worst_out, float((y2[:, t] - y0[:, t]).abs().max()))
+[ok] FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) E2 max change 9.54e-07; control (swap inside S_g) changes by 1.80e+00
+[ok]   control: a swap inside S_g changes the FFN output E2 
+[ok] FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) E3a max change 9.54e-07; control (swap inside S_g) changes by 1.80e+00
+[ok]   control: a swap inside S_g changes the FFN output E3a 
+[ok] FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) E3b max change 9.54e-07; control (swap inside S_g) changes by 1.80e+00
+[ok]   control: a swap inside S_g changes the FFN output E3b 
+[ok] FFN output of t independent of u_t[j], j outside S_g (RMS held fixed) IND max change 1.43e-06; control (swap inside S_g) changes by 2.80e+00
+[ok]   control: a swap inside S_g changes the FFN output IND 
+--- check_packed_selected
+[ok] packed == selected, logits E2 max|diff| 0.00e+00
+[ok] packed == selected, gradients E2 max|diff| 2.91e-09 (max|grad| 2.03e-02)
+[ok] packed == selected, logits E3a max|diff| 0.00e+00
+[ok] packed == selected, gradients E3a max|diff| 2.56e-09 (max|grad| 1.95e-02)
+[ok] packed == selected, logits E3b max|diff| 0.00e+00
+[ok] packed == selected, gradients E3b max|diff| 5.12e-09 (max|grad| 2.21e-02)
+[ok] packed == selected, logits IND max|diff| 0.00e+00
+[ok] packed == selected, gradients IND max|diff| 5.59e-09 (max|grad| 1.90e-02)
+[ok] packed == selected, logits E3b_L4 max|diff| 0.00e+00
+[ok] packed == selected, gradients E3b_L4 max|diff| 6.75e-09 (max|grad| 1.95e-02)
+[ok] packed == selected, logits E3b_L4rot max|diff| 0.00e+00
+[ok] packed == selected, gradients E3b_L4rot max|diff| 8.38e-09 (max|grad| 1.89e-02)
+[ok] packed == selected, logits E0 max|diff| 0.00e+00
+[ok] packed == selected, gradients E0 max|diff| 0.00e+00 (max|grad| 2.15e-02)
+[ok] packed == selected, logits E1 max|diff| 0.00e+00
+[ok] packed == selected, gradients E1 max|diff| 0.00e+00 (max|grad| 2.79e-02)
+--- check_causality
+[ok] causality E0 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality E0 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality NOATT [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality NOATT [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E1 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality E1 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E2 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality E2 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3a [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3a [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3b [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3b [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality IND [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality IND [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4b [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF4 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF4 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3b_L4 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3b_L4 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3b_L4rot [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality E3b_L4rot [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L4 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L4rot [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF1 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF1 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF3 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF3 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L2 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L6 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality IND_L4 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF1_N512 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF1_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2_N512 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF3_N512 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF3_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF4_N512 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF4_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L2_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L4_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L6_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality IND_L4_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF1_W256 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF1_W256 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2_W256 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2_W256 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L2_W256 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L4_W256 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2_W256_h16 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF2_W256_h16 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E4a_L4_W256_h16 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E2h_L4 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E2h_L4_N512 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality E2h_L4_W256 [selected] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF4_W256 [packed] max|diff| on positions < 90: 0.00e+00
+[ok] causality REF4_W256 [selected] max|diff| on positions < 90: 0.00e+00
+--- check_determinism
+[ok] determinism of the initialisation and forward E0 
+[ok] determinism of the initialisation and forward E3b 
+[ok] determinism of the initialisation and forward E4b 
+[ok] shared tensors (embedding, W_Q, W_K, W_V, norms) identical across arms for a seed 
+[ok] E1 and E2 have the same supports and values 
+--- check_hash_and_router
+[ok] balanced byte hash: each group receives about a quarter of the training bytes shares [0.25, 0.25, 0.25, 0.25]
+[ok] learned router: routes in {-1..G-1}, capacity respected capacity 40, max per window [40, 40, 34, 39]
+[ok] learned router: dropped tokens receive no attention and no FFN contribution dropped fraction 0.008
+[ok] learned router receives a gradient through the gate 
+[ok] balance loss is 1 for a perfectly balanced router, >= 1 otherwise 1.000
+[ok] hash routing: route = table[byte of the token] 
+[ok] hash routing with rotation: route at layer l = (table[byte] + l) mod G 
+--- check_mixing_zero_for_ind
+[ok] IND: zeroing the cross-block entries changes nothing (they are zero by construction) 
+[ok] E3b: the mixing diagnostic does modify the model -0.0149
+219/219 checks passed

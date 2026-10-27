@@ -1,0 +1,416 @@
+{
+ "checks": [
+  {
+   "check": "arm E2h_L4 exists, context 128",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "arm E2h_L4_N512 exists, context 512",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "arm E2h_L4_W256 exists, context 512",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "arm REF4_W256 exists, context 512",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "E2h: dense attention, dense W_O, routed FFN of E4a under the hash route, no router, 4 layers",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "E2h_L4 has the parameters of E4a_L4 plus 12288 per layer (W_O), M = 128",
+   "ok": true,
+   "detail": "372352 - 323200 = 49152"
+  },
+  {
+   "check": "E2h_L4_W256 has the parameters of E4a_L4_W256 plus 49152 per layer (W_O), M = 256",
+   "ok": true,
+   "detail": "1481984 - 1285376 = 196608"
+  },
+  {
+   "check": "E2h_L4 inference multiply-adds equal the hand count (452,608)",
+   "ok": true,
+   "detail": "452608 vs 452608"
+  },
+  {
+   "check": "E2h layer terms equal the dense layer except the FFN (routed: 2 n k against 2 H k)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "KV cache stored: 2 L M in E2h, E4a and REF4 (decision 3)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "KV read per decoded token: E4a / E2h = 0.25 at equal depth, E2h / REF4 = 1",
+   "ok": true,
+   "detail": "{'E4a_L4': 16384, 'E2h_L4': 65536, 'REF4': 65536}"
+  },
+  {
+   "check": "gather (packed form of E2h) == selected: logits and every parameter gradient, E2h_L4",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 6.5e-09"
+  },
+  {
+   "check": "gather (packed form of E2h) == selected: logits and every parameter gradient, E2h_L4_N512",
+   "ok": true,
+   "detail": "max|logit diff| 0.0e+00, max|grad diff| 7.5e-09"
+  },
+  {
+   "check": "gather (packed form of E2h) == selected: logits and every parameter gradient, E2h_L4_W256",
+   "ok": true,
+   "detail": "max|logit diff| 2.4e-06, max|grad diff| 1.2e-07"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E2h_L4",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E2h_L4_N512",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, E2h_L4_W256",
+   "ok": true,
+   "detail": "max|diff| 3.1e-06"
+  },
+  {
+   "check": "executor == sequential forward within float32 rounding, REF4_W256",
+   "ok": true,
+   "detail": "max|diff| 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF1",
+   "ok": true,
+   "detail": "ref vs full 6.0e-07, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF1",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF2",
+   "ok": true,
+   "detail": "ref vs full 9.5e-07, sequential vs ref 8.9e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF2",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF3",
+   "ok": true,
+   "detail": "ref vs full 7.2e-07, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF3",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF4",
+   "ok": true,
+   "detail": "ref vs full 1.2e-06, sequential vs ref 1.1e-06"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF4",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L2",
+   "ok": true,
+   "detail": "ref vs full 6.0e-07, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L2",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L4",
+   "ok": true,
+   "detail": "ref vs full 8.6e-07, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L4",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L6",
+   "ok": true,
+   "detail": "ref vs full 1.1e-06, sequential vs ref 8.9e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L6",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), IND_L4",
+   "ok": true,
+   "detail": "ref vs full 1.4e-06, sequential vs ref 1.1e-06"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, IND_L4",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF1_N512",
+   "ok": true,
+   "detail": "ref vs full 7.2e-07, sequential vs ref 7.2e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF1_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF2_N512",
+   "ok": true,
+   "detail": "ref vs full 8.3e-07, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF2_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF3_N512",
+   "ok": true,
+   "detail": "ref vs full 8.3e-07, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF3_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF4_N512",
+   "ok": true,
+   "detail": "ref vs full 7.7e-07, sequential vs ref 7.7e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF4_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L2_N512",
+   "ok": true,
+   "detail": "ref vs full 7.2e-07, sequential vs ref 1.2e-06"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L2_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L4_N512",
+   "ok": true,
+   "detail": "ref vs full 7.2e-07, sequential vs ref 1.2e-06"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L4_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L6_N512",
+   "ok": true,
+   "detail": "ref vs full 6.6e-07, sequential vs ref 1.1e-06"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L6_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), IND_L4_N512",
+   "ok": true,
+   "detail": "ref vs full 1.3e-06, sequential vs ref 6.0e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, IND_L4_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF1_W256",
+   "ok": true,
+   "detail": "ref vs full 1.5e-06, sequential vs ref 0.0e+00"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF1_W256",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF2_W256",
+   "ok": true,
+   "detail": "ref vs full 1.5e-06, sequential vs ref 0.0e+00"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF2_W256",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF2_W256_h16",
+   "ok": true,
+   "detail": "ref vs full 1.9e-06, sequential vs ref 0.0e+00"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF2_W256_h16",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L2_W256",
+   "ok": true,
+   "detail": "ref vs full 1.7e-06, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L2_W256",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L4_W256",
+   "ok": true,
+   "detail": "ref vs full 2.0e-06, sequential vs ref 1.0e-06"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L4_W256",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E4a_L4_W256_h16",
+   "ok": true,
+   "detail": "ref vs full 1.7e-06, sequential vs ref 1.0e-06"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E4a_L4_W256_h16",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), REF4_W256",
+   "ok": true,
+   "detail": "ref vs full 1.7e-06, sequential vs ref 0.0e+00"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, REF4_W256",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E2h_L4",
+   "ok": true,
+   "detail": "ref vs full 7.2e-07, sequential vs ref 8.9e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E2h_L4",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E2h_L4_N512",
+   "ok": true,
+   "detail": "ref vs full 7.7e-07, sequential vs ref 8.3e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E2h_L4_N512",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "decoded step == full forward at the same position (reference, packed sequential, executor), E2h_L4_W256",
+   "ok": true,
+   "detail": "ref vs full 2.4e-06, sequential vs ref 9.5e-07"
+  },
+  {
+   "check": "decoded step under the executor == sequential decoded step; repeated call identical; filled cache untouched, E2h_L4_W256",
+   "ok": true,
+   "detail": "executor vs sequential 0.0e+00, repeat 0.0e+00"
+  },
+  {
+   "check": "per-group counts of the 64 new tokens at N = 128 recorded (sum 64)",
+   "ok": true,
+   "detail": "[14, 21, 13, 16]"
+  },
+  {
+   "check": "per-group counts of the 64 new tokens at N = 512 recorded (sum 64)",
+   "ok": true,
+   "detail": "[19, 17, 17, 11]"
+  },
+  {
+   "check": "decoding windows: drawn per process, different between processes, equal for equal processes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "cells: 19 frontier cells (7 + 7 + 5) and 6 pair cells",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "every cell: variant and anchor are arms of the same width and context",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "pairs p1-p6 as PLAN 17.7 (attention alone: E4a_L4 / E2h_L4; routing of the FFN alone: E2h_L4 / REF4)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "a frontier cell, a pair cell and a width cell build and run once in both modes",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "analysis of a timing run: median ratio recovers a known 0.7 (within 3 %), the copy 1.0, one delta per run, outcome rule",
+   "ok": true,
+   "detail": "r 0.700, delta 0.002, outcome gain (variant faster)"
+  },
+  {
+   "check": "counted ratios: prefill uses N keys, decode N / 2 keys (E4a_L4 / E2h_L4)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "check": "memory (e): the peak of a synthetic pattern equals the hand value (6 MiB) even after a region that left tensors alive",
+   "ok": true,
+   "detail": "{'peak_live_bytes': 6291456, 'live_at_end_bytes': 0, 'baseline_bytes': 1048576}"
+  },
+  {
+   "check": "memory (e): the working buffers are released before the region and counted inside it (1 MiB buffer + 2 MiB temporary = 3 MiB)",
+   "ok": true,
+   "detail": "{'peak_live_bytes': 3145728, 'live_at_end_bytes': 1048576, 'baseline_bytes': 1048576}"
+  },
+  {
+   "check": "memory harness of E14 on E2h_L4 in two fresh processes: (a) identical, (b), (c), (e) within 1 %",
+   "ok": true,
+   "detail": "(e) 297044 / 297044, (c) 35232512 / 35232512"
+  }
+ ],
+ "failed": [],
+ "wall_s": 90.83891344070435
+}

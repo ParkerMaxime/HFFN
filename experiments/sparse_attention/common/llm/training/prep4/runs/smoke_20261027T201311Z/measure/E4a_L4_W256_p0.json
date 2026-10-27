@@ -1,0 +1,43 @@
+{
+ "arm": "E4a_L4_W256",
+ "impl": "gather",
+ "seed": 0,
+ "tokens_per_step": 8192,
+ "context": 512,
+ "prefill": {
+  "peak_live_bytes": 84638560,
+  "live_at_end_bytes": 0
+ },
+ "saved": {
+  "saved_total_bytes": 603978724,
+  "saved_weight_side_bytes": 22356992,
+  "saved_token_side_bytes": 581621732,
+  "saved_distinct_storages": 304
+ },
+ "train_step": {
+  "peak_live_bytes": 607935336,
+  "live_at_end_bytes": 12874752
+ },
+ "peak_rss_bytes": 2869293056,
+ "per_token": {
+  "saved_total": 73727.87158203125,
+  "saved_token_side": 70998.74658203125,
+  "train_peak": 74210.8564453125,
+  "prefill_peak": 10331.85546875,
+  "decode_peak_per_decoded_token": 43365.75
+ },
+ "decode": {
+  "peak_live_bytes": 2775408,
+  "live_at_end_bytes": 327680,
+  "baseline_bytes": 12874752,
+  "batch": 64,
+  "cache_positions": 256,
+  "group_counts": [
+   19,
+   17,
+   17,
+   11
+  ],
+  "cache_bytes_per_token_counted": 8192
+ }
+}
