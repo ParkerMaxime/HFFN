@@ -42,7 +42,7 @@ Test split, beside (selects nothing): `E4a_L2_W256`/`REF1_W256` +0.0022 [−0.01
 | REF2_W256 | 2.0509 | 1.9677 | 1.9668 |
 | REF2_W256_h16 | 2.0491 | 1.9652 | 1.9635 |
 
-Descriptive, within this campaign: in every arm the ranges 128-255 and 256-511 are within 0.002 of each other and the first range is 0.05-0.08 higher.
+Descriptive, within this campaign: in every arm the ranges 128-255 and 256-511 are within 0.002 of each other and the first range is 0.06-0.08 higher.
 
 ## Measured memory of E10 for the same arms, beside (bytes per token, fp32, one step of 8,192 bytes; `../e10/RESULTS.md`)
 
@@ -76,7 +76,7 @@ At equal counted multiply-adds the constrained model keeps 1.6-1.7 times the den
 
 ## Limits
 
-- Three seeds: a direction, not a size. The seed band of the constrained arms is wide: `E4a_L4_W256` spans 0.0206 (seed 2 at 2.0045), `E4a_L2_W256` 0.0313, against 0.0018 for `REF1_W256`; the two within-readings at 8 heads rest on that.
+- Three seeds: a direction, not a size. The seed band of the constrained arms is wide: `E4a_L4_W256` spans 0.0206 (seed 2 at 2.0045), `E4a_L2_W256` 0.0313, against 0.0019 for `REF1_W256`; the two within-readings at 8 heads rest on that.
 - Rates: four computed, not swept; E12 is one seed each and `E4a_L4_W256` is flat between 0.002 and 0.004. The `h16` layouts use the rate of the 8-head arms, not tuned for 16 heads: a different rate could move `i_s` in either direction.
 - Horizon 4,000 not recalibrated at width; two depths of the dense family; one width and one context; a PyTorch executor in the packed form, so memory and time here say nothing of a native implementation.
 - The validation split served the choice of the rates and the figures of this step; the test split is read once and selects nothing.
