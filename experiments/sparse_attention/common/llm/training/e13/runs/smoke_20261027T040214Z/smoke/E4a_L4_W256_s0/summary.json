@@ -1,0 +1,43 @@
+{
+ "arm": "E4a_L4_W256",
+ "seed": 0,
+ "lr": 0.002,
+ "steps_done": 40,
+ "steps": 40,
+ "start_step": 0,
+ "horizon": 40,
+ "schedule": "wsd",
+ "status": "passed",
+ "cause": null,
+ "params_outside_embedding": 1285376,
+ "train_wall_s": 69.1779625415802,
+ "final_eval_wall_s": 23.107949018478394,
+ "final_eval_windows": 512,
+ "final_valid": {
+  "bpb": 4.459931930190701,
+  "bpb_by_class": [
+   4.458534330866874,
+   4.457024015950709,
+   4.47564540413707,
+   4.448523969808154
+  ],
+  "windows": 512,
+  "range_names": [
+   "0-127",
+   "128-255",
+   "256-511"
+  ],
+  "range_lengths": [
+   128,
+   128,
+   256
+  ],
+  "bpb_by_range": [
+   4.512626589016892,
+   4.441290935971317,
+   4.442905097887298
+  ]
+ },
+ "final_valid_bpb": 4.459931930190701,
+ "train_bpb_ema_last": 7.193564042071309
+}

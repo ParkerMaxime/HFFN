@@ -1,0 +1,17 @@
+04:02:14Z step e13 mode smoke -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e13/runs/smoke_20261027T040214Z
+04:02:24Z checks check_model.py: 203/203 passed (exit 0)
+04:05:08Z checks check_series.py: 44/44 passed (exit 0)
+04:06:42Z checks check_series3.py: 34/34 passed (exit 0)
+04:06:42Z start smoke/E4a_L4_W256_s0
+04:06:42Z start smoke/E4a_L2_W256_s0
+04:06:42Z start smoke/REF2_W256_s0
+04:06:42Z start smoke/E4a_L4_W256_h16_s0
+04:07:39Z done  smoke/E4a_L2_W256_s0: exit 0, valid bpb 4.613376832076721
+04:07:39Z start smoke/REF2_W256_h16_s0
+04:08:02Z done  smoke/REF2_W256_s0: exit 0, valid bpb 4.4482798131731
+04:08:02Z start smoke/REF1_W256_s0
+04:08:21Z done  smoke/E4a_L4_W256_s0: exit 0, valid bpb 4.459931930190701
+04:08:27Z done  smoke/E4a_L4_W256_h16_s0: exit 0, valid bpb 4.440904673796777
+04:08:45Z done  smoke/REF1_W256_s0: exit 0, valid bpb 4.456579362288139
+04:09:03Z done  smoke/REF2_W256_h16_s0: exit 0, valid bpb 4.461820571496832
+04:09:03Z EXIT 0 

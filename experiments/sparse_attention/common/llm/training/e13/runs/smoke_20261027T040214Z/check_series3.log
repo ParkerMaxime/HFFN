@@ -1,0 +1,51 @@
+--- check_w256_counts
+[ok] counter E4a_L2_W256 equal to the table of PLAN 15.5 (552960, 642816, 1024, 3328)
+[ok] counter REF1_W256 equal to the table of PLAN 15.5 (696320, 370688, 512, 6656)
+[ok] counter E4a_L4_W256 equal to the table of PLAN 15.5 (1040384, 1285376, 2048, 6656)
+[ok] counter E4a_L4_W256_h16 equal to the table of PLAN 15.5 (1040384, 1285376, 2048, 10752)
+[ok] counter REF2_W256 equal to the table of PLAN 15.5 (1327104, 741120, 1024, 13312)
+[ok] counter REF2_W256_h16 equal to the table of PLAN 15.5 (1327104, 741120, 1024, 21504)
+[ok] the two head layouts of a family have equal parameters and multiply-adds 
+[ok] arms of width 256: 8 heads of 32 and 16 heads of 16, N = 512, H = 1024, degree 52 
+[ok] width 256: degree 52 per neuron and up_idx of R_g inside S_g 
+--- check_gather_parity
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, E4a_L2 max|logit diff| 0.0e+00, max|grad diff| 3.0e-08
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4 max|logit diff| 0.0e+00, max|grad diff| 3.0e-08
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, IND_L4 max|logit diff| 0.0e+00, max|grad diff| 2.2e-08
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, E4a_L2_N512 max|logit diff| 0.0e+00, max|grad diff| 3.7e-08
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4_N512 max|logit diff| 0.0e+00, max|grad diff| 3.7e-08
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, IND_L4_N512 max|logit diff| 0.0e+00, max|grad diff| 3.0e-08
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4_W256 max|logit diff| 1.8e-06, max|grad diff| 6.0e-08
+[ok] gather (packed hash form) == selected: logits and every parameter gradient, E4a_L4_W256_h16 max|logit diff| 1.9e-06, max|grad diff| 4.5e-08
+--- check_memory_harness
+[ok] memory (a): saved bytes of a synthetic module equal the hand count (distinct storages, relu result shared) 25088 vs 25088; weight-side 4608 vs 4608
+USDT:2026-10-27 04:05:16 10639:10639 SyncActivityProfilerHandler.cpp:39] profiler_start
+USDT:2026-10-27 04:05:16 10639:10639 SyncActivityProfilerHandler.cpp:46] profiler_stop
+ERROR:2026-10-27 04:05:16 10639:10639 DeviceProperties.cpp:56] gpuGetDeviceCount failed with code 35
+[ok] memory (b)/(c): peak live bytes of a synthetic allocation pattern equal the hand value (A + B = 6 MiB) {'peak_live_bytes': 6291456, 'live_at_end_bytes': 0}
+[ok] memory harness: two fresh processes give identical (a) and (b), (c) within 1 % saved 165663492 / 165663492, train peak 180594440 / 180594440, prefill 43326208 / 43326208
+--- check_executor_parity
+[ok] executor == sequential forward within float32 rounding, E4a_L2 max|diff| 0.0e+00
+[ok] executor == sequential forward within float32 rounding, E4a_L4 max|diff| 0.0e+00
+[ok] executor == sequential forward within float32 rounding, IND_L4 max|diff| 0.0e+00
+[ok] executor == sequential forward within float32 rounding, REF2 max|diff| 0.0e+00
+[ok] executor == sequential forward within float32 rounding, E4a_L2_N512 max|diff| 0.0e+00
+[ok] executor == sequential forward within float32 rounding, IND_L4_N512 max|diff| 0.0e+00
+[ok] executor == sequential forward within float32 rounding, REF2_N512 max|diff| 0.0e+00
+[ok] executor == sequential forward within float32 rounding, E4a_L4_W256 max|diff| 2.4e-06
+[ok] executor == sequential forward within float32 rounding, E4a_L4_W256_h16 max|diff| 2.1e-06
+[ok] executor == sequential forward within float32 rounding, REF2_W256_h16 max|diff| 0.0e+00
+--- check_timing_harness
+[ok] timing harness: 12-slot protocol per window is control, copy, variant, variant, copy, control; every slot lasts >= 0.2 s (0.05 s here) 
+[ok] timing harness: ratios from raw.jsonl only recover a known variant/control = 1.5 (within 3 %) and copy/control = 1 (within 3 %) r_variant 1.500, r_copy 1.000
+[ok] timing harness: steal/user time per window, lscpu, torch configuration and load average recorded 
+--- check_second_series_reproducible
+[E4a_L4 seed=0 lr=0.002] params=323200 steps=0->40 schedule=wsd horizon=40 batch=64x128
+/home/user/HFFN/experiments/sparse_attention/common/llm/training/lib/train.py:218: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:820.)
+  tb = float(ce) / LN2
+{"step": 1, "lr": 0.0, "train_bpb": 8.1781, "train_bpb_ema": 8.1781, "balance_loss": null, "wall_s": 1.0004}
+{"step": 20, "lr": 0.0002, "wall_s": 37.2444}
+{"arm": "E4a_L4", "seed": 0, "lr": 0.002, "steps_done": 40, "steps": 40, "start_step": 0, "horizon": 40, "schedule": "wsd", "status": "passed", "cause": null, "params_outside_embedding": 323200, "train_wall_s": 55.01194453239441, "final_eval_wall_s": 2.7566425800323486, "final_eval_windows": 512, "final_valid_bpb": 5.887834514427231, "train_bpb_ema_last": 7.666183642227471}
+[ok] second series reproducible: the default form under the hash route (selected) gives the bits of the E8 smoke of E4a_L4 5.887834514427231 vs 5.887834514427231
+34/34 checks passed
