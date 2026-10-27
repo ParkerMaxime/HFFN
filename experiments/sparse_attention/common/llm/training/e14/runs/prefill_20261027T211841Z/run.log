@@ -1,0 +1,162 @@
+21:21:42Z checks check_e14.py: 82/82 passed (exit 0)
+21:21:50Z concurrency gate at the start of the run: median ratio 0.325 (threshold 0.4) -> PASSED
+21:22:27Z prefill n128-REF1 process 0: {"cell": "n128-REF1", "mode": "prefill", "process": 0, "r_variant": 0.5572286505393691, "r_copy": 1.0455627684433515}
+21:23:05Z prefill n128-REF1 process 1: {"cell": "n128-REF1", "mode": "prefill", "process": 1, "r_variant": 0.5769887478744569, "r_copy": 1.0420364795608186}
+21:23:41Z prefill n128-REF1 process 2: {"cell": "n128-REF1", "mode": "prefill", "process": 2, "r_variant": 0.5878928558998018, "r_copy": 1.0066026524482978}
+21:24:20Z prefill n128-REF1 process 3: {"cell": "n128-REF1", "mode": "prefill", "process": 3, "r_variant": 0.5629391237073436, "r_copy": 1.0052080959907945}
+21:24:59Z prefill n128-REF1 process 4: {"cell": "n128-REF1", "mode": "prefill", "process": 4, "r_variant": 0.5884508140086063, "r_copy": 1.022983938697263}
+21:25:35Z prefill n128-REF3 process 0: {"cell": "n128-REF3", "mode": "prefill", "process": 0, "r_variant": 1.4751615614901081, "r_copy": 0.9740355159461038}
+21:26:16Z prefill n128-REF3 process 1: {"cell": "n128-REF3", "mode": "prefill", "process": 1, "r_variant": 1.4351640980105551, "r_copy": 0.9736946568871466}
+21:26:54Z prefill n128-REF3 process 2: {"cell": "n128-REF3", "mode": "prefill", "process": 2, "r_variant": 1.4630926549148286, "r_copy": 0.9972210819013516}
+21:27:30Z prefill n128-REF3 process 3: {"cell": "n128-REF3", "mode": "prefill", "process": 3, "r_variant": 1.4766063617091956, "r_copy": 1.0440430891064119}
+21:28:09Z prefill n128-REF3 process 4: {"cell": "n128-REF3", "mode": "prefill", "process": 4, "r_variant": 1.4505812017658546, "r_copy": 1.0300601442836284}
+21:28:49Z prefill n128-REF4 process 0: {"cell": "n128-REF4", "mode": "prefill", "process": 0, "r_variant": 1.8553437322888873, "r_copy": 1.0184108579867814}
+21:29:26Z prefill n128-REF4 process 1: {"cell": "n128-REF4", "mode": "prefill", "process": 1, "r_variant": 1.827406538311359, "r_copy": 0.9896090434670017}
+21:30:03Z prefill n128-REF4 process 2: {"cell": "n128-REF4", "mode": "prefill", "process": 2, "r_variant": 1.857343488861745, "r_copy": 0.992552020090854}
+21:30:42Z prefill n128-REF4 process 3: {"cell": "n128-REF4", "mode": "prefill", "process": 3, "r_variant": 1.8548519092081306, "r_copy": 1.0197473556446917}
+21:31:22Z prefill n128-REF4 process 4: {"cell": "n128-REF4", "mode": "prefill", "process": 4, "r_variant": 1.876377136451961, "r_copy": 0.9749045714333118}
+21:31:59Z prefill n128-E4a_L2 process 0: {"cell": "n128-E4a_L2", "mode": "prefill", "process": 0, "r_variant": 0.7403617266393918, "r_copy": 0.9800143737353091}
+21:32:36Z prefill n128-E4a_L2 process 1: {"cell": "n128-E4a_L2", "mode": "prefill", "process": 1, "r_variant": 0.6904830152636783, "r_copy": 0.9654947107910357}
+21:33:16Z prefill n128-E4a_L2 process 2: {"cell": "n128-E4a_L2", "mode": "prefill", "process": 2, "r_variant": 0.7293325451273377, "r_copy": 0.961458551257857}
+21:33:54Z prefill n128-E4a_L2 process 3: {"cell": "n128-E4a_L2", "mode": "prefill", "process": 3, "r_variant": 0.714886387522311, "r_copy": 0.9846540996085906}
+21:34:32Z prefill n128-E4a_L2 process 4: {"cell": "n128-E4a_L2", "mode": "prefill", "process": 4, "r_variant": 0.7440845716246123, "r_copy": 1.027032753288744}
+21:35:09Z prefill n128-E4a_L4 process 0: {"cell": "n128-E4a_L4", "mode": "prefill", "process": 0, "r_variant": 1.1920594781316156, "r_copy": 0.9759678133647538}
+21:35:46Z prefill n128-E4a_L4 process 1: {"cell": "n128-E4a_L4", "mode": "prefill", "process": 1, "r_variant": 1.2961402971553682, "r_copy": 1.0271627042557263}
+21:36:26Z prefill n128-E4a_L4 process 2: {"cell": "n128-E4a_L4", "mode": "prefill", "process": 2, "r_variant": 1.266667358286099, "r_copy": 0.9851603921472903}
+21:37:03Z prefill n128-E4a_L4 process 3: {"cell": "n128-E4a_L4", "mode": "prefill", "process": 3, "r_variant": 1.2367860342098622, "r_copy": 0.9470251043977063}
+21:37:42Z prefill n128-E4a_L4 process 4: {"cell": "n128-E4a_L4", "mode": "prefill", "process": 4, "r_variant": 1.2402118320533013, "r_copy": 1.0104277464405946}
+21:38:19Z prefill n128-E4a_L6 process 0: {"cell": "n128-E4a_L6", "mode": "prefill", "process": 0, "r_variant": 1.8599873232398063, "r_copy": 1.0278243322887233}
+21:38:58Z prefill n128-E4a_L6 process 1: {"cell": "n128-E4a_L6", "mode": "prefill", "process": 1, "r_variant": 1.7813385917574798, "r_copy": 0.9980788325773557}
+21:39:36Z prefill n128-E4a_L6 process 2: {"cell": "n128-E4a_L6", "mode": "prefill", "process": 2, "r_variant": 1.7384338137991295, "r_copy": 0.9525461262689108}
+21:40:15Z prefill n128-E4a_L6 process 3: {"cell": "n128-E4a_L6", "mode": "prefill", "process": 3, "r_variant": 1.8228732263650977, "r_copy": 1.0165031289262174}
+21:40:51Z prefill n128-E4a_L6 process 4: {"cell": "n128-E4a_L6", "mode": "prefill", "process": 4, "r_variant": 1.7879034469750568, "r_copy": 1.0033388107079861}
+21:41:28Z prefill n128-IND_L4 process 0: {"cell": "n128-IND_L4", "mode": "prefill", "process": 0, "r_variant": 1.1472318208914811, "r_copy": 1.0142715771252837}
+21:42:06Z prefill n128-IND_L4 process 1: {"cell": "n128-IND_L4", "mode": "prefill", "process": 1, "r_variant": 1.0904560161166104, "r_copy": 0.962500251569939}
+21:42:45Z prefill n128-IND_L4 process 2: {"cell": "n128-IND_L4", "mode": "prefill", "process": 2, "r_variant": 1.0784827798662144, "r_copy": 0.9662527167443267}
+21:43:21Z prefill n128-IND_L4 process 3: {"cell": "n128-IND_L4", "mode": "prefill", "process": 3, "r_variant": 1.1227960154727599, "r_copy": 0.9954208883643911}
+21:43:58Z prefill n128-IND_L4 process 4: {"cell": "n128-IND_L4", "mode": "prefill", "process": 4, "r_variant": 1.0958863527905174, "r_copy": 0.9675093851834118}
+21:44:35Z prefill n512-REF1 process 0: {"cell": "n512-REF1", "mode": "prefill", "process": 0, "r_variant": 0.5801650496502873, "r_copy": 1.0389340018657545}
+21:45:12Z prefill n512-REF1 process 1: {"cell": "n512-REF1", "mode": "prefill", "process": 1, "r_variant": 0.5699449626161204, "r_copy": 1.012446560719714}
+21:45:51Z prefill n512-REF1 process 2: {"cell": "n512-REF1", "mode": "prefill", "process": 2, "r_variant": 0.564631340406909, "r_copy": 0.9519105140297268}
+21:46:30Z prefill n512-REF1 process 3: {"cell": "n512-REF1", "mode": "prefill", "process": 3, "r_variant": 0.5624363935808852, "r_copy": 0.9945199452958686}
+21:47:07Z prefill n512-REF1 process 4: {"cell": "n512-REF1", "mode": "prefill", "process": 4, "r_variant": 0.5642023603090222, "r_copy": 1.0165617182362978}
+21:47:47Z prefill n512-REF3 process 0: {"cell": "n512-REF3", "mode": "prefill", "process": 0, "r_variant": 1.3472850306110689, "r_copy": 1.0058911439367155}
+21:48:24Z prefill n512-REF3 process 1: {"cell": "n512-REF3", "mode": "prefill", "process": 1, "r_variant": 1.470096937832972, "r_copy": 0.979499514005266}
+21:49:02Z prefill n512-REF3 process 2: {"cell": "n512-REF3", "mode": "prefill", "process": 2, "r_variant": 1.510062361201943, "r_copy": 1.0453147007642347}
+21:49:40Z prefill n512-REF3 process 3: {"cell": "n512-REF3", "mode": "prefill", "process": 3, "r_variant": 1.4536081882380039, "r_copy": 0.9930454646217288}
+21:50:18Z prefill n512-REF3 process 4: {"cell": "n512-REF3", "mode": "prefill", "process": 4, "r_variant": 1.4952305335500364, "r_copy": 1.0351854726843217}
+21:50:59Z prefill n512-REF4 process 0: {"cell": "n512-REF4", "mode": "prefill", "process": 0, "r_variant": 1.826793575597962, "r_copy": 1.022118805184773}
+21:51:39Z prefill n512-REF4 process 1: {"cell": "n512-REF4", "mode": "prefill", "process": 1, "r_variant": 1.8147497194251168, "r_copy": 0.9940653625486897}
+21:52:19Z prefill n512-REF4 process 2: {"cell": "n512-REF4", "mode": "prefill", "process": 2, "r_variant": 1.8277748084217844, "r_copy": 0.9976750542574793}
+21:52:58Z prefill n512-REF4 process 3: {"cell": "n512-REF4", "mode": "prefill", "process": 3, "r_variant": 1.712431774401411, "r_copy": 0.9493654910962264}
+21:53:38Z prefill n512-REF4 process 4: {"cell": "n512-REF4", "mode": "prefill", "process": 4, "r_variant": 1.8998921679151841, "r_copy": 1.0338968233453207}
+21:54:16Z prefill n512-E4a_L2 process 0: {"cell": "n512-E4a_L2", "mode": "prefill", "process": 0, "r_variant": 0.6830906608863718, "r_copy": 1.0139399144065124}
+21:54:53Z prefill n512-E4a_L2 process 1: {"cell": "n512-E4a_L2", "mode": "prefill", "process": 1, "r_variant": 0.641933695796987, "r_copy": 0.9842404952667816}
+21:55:31Z prefill n512-E4a_L2 process 2: {"cell": "n512-E4a_L2", "mode": "prefill", "process": 2, "r_variant": 0.6547082058270727, "r_copy": 1.0247857482572666}
+21:56:08Z prefill n512-E4a_L2 process 3: {"cell": "n512-E4a_L2", "mode": "prefill", "process": 3, "r_variant": 0.6415149125075887, "r_copy": 1.0358617723122032}
+21:56:46Z prefill n512-E4a_L2 process 4: {"cell": "n512-E4a_L2", "mode": "prefill", "process": 4, "r_variant": 0.6642860095932366, "r_copy": 1.0394772847197868}
+21:57:23Z prefill n512-E4a_L4 process 0: {"cell": "n512-E4a_L4", "mode": "prefill", "process": 0, "r_variant": 1.226653555712352, "r_copy": 1.0452466032288852}
+21:57:57Z prefill n512-E4a_L4 process 1: {"cell": "n512-E4a_L4", "mode": "prefill", "process": 1, "r_variant": 1.1468429716857842, "r_copy": 1.026303075405334}
+21:58:38Z prefill n512-E4a_L4 process 2: {"cell": "n512-E4a_L4", "mode": "prefill", "process": 2, "r_variant": 1.146117760643977, "r_copy": 0.9940033189162608}
+21:59:18Z prefill n512-E4a_L4 process 3: {"cell": "n512-E4a_L4", "mode": "prefill", "process": 3, "r_variant": 1.1612703436653393, "r_copy": 1.034378688134729}
+21:59:55Z prefill n512-E4a_L4 process 4: {"cell": "n512-E4a_L4", "mode": "prefill", "process": 4, "r_variant": 1.161953048956795, "r_copy": 1.0293964781348928}
+22:00:31Z prefill n512-E4a_L6 process 0: {"cell": "n512-E4a_L6", "mode": "prefill", "process": 0, "r_variant": 1.746202987353469, "r_copy": 1.0058719984815603}
+22:01:09Z prefill n512-E4a_L6 process 1: {"cell": "n512-E4a_L6", "mode": "prefill", "process": 1, "r_variant": 1.6498860294627071, "r_copy": 0.9851240538464014}
+22:01:48Z prefill n512-E4a_L6 process 2: {"cell": "n512-E4a_L6", "mode": "prefill", "process": 2, "r_variant": 1.6425694148174586, "r_copy": 1.0083412088052075}
+22:02:27Z prefill n512-E4a_L6 process 3: {"cell": "n512-E4a_L6", "mode": "prefill", "process": 3, "r_variant": 1.7518645237758803, "r_copy": 1.0366364838220443}
+22:03:04Z prefill n512-E4a_L6 process 4: {"cell": "n512-E4a_L6", "mode": "prefill", "process": 4, "r_variant": 1.720768087126317, "r_copy": 0.9900574836437172}
+22:03:43Z prefill n512-IND_L4 process 0: {"cell": "n512-IND_L4", "mode": "prefill", "process": 0, "r_variant": 1.0800424732330218, "r_copy": 0.9952561465221181}
+22:04:22Z prefill n512-IND_L4 process 1: {"cell": "n512-IND_L4", "mode": "prefill", "process": 1, "r_variant": 1.0580379755471376, "r_copy": 1.0302911184455465}
+22:05:00Z prefill n512-IND_L4 process 2: {"cell": "n512-IND_L4", "mode": "prefill", "process": 2, "r_variant": 1.0649675790285964, "r_copy": 1.0075665125351727}
+22:05:38Z prefill n512-IND_L4 process 3: {"cell": "n512-IND_L4", "mode": "prefill", "process": 3, "r_variant": 1.0507387823300482, "r_copy": 0.9981391340310949}
+22:06:16Z prefill n512-IND_L4 process 4: {"cell": "n512-IND_L4", "mode": "prefill", "process": 4, "r_variant": 1.0902304419045135, "r_copy": 1.0394046943192956}
+22:06:59Z prefill w256-REF1_W256 process 0: {"cell": "w256-REF1_W256", "mode": "prefill", "process": 0, "r_variant": 0.5531804511702818, "r_copy": 0.998759508137361}
+22:07:42Z prefill w256-REF1_W256 process 1: {"cell": "w256-REF1_W256", "mode": "prefill", "process": 1, "r_variant": 0.5374421927891762, "r_copy": 1.0332673590935828}
+22:08:25Z prefill w256-REF1_W256 process 2: {"cell": "w256-REF1_W256", "mode": "prefill", "process": 2, "r_variant": 0.5684909767792266, "r_copy": 1.0064974730624718}
+22:09:09Z prefill w256-REF1_W256 process 3: {"cell": "w256-REF1_W256", "mode": "prefill", "process": 3, "r_variant": 0.5616843571311003, "r_copy": 1.0052866835631602}
+22:09:52Z prefill w256-REF1_W256 process 4: {"cell": "w256-REF1_W256", "mode": "prefill", "process": 4, "r_variant": 0.5717601530998038, "r_copy": 1.024027095303536}
+22:10:37Z prefill w256-REF2_W256_h16 process 0: {"cell": "w256-REF2_W256_h16", "mode": "prefill", "process": 0, "r_variant": 1.1044628368100877, "r_copy": 0.995812172436112}
+22:11:25Z prefill w256-REF2_W256_h16 process 1: {"cell": "w256-REF2_W256_h16", "mode": "prefill", "process": 1, "r_variant": 1.1169335931444497, "r_copy": 1.0444630410998754}
+22:12:11Z prefill w256-REF2_W256_h16 process 2: {"cell": "w256-REF2_W256_h16", "mode": "prefill", "process": 2, "r_variant": 1.1544011838439916, "r_copy": 0.9993807273229951}
+22:12:59Z prefill w256-REF2_W256_h16 process 3: {"cell": "w256-REF2_W256_h16", "mode": "prefill", "process": 3, "r_variant": 1.0898002290719973, "r_copy": 1.0142735547798192}
+22:13:47Z prefill w256-REF2_W256_h16 process 4: {"cell": "w256-REF2_W256_h16", "mode": "prefill", "process": 4, "r_variant": 1.077450324682348, "r_copy": 0.9606248979113434}
+22:14:31Z prefill w256-E4a_L2_W256 process 0: {"cell": "w256-E4a_L2_W256", "mode": "prefill", "process": 0, "r_variant": 0.5672090303856054, "r_copy": 1.028548261749477}
+22:15:16Z prefill w256-E4a_L2_W256 process 1: {"cell": "w256-E4a_L2_W256", "mode": "prefill", "process": 1, "r_variant": 0.5636139911982951, "r_copy": 0.9810259249890256}
+22:15:59Z prefill w256-E4a_L2_W256 process 2: {"cell": "w256-E4a_L2_W256", "mode": "prefill", "process": 2, "r_variant": 0.5590464438331391, "r_copy": 1.0116975314828958}
+22:16:42Z prefill w256-E4a_L2_W256 process 3: {"cell": "w256-E4a_L2_W256", "mode": "prefill", "process": 3, "r_variant": 0.5572627097769571, "r_copy": 1.0166196909214023}
+22:17:26Z prefill w256-E4a_L2_W256 process 4: {"cell": "w256-E4a_L2_W256", "mode": "prefill", "process": 4, "r_variant": 0.542634524035233, "r_copy": 0.9830291638582875}
+22:18:11Z prefill w256-E4a_L4_W256 process 0: {"cell": "w256-E4a_L4_W256", "mode": "prefill", "process": 0, "r_variant": 0.9760718024849107, "r_copy": 1.02501031028113}
+22:18:56Z prefill w256-E4a_L4_W256 process 1: {"cell": "w256-E4a_L4_W256", "mode": "prefill", "process": 1, "r_variant": 0.9742002057805268, "r_copy": 0.9958767120034016}
+22:19:41Z prefill w256-E4a_L4_W256 process 2: {"cell": "w256-E4a_L4_W256", "mode": "prefill", "process": 2, "r_variant": 1.010485380848806, "r_copy": 0.9651250091839679}
+22:20:26Z prefill w256-E4a_L4_W256 process 3: {"cell": "w256-E4a_L4_W256", "mode": "prefill", "process": 3, "r_variant": 0.9866174607768634, "r_copy": 0.9958608358212875}
+22:21:10Z prefill w256-E4a_L4_W256 process 4: {"cell": "w256-E4a_L4_W256", "mode": "prefill", "process": 4, "r_variant": 1.025466037092954, "r_copy": 0.9835976410280682}
+22:21:53Z prefill w256-E4a_L4_W256_h16 process 0: {"cell": "w256-E4a_L4_W256_h16", "mode": "prefill", "process": 0, "r_variant": 1.03236209127899, "r_copy": 0.9746304979299953}
+22:22:38Z prefill w256-E4a_L4_W256_h16 process 1: {"cell": "w256-E4a_L4_W256_h16", "mode": "prefill", "process": 1, "r_variant": 1.0200967704373753, "r_copy": 0.9874760107151059}
+22:23:22Z prefill w256-E4a_L4_W256_h16 process 2: {"cell": "w256-E4a_L4_W256_h16", "mode": "prefill", "process": 2, "r_variant": 1.06288068605252, "r_copy": 1.012604627523754}
+22:24:07Z prefill w256-E4a_L4_W256_h16 process 3: {"cell": "w256-E4a_L4_W256_h16", "mode": "prefill", "process": 3, "r_variant": 1.0018281036849794, "r_copy": 0.9820729409337654}
+22:24:53Z prefill w256-E4a_L4_W256_h16 process 4: {"cell": "w256-E4a_L4_W256_h16", "mode": "prefill", "process": 4, "r_variant": 1.049256422099274, "r_copy": 1.007724704178052}
+22:25:30Z prefill p1 process 0: {"cell": "p1", "mode": "prefill", "process": 0, "r_variant": 0.6783425705682173, "r_copy": 0.9817165225410348}
+22:26:07Z prefill p1 process 1: {"cell": "p1", "mode": "prefill", "process": 1, "r_variant": 0.7578900691564302, "r_copy": 1.0000739442706474}
+22:26:43Z prefill p1 process 2: {"cell": "p1", "mode": "prefill", "process": 2, "r_variant": 0.7582452506592834, "r_copy": 0.9649554038775177}
+22:27:22Z prefill p1 process 3: {"cell": "p1", "mode": "prefill", "process": 3, "r_variant": 0.7134976659386364, "r_copy": 0.9765492986989242}
+22:28:03Z prefill p1 process 4: {"cell": "p1", "mode": "prefill", "process": 4, "r_variant": 0.7149196442004602, "r_copy": 1.0029743294377034}
+22:28:40Z prefill p2 process 0: {"cell": "p2", "mode": "prefill", "process": 0, "r_variant": 0.8997557762806898, "r_copy": 1.0147542099110582}
+22:29:17Z prefill p2 process 1: {"cell": "p2", "mode": "prefill", "process": 1, "r_variant": 0.9015521146147087, "r_copy": 0.9689795208846363}
+22:29:56Z prefill p2 process 2: {"cell": "p2", "mode": "prefill", "process": 2, "r_variant": 0.9466715032696854, "r_copy": 1.0184859052886353}
+22:30:36Z prefill p2 process 3: {"cell": "p2", "mode": "prefill", "process": 3, "r_variant": 0.9024487399793377, "r_copy": 1.0333136804922853}
+22:31:15Z prefill p2 process 4: {"cell": "p2", "mode": "prefill", "process": 4, "r_variant": 0.8655494491884246, "r_copy": 0.9621022397207707}
+22:31:54Z prefill p3 process 0: {"cell": "p3", "mode": "prefill", "process": 0, "r_variant": 0.6697735749689085, "r_copy": 0.9952058102210218}
+22:32:34Z prefill p3 process 1: {"cell": "p3", "mode": "prefill", "process": 1, "r_variant": 0.7155288460503322, "r_copy": 1.0188385764835388}
+22:33:12Z prefill p3 process 2: {"cell": "p3", "mode": "prefill", "process": 2, "r_variant": 0.685422218062006, "r_copy": 1.0001877821611365}
+22:33:53Z prefill p3 process 3: {"cell": "p3", "mode": "prefill", "process": 3, "r_variant": 0.6872513218027185, "r_copy": 1.0170810188079793}
+22:34:32Z prefill p3 process 4: {"cell": "p3", "mode": "prefill", "process": 4, "r_variant": 0.6844825594937398, "r_copy": 1.0623018618679305}
+22:35:13Z prefill p4 process 0: {"cell": "p4", "mode": "prefill", "process": 0, "r_variant": 0.8771495628223245, "r_copy": 0.944915344214158}
+22:35:53Z prefill p4 process 1: {"cell": "p4", "mode": "prefill", "process": 1, "r_variant": 0.9321645257194878, "r_copy": 1.03408392521426}
+22:36:34Z prefill p4 process 2: {"cell": "p4", "mode": "prefill", "process": 2, "r_variant": 0.9241251022382694, "r_copy": 0.9693138275492343}
+22:37:14Z prefill p4 process 3: {"cell": "p4", "mode": "prefill", "process": 3, "r_variant": 0.9560378441494171, "r_copy": 1.0317192970713185}
+22:37:54Z prefill p4 process 4: {"cell": "p4", "mode": "prefill", "process": 4, "r_variant": 0.9714039234537621, "r_copy": 0.9784086637809857}
+22:38:39Z prefill p5 process 0: {"cell": "p5", "mode": "prefill", "process": 0, "r_variant": 0.6985834280404183, "r_copy": 1.0039302940609938}
+22:39:23Z prefill p5 process 1: {"cell": "p5", "mode": "prefill", "process": 1, "r_variant": 0.670265910707952, "r_copy": 0.978624942388124}
+22:40:06Z prefill p5 process 2: {"cell": "p5", "mode": "prefill", "process": 2, "r_variant": 0.6896083860331392, "r_copy": 0.9729244163522837}
+22:40:52Z prefill p5 process 3: {"cell": "p5", "mode": "prefill", "process": 3, "r_variant": 0.7009855649031141, "r_copy": 1.0345735828528362}
+22:41:34Z prefill p5 process 4: {"cell": "p5", "mode": "prefill", "process": 4, "r_variant": 0.7210735932293451, "r_copy": 1.015832406732898}
+22:42:25Z prefill p6 process 0: {"cell": "p6", "mode": "prefill", "process": 0, "r_variant": 0.7725087329501144, "r_copy": 1.0328535311521434}
+22:43:18Z prefill p6 process 1: {"cell": "p6", "mode": "prefill", "process": 1, "r_variant": 0.8038022419815134, "r_copy": 0.9845693965621407}
+22:44:08Z prefill p6 process 2: {"cell": "p6", "mode": "prefill", "process": 2, "r_variant": 0.7635342099134618, "r_copy": 1.018368088227005}
+22:45:00Z prefill p6 process 3: {"cell": "p6", "mode": "prefill", "process": 3, "r_variant": 0.68953291987223, "r_copy": 0.9614991044785656}
+22:45:51Z prefill p6 process 4: {"cell": "p6", "mode": "prefill", "process": 4, "r_variant": 0.7433124354166774, "r_copy": 1.00967959870304}
+22:45:51Z # E14 prefill: analysis (delta of the run = 0.0623)
+
+| cell | variant / anchor | r median [min–max] | outcome | counted ratio | r / counted | steal fraction |
+|---|---|---|---|---|---|---|
+| n128-REF1 | REF1 / REF2 | 0.577 [0.557–0.588] | gain (variant faster) | 0.558 | 1.03 | 0.0140 |
+| n128-REF3 | REF3 / REF2 | 1.463 [1.435–1.477] | loss (variant slower) | 1.442 | 1.01 | 0.0150 |
+| n128-REF4 | REF4 / REF2 | 1.855 [1.827–1.876] | loss (variant slower) | 1.884 | 0.98 | 0.0143 |
+| n128-E4a_L2 | E4a_L2 / REF2 | 0.729 [0.690–0.744] | gain (variant faster) | 0.489 | 1.49 | 0.0133 |
+| n128-E4a_L4 | E4a_L4 / REF2 | 1.240 [1.192–1.296] | loss (variant slower) | 0.862 | 1.44 | 0.0137 |
+| n128-E4a_L6 | E4a_L6 / REF2 | 1.788 [1.738–1.860] | loss (variant slower) | 1.236 | 1.45 | 0.0131 |
+| n128-IND_L4 | IND_L4 / REF2 | 1.096 [1.078–1.147] | loss (variant slower) | 0.471 | 2.33 | 0.0130 |
+| n512-REF1 | REF1_N512 / REF2_N512 | 0.565 [0.562–0.580] | gain (variant faster) | 0.534 | 1.06 | 0.0121 |
+| n512-REF3 | REF3_N512 / REF2_N512 | 1.470 [1.347–1.510] | loss (variant slower) | 1.466 | 1.00 | 0.0128 |
+| n512-REF4 | REF4_N512 / REF2_N512 | 1.827 [1.712–1.900] | loss (variant slower) | 1.932 | 0.95 | 0.0118 |
+| n512-E4a_L2 | E4a_L2_N512 / REF2_N512 | 0.655 [0.642–0.683] | gain (variant faster) | 0.391 | 1.67 | 0.0125 |
+| n512-E4a_L4 | E4a_L4_N512 / REF2_N512 | 1.161 [1.146–1.227] | loss (variant slower) | 0.714 | 1.63 | 0.0116 |
+| n512-E4a_L6 | E4a_L6_N512 / REF2_N512 | 1.721 [1.643–1.752] | loss (variant slower) | 1.036 | 1.66 | 0.0115 |
+| n512-IND_L4 | IND_L4_N512 / REF2_N512 | 1.065 [1.051–1.090] | loss (variant slower) | 0.483 | 2.21 | 0.0115 |
+| w256-REF1_W256 | REF1_W256 / REF2_W256 | 0.562 [0.537–0.572] | gain (variant faster) | 0.525 | 1.07 | 0.0115 |
+| w256-REF2_W256_h16 | REF2_W256_h16 / REF2_W256 | 1.104 [1.077–1.154] | loss (variant slower) | 1.000 | 1.10 | 0.0117 |
+| w256-E4a_L2_W256 | E4a_L2_W256 / REF2_W256 | 0.559 [0.543–0.567] | gain (variant faster) | 0.417 | 1.34 | 0.0113 |
+| w256-E4a_L4_W256 | E4a_L4_W256 / REF2_W256 | 0.987 [0.974–1.025] | no difference within delta | 0.784 | 1.26 | 0.0127 |
+| w256-E4a_L4_W256_h16 | E4a_L4_W256_h16 / REF2_W256 | 1.032 [1.002–1.063] | no difference within delta | 0.784 | 1.32 | 0.0118 |
+| p1 | E4a_L4 / E2h_L4 | 0.715 [0.678–0.758] | gain (variant faster) | 0.538 | 1.33 | 0.0134 |
+| p2 | E2h_L4 / REF4 | 0.902 [0.866–0.947] | gain (variant faster) | 0.850 | 1.06 | 0.0152 |
+| p3 | E4a_L4_N512 / E2h_L4_N512 | 0.685 [0.670–0.716] | gain (variant faster) | 0.404 | 1.70 | 0.0144 |
+| p4 | E2h_L4_N512 / REF4_N512 | 0.932 [0.877–0.971] | gain (variant faster) | 0.914 | 1.02 | 0.0134 |
+| p5 | E4a_L4_W256 / E2h_L4_W256 | 0.699 [0.670–0.721] | gain (variant faster) | 0.458 | 1.52 | 0.0138 |
+| p6 | E2h_L4_W256 / REF4_W256 | 0.764 [0.690–0.804] | gain (variant faster) | 0.877 | 0.87 | 0.0121 |
+
+Products of the pairs (estimated):
+- p1xp2: 0.645 (counted 0.458)
+- p3xp4: 0.639 (counted 0.369)
+- p5xp6: 0.533 (counted 0.402)
+22:45:51Z EXIT 0 

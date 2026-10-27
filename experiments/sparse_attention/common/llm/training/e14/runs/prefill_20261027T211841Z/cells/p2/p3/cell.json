@@ -1,0 +1,19 @@
+{
+ "cell": "p2",
+ "group": "pair",
+ "campaign": "p2",
+ "variant": "E2h_L4",
+ "control": "REF4",
+ "isolates": "the routing of the FFN alone",
+ "mode": "prefill",
+ "context": 128,
+ "d_model": 128,
+ "variant_kind": "e2h",
+ "control_kind": "dense",
+ "tokens_per_call": 8192,
+ "reps": {
+  "control": 2,
+  "copy": 3,
+  "variant": 2
+ }
+}

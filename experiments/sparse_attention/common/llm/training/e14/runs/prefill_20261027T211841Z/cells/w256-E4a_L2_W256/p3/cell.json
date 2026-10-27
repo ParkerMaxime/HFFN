@@ -1,0 +1,18 @@
+{
+ "cell": "w256-E4a_L2_W256",
+ "group": "frontier",
+ "campaign": "w256",
+ "variant": "E4a_L2_W256",
+ "control": "REF2_W256",
+ "mode": "prefill",
+ "context": 512,
+ "d_model": 256,
+ "variant_kind": "e4a",
+ "control_kind": "dense",
+ "tokens_per_call": 8192,
+ "reps": {
+  "control": 2,
+  "copy": 2,
+  "variant": 3
+ }
+}

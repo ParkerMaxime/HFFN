@@ -1,0 +1,3 @@
+{"cell": "p4", "mode": "prefill", "process": 2, "r_variant": 0.9241251022382694, "r_copy": 0.9693138275492343}
+/usr/local/lib/python3.13/dist-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(

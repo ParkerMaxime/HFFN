@@ -1,0 +1,19 @@
+{
+ "cell": "p5",
+ "group": "pair",
+ "campaign": "p5",
+ "variant": "E4a_L4_W256",
+ "control": "E2h_L4_W256",
+ "isolates": "the attention alone, at width",
+ "mode": "prefill",
+ "context": 512,
+ "d_model": 256,
+ "variant_kind": "e4a",
+ "control_kind": "e2h",
+ "tokens_per_call": 8192,
+ "reps": {
+  "control": 1,
+  "copy": 1,
+  "variant": 2
+ }
+}
