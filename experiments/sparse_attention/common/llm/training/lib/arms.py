@@ -105,8 +105,17 @@ REF2_W256_H16 = REF2_W256.with_(name="REF2_W256_h16", n_heads=16)
 E4A_L4_W256_H16 = E4A_L4_W256.with_(name="E4a_L4_W256_h16", n_heads=16)
 SERIES_W256 = (REF1_W256, REF2_W256, E4A_L2_W256, E4A_L4_W256, REF2_W256_H16, E4A_L4_W256_H16)
 
+# fourth step (E14, PLAN section 17.7): the attention alone. `E2h` = `E4a` with the dense attention of `REF` (every head for every
+# token, dense W_O) and the routed FFN of `E4a` under the balanced byte hash; never trained (time and memory need no training)
+E2H_L4 = E2.with_(name="E2h_L4", n_layers=4, routing="hash")
+E2H_L4_N512 = E2H_L4.with_(name="E2h_L4_N512", context=512)
+E2H_L4_W256 = E2H_L4.with_(name="E2h_L4_W256", **_W256)
+REF4_W256 = REF4.with_(name="REF4_W256", **_W256)
+SERIES_E14 = (E2H_L4, E2H_L4_N512, E2H_L4_W256, REF4_W256)
+
 ARMS = {a.name: a for a in (E0, NOATT, E1, E2, E3A, E3B, IND, E4A, E4B, REF4, E3B4, E3B4R, E4A_L4, E4A_L4R,
-                            REF1, REF2, REF3, E4A_L2, E4A_L6, IND_L4, *SERIES_N512, *SERIES_W256)}
+                            REF1, REF2, REF3, E4A_L2, E4A_L6, IND_L4, *SERIES_N512, *SERIES_W256,
+                            *SERIES_E14)}
 
 
 def get_arm(name: str, **overrides) -> ArmConfig:

@@ -244,7 +244,7 @@ class Layer(nn.Module):
         return plan, route
 
     def parts_gather(self, x, tokens, cos, sin, hash_table, plan):
-        """Constraint (C2) computed for the routed tokens only. Worker g: keys and values of its heads H_g for every
+        """Constraint (C2) computed for the routed tokens only (for E2h, dense attention and routed FFN only). Worker g: keys and values of its heads H_g for every
         token, then queries, scores (causal mask on the original positions), outputs, W_O^g and the FFN group R_g for
         the tokens routed to g, scattered back to their rows. Same function and gradients as the selected form."""
         cfg = self.cfg
@@ -262,7 +262,8 @@ class Layer(nn.Module):
         keys = torch.arange(N)
         ind = cfg.qkv_blockdiag
         o_blocks, groups_out = [], []
-        for g, (pos, valid) in enumerate(plan_g):
+        dense_attn = cfg.attn == "dense"  # E2h: every head for every token, dense W_O; only the FFN is packed
+        for g, (pos, valid) in enumerate(plan_g if not dense_attn else ()):
             rows, cols = slice(g * m, (g + 1) * m), (slice(g * m, (g + 1) * m) if ind else slice(None))
             P = pos.shape[1]
             if P == 0:
@@ -278,7 +279,7 @@ class Layer(nn.Module):
             a = F.scaled_dot_product_attention(q, k, v, attn_mask=mask).transpose(1, 2).reshape(B, P, m)
             og = (a @ wo[rows, rows].t()) * valid[..., None]
             o_blocks.append(x.new_zeros(B, N, m).scatter_add(1, pos[..., None].expand(-1, -1, m), og))
-        o = torch.cat(o_blocks, -1)
+        o = self.attention_full(xi, cos, sin) @ wo.t() if dense_attn else torch.cat(o_blocks, -1)
         u = x + o
         z = rms_norm(u) * self.g2
         y = x.new_zeros(B, N, M)
@@ -306,7 +307,7 @@ class Layer(nn.Module):
         """One layer, with its intermediate quantities: u = x + o (attention), y (FFN), route, gate, router stats."""
         cfg = self.cfg
         stats = {}
-        if impl == "gather" and cfg.routing == "hash" and cfg.attn == "routed":
+        if impl == "gather" and cfg.routing == "hash" and cfg.attn in ("routed", "dense"):
             return self.parts_gather(x, tokens, cos, sin, hash_table, plan)
         packed = impl in ("packed", "gather") and cfg.routing == "position"
         route = gate = None

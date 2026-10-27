@@ -1,0 +1,8 @@
+{"step":"prep4","checks":["check_model.py","check_series.py","check_series3.py","check_e14.py"],
+ "cells":["n128-REF1","n128-REF3","n128-REF4","n128-E4a_L2","n128-E4a_L4","n128-E4a_L6","n128-IND_L4",
+          "n512-REF1","n512-REF3","n512-REF4","n512-E4a_L2","n512-E4a_L4","n512-E4a_L6","n512-IND_L4",
+          "w256-REF1_W256","w256-REF2_W256_h16","w256-E4a_L2_W256","w256-E4a_L4_W256","w256-E4a_L4_W256_h16",
+          "p1","p2","p3","p4","p5","p6"],
+ "smoke_memory_arms":["E2h_L4","E4a_L4_W256"],
+ "memory_arms":["E4a_L4","E2h_L4","REF4","E4a_L4_N512","E2h_L4_N512","REF4_N512","E4a_L4_W256","E2h_L4_W256","REF4_W256"],
+ "memory_processes":2,"processes":5,"windows":12}

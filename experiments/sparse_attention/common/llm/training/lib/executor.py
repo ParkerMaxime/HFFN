@@ -143,6 +143,30 @@ def dense_tail_worker(a: torch.Tensor, x: torch.Tensor, x_out: torch.Tensor, xi_
 
 
 @torch.jit.script
+def e2h_tail_worker(a: torch.Tensor, x: torch.Tensor, x_out: torch.Tensor, xi_out: torch.Tensor, wo: torch.Tensor,
+                    w_up: torch.Tensor, b_up: torch.Tensor, w_down: torch.Tensor, g2: torch.Tensor, b_down: torch.Tensor,
+                    g_next: torch.Tensor, pos: torch.Tensor, valid: torch.Tensor, flat: torch.Tensor,
+                    g: int, m: int, n: int, final: bool) -> int:
+    """E2h (PLAN 17.7), after the barrier of the dense heads: W_O (dense) and FFN group g for the tokens routed to g."""
+    B = x.shape[0]
+    N = x.shape[1]
+    M = x.shape[2]
+    P = pos.shape[1]
+    if P == 0:
+        return 0
+    idx = pos.unsqueeze(-1).expand(-1, -1, M)
+    u = x.gather(1, idx) + a.gather(1, idx) @ wo.t()
+    z = _rms(u) * g2
+    h = F.gelu(z[:, :, g * m:(g + 1) * m] @ w_up[g * n:(g + 1) * n, g * m:(g + 1) * m].t() + b_up[g * n:(g + 1) * n])
+    xn = u + h @ w_down[:, g * n:(g + 1) * n].t() + b_down
+    xn_rows = xn.reshape(B * P, M)[valid.reshape(-1)]
+    x_out.view(B * N, M).index_copy_(0, flat, xn_rows)
+    if not final:
+        xi_out.view(B * N, M).index_copy_(0, flat, _rms(xn_rows) * g_next)
+    return 0
+
+
+@torch.jit.script
 def logits_worker(x: torch.Tensor, out: torch.Tensor, g_final: torch.Tensor, emb: torch.Tensor, g: int, G: int) -> int:
     M = x.shape[2]
     rows = x.shape[0] * x.shape[1]
@@ -190,6 +214,19 @@ def run_dense_tail(a: torch.Tensor, x: torch.Tensor, x_out: torch.Tensor, xi_out
 
 
 @torch.jit.script
+def run_e2h_tail(a: torch.Tensor, x: torch.Tensor, x_out: torch.Tensor, xi_out: torch.Tensor, wo: torch.Tensor,
+                 w_up: torch.Tensor, b_up: torch.Tensor, w_down: torch.Tensor, g2: torch.Tensor, b_down: torch.Tensor,
+                 g_next: torch.Tensor, pos: List[torch.Tensor], valid: List[torch.Tensor], flat: List[torch.Tensor],
+                 m: int, n: int, final: bool):
+    futs: List[torch.jit.Future[int]] = []
+    for g in range(len(pos)):
+        futs.append(torch.jit.fork(e2h_tail_worker, a, x, x_out, xi_out, wo, w_up, b_up, w_down, g2, b_down, g_next, pos[g],
+                                   valid[g], flat[g], g, m, n, final))
+    for f in futs:
+        torch.jit.wait(f)
+
+
+@torch.jit.script
 def run_logits(x: torch.Tensor, out: torch.Tensor, g_final: torch.Tensor, emb: torch.Tensor, G: int):
     futs: List[torch.jit.Future[int]] = []
     for g in range(G):
@@ -200,12 +237,14 @@ def run_logits(x: torch.Tensor, out: torch.Tensor, g_final: torch.Tensor, emb: t
 
 # --------------------------------------------------------------------------- the executor
 class Executor:
-    """Forward pass of a `SparseAttnLM` over G workers. `kind` is "e4a" / "ind" (hash route, packed form) or "dense"."""
+    """Forward pass of a `SparseAttnLM` over G workers. `kind` is "e4a" / "ind" (hash route, packed form), "dense", or "e2h"
+    (E2h, PLAN 17.7: the heads as in the dense kind, a barrier, then W_O and FFN group g on worker g for the tokens routed to g)."""
 
     def __init__(self, model: SparseAttnLM, kind: str):
         self.cfg, self.kind, self.G = model.cfg, kind, model.cfg.groups
-        assert kind in ("e4a", "ind", "dense")
-        assert (kind == "dense") == (model.cfg.attn == "dense")
+        assert kind in ("e4a", "ind", "dense", "e2h")
+        assert (kind in ("dense", "e2h")) == (model.cfg.attn == "dense")
+        assert (kind == "e2h") == (model.cfg.routing == "hash" and model.cfg.attn == "dense")
         self.hash_table = model.hash_table
         self.emb = model.emb.weight.detach()
         self.g_final = model.g_final.detach()
@@ -255,7 +294,12 @@ class Executor:
         x_out, xi_out = self._buf(f"x_out{l % 2}", x), self._buf(f"xi_out{l % 2}", x)  # double buffer: a layer reads the previous one
         G, m, n, dh = self.G, cfg.m, cfg.n, cfg.d_head
         hpg = cfg.n_heads // G
-        if self.kind == "dense":
+        if self.kind == "e2h":
+            a = self._buf("a", x)
+            run_dense_heads(xi, a, w["wq"], w["wk"], w["wv"], self.cos[:x.shape[1]], self.sin[:x.shape[1]], G, hpg, dh, m)
+            run_e2h_tail(a, x, x_out, xi_out, w["wo"], w["w_up"], w["b_up"], w["w_down"], w["g2"], w["b_down"], g_next,
+                         [p[0] for p in plan], [p[1] for p in plan], [p[2] for p in plan], m, n, final)
+        elif self.kind == "dense":
             a = self._buf("a", x)
             run_dense_heads(xi, a, w["wq"], w["wk"], w["wv"], self.cos[:x.shape[1]], self.sin[:x.shape[1]], G, hpg, dh, m)
             run_dense_tail(a, x, x_out, xi_out, w["wo"], w["w_up"], w["b_up"], w["w_down"], w["g2"], w["b_down"], g_next, G,
@@ -362,7 +406,8 @@ def parity(arms=("E4a_L2", "E4a_L4", "IND_L4", "REF2", "E4a_L2_N512", "IND_L4_N5
     with torch.no_grad():
         for name in arms:
             cfg = get_arm(name)
-            kind = "dense" if cfg.attn == "dense" else ("ind" if cfg.qkv_blockdiag else "e4a")
+            kind = (("e2h" if cfg.routing == "hash" else "dense") if cfg.attn == "dense"
+                    else ("ind" if cfg.qkv_blockdiag else "e4a"))
             tokens, _ = data.eval_windows("valid", cfg.context, 8192 // cfg.context)
             model = SparseAttnLM(cfg, 3, hash_table=ht, impl="selected" if kind != "dense" else "packed").eval()
             ref, _ = model(tokens)
@@ -377,6 +422,7 @@ if __name__ == "__main__":
     torch.set_num_threads(1)
     torch.set_num_interop_threads(4)
     if "--parity" in sys.argv:
-        print(json.dumps(parity()))
+        arms = [a for a in sys.argv[sys.argv.index("--arms") + 1].split(",")] if "--arms" in sys.argv else None
+        print(json.dumps(parity(arms) if arms else parity()))
     if "--gate" in sys.argv:
         print(json.dumps(concurrency_gate()))
