@@ -11,7 +11,7 @@ Every figure is **measured** in the qualified run named in the step's `RESULTS.m
 203 + 44 + 34 checks pass (the second series stays reproducible bit for bit). The packed hash form (`gather`) equals the `selected` form (logits bit for bit at width 128, within 2e-6 at width 256;
 gradients within 6e-8). The counter equals PLAN 15.5 for the six arms of width 256. The memory harness equals hand counts on synthetic modules; the executor equals the sequential forward; the concurrency
 gate of the timing harness passed (0.310 ≤ 0.4). Wall time: preparation 0.2 h, E10 0.1 h, E11 0.5 h (after one interrupted launch), E12 5.5 h, E13 8.8 h, about 15 h against the 12.6 h re-estimated after
-the smoke (the stop rule of 24 h was not triggered). E12 and E13 ran longer than estimated: an extension round ran alone on one core (E12); the last jobs of E13 left cores idle.
+the smoke (the stop rule of 24 h was not triggered). E12 and E13 ran longer than estimated: in E12 an extension round ran alone on one core; E13 took 1.2 times its estimate (cause not examined).
 
 ## E10, memory of the implementation against the counter (measured; 24 configurations, two fresh processes each, rule held everywhere)
 
