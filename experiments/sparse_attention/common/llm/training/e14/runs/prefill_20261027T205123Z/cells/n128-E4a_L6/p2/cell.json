@@ -1,0 +1,18 @@
+{
+ "cell": "n128-E4a_L6",
+ "group": "frontier",
+ "campaign": "n128",
+ "variant": "E4a_L6",
+ "control": "REF2",
+ "mode": "prefill",
+ "context": 128,
+ "d_model": 128,
+ "variant_kind": "e4a",
+ "control_kind": "dense",
+ "tokens_per_call": 8192,
+ "reps": {
+  "control": 4,
+  "copy": 4,
+  "variant": 2
+ }
+}

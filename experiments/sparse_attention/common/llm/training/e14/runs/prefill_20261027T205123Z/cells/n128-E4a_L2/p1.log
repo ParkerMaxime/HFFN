@@ -1,0 +1,3 @@
+{"cell": "n128-E4a_L2", "mode": "prefill", "process": 1, "r_variant": 0.7368110000098395, "r_copy": 0.998701097636935}
+/usr/local/lib/python3.13/dist-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
