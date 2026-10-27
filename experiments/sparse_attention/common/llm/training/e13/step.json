@@ -1,0 +1,51 @@
+{
+  "step": "e13",
+  "workers": 4,
+  "threads": 1,
+  "checks": [
+    "check_model.py",
+    "check_series.py",
+    "check_series3.py"
+  ],
+  "stages": [
+    {
+      "name": "final",
+      "arms": [
+        "REF1_W256",
+        "REF2_W256",
+        "E4a_L2_W256",
+        "E4a_L4_W256",
+        "REF2_W256_h16",
+        "E4a_L4_W256_h16"
+      ],
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "steps": 4000,
+      "schedule": "wsd",
+      "tokens_per_step": 8192,
+      "valid_bytes": 524288,
+      "eval_every": 1000,
+      "mixing": false,
+      "test": true,
+      "impl": "gather",
+      "lr": {
+        "REF1_W256": 0.00504,
+        "REF2_W256": 0.004,
+        "E4a_L2_W256": 0.004,
+        "E4a_L4_W256": 0.004,
+        "REF2_W256_h16": 0.004,
+        "E4a_L4_W256_h16": 0.004
+      }
+    }
+  ],
+  "smoke": {
+    "test": false
+  },
+  "analysis": {
+    "tau": 0.075,
+    "memory": "../e10/runs/run_20261026T211323Z/analysis.json"
+  }
+}
