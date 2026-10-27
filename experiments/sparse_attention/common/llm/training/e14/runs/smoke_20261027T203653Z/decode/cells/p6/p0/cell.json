@@ -1,0 +1,31 @@
+{
+ "cell": "p6",
+ "group": "pair",
+ "campaign": "p6",
+ "variant": "E2h_L4_W256",
+ "control": "REF4_W256",
+ "isolates": "the routing of the FFN alone, at width",
+ "mode": "decode",
+ "context": 512,
+ "d_model": 256,
+ "variant_kind": "e2h",
+ "control_kind": "dense",
+ "batch": 64,
+ "cache_positions": 256,
+ "position": 256,
+ "group_counts_of_the_step": {
+  "control": null,
+  "copy": null,
+  "variant": [
+   19,
+   17,
+   17,
+   11
+  ]
+ },
+ "reps": {
+  "control": 10,
+  "copy": 11,
+  "variant": 12
+ }
+}

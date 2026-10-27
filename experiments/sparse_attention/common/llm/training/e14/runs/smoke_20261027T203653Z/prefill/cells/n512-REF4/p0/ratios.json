@@ -1,0 +1,22 @@
+{
+ "windows": [
+  {
+   "window": 0,
+   "r_variant": 2.198956024643896,
+   "r_copy": 1.2238308063311172,
+   "steal_jiffies": 10,
+   "user_jiffies": 482,
+   "total_jiffies": 706
+  },
+  {
+   "window": 1,
+   "r_variant": 1.9992735480352697,
+   "r_copy": 1.0190998111339433,
+   "steal_jiffies": 6,
+   "user_jiffies": 514,
+   "total_jiffies": 698
+  }
+ ],
+ "r_variant": 2.099114786339583,
+ "r_copy": 1.1214653087325304
+}

@@ -1,0 +1,18 @@
+{
+ "cell": "n512-REF1",
+ "group": "frontier",
+ "campaign": "n512",
+ "variant": "REF1_N512",
+ "control": "REF2_N512",
+ "mode": "prefill",
+ "context": 512,
+ "d_model": 128,
+ "variant_kind": "dense",
+ "control_kind": "dense",
+ "tokens_per_call": 8192,
+ "reps": {
+  "control": 3,
+  "copy": 3,
+  "variant": 4
+ }
+}

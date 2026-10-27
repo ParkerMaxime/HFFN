@@ -1,0 +1,39 @@
+{
+ "rows": {
+  "E2h_L4": {
+   "arm": "E2h_L4",
+   "impl": "gather",
+   "tokens": 8192,
+   "a_saved_total_per_token": 33879.34423828125,
+   "a_saved_token_side_per_token": 33221.78173828125,
+   "a_saved_weight_side_bytes": 5386752,
+   "b_train_peak_per_token": 35509.7197265625,
+   "c_prefill_peak_per_token": 4300.84375,
+   "e_decode_peak_per_decoded_token": 4641.3125,
+   "e_group_counts": [
+    14,
+    21,
+    13,
+    16
+   ],
+   "d_peak_rss_bytes": [
+    2154864640,
+    2170187776
+   ],
+   "rule": {
+    "a_identical": true,
+    "b_within_1pct": true,
+    "c_within_1pct": true,
+    "e_within_1pct": true
+   },
+   "counted_inference_macs": 452608,
+   "counted_params_outside_embedding": 372352,
+   "counted_adamw_state_values": 744704,
+   "counted_kv_values_stored_per_token": 1024,
+   "counted_kv_values_read_per_decoded_token": 65536,
+   "counted_training_activation_bytes_per_token": 24576
+  }
+ },
+ "rule_failures": [],
+ "ratios": []
+}
