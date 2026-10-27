@@ -8,6 +8,12 @@ Section 14, added on 2026-10-25 before any of its runs, plans the second series 
 Section 14.8, added on 2026-10-26, reports that series and the reserves of its review; 14.1 to 14.7 are left as
 written before the runs. Section 15, added on 2026-10-26 before any of its runs, plans the third series (E10-E13):
 memory and relative time of the implementation, and width; it amends decision 9 (decision 14, section 15.2).
+Section 15.8, added on 2026-10-27, reports that series and the reserves of its review; 15.1 to 15.7 are left as
+written before the runs.
+Section 16, added on 2026-10-27 outside the series and before any run, analyses how the partition could make the
+HFFN FFN faster on CPU and GPU; it is estimates and hypotheses only, and changes no step of the plan.
+Section 17, added on 2026-10-27 before any of its runs, records the user's criterion of quality per inference time
+(decision 16) and plans E14, the measured frontier of quality against inference time, in prefill and batched decoding.
 
 ## 0. Status and scope
 
@@ -1118,3 +1124,592 @@ KV cache. The preparation checks these figures against the counter of the branch
 - Each step has its own folder `experiments/sparse_attention/common/llm/training/<step>/`, a README committed before
   its first run, its own run records and its own `RESULTS.md`. A harness failure is not an attempt.
 - Nothing is promoted: the series measures, it retains no model.
+
+### 15.8 Results of the third series (2026-10-26/27)
+
+**Provenance.** The same cloud session and orphan branch `sparse-attention-cloud` as sections 13 and 14.8, under the
+brief `experiments/sparse_attention/CLOUD_E10_E13.md`, from `a08b25968` to `440da1e17`. Records under
+`experiments/sparse_attention/common/llm/training/{prep3,e10,e11,e12,e13}/`, each with its README (committed before its
+first run) and its `RESULTS.md`; summary `experiments/sparse_attention/SUMMARY_E10_E13.md`. The branch is **not
+merged**. Nothing was promoted. Read on 2026-10-27 from the `RESULTS.md` of each step and the `raw.jsonl` of E11; the
+paired differences of E13 were recomputed from its `summary.json`. The reading of 15.8.3 and the reserves of 15.8.4 are
+those of this review, not of the cloud summary.
+
+**What "time" and "memory" mean here.** Under decision 14, a time is the ratio of two models measured in the same
+process on the cloud machine (a shared virtual machine of 4 vCPU, torch 2.14.1 for CPU), forward only, by a PyTorch
+executor (TorchScript fork and join, four workers, one intra-op thread each), with a masked dense FFN in every arm. A
+memory is the bytes per token that this PyTorch harness keeps (float32, one thread, one step of 8,192 bytes). Both hold
+for that harness and that machine only. Neither says anything of the HFFN runtime or of a native implementation of
+the constraint, and no ratio below is compared with another machine, campaign or runtime figure.
+
+#### 15.8.1 The protocol as run
+
+- **Preparation** (`prep3/runs/run_20261026T205721Z`, exit 0):
+  - checks 203/203, 44/44 and 34/34 pass;
+  - the packed hash form (`--impl gather`) equals the `selected` form: logits bit for bit at width 128, within 2e-6
+    at width 256, gradients within 6e-8;
+  - the counter equals the table of 15.5;
+  - the executor equals the sequential forward;
+  - the concurrency gate passes (median ratio 0.310 ≤ 0.4).
+  - The dense control of E11 is the executor itself (README addendum before the run).
+- **E10** (`e10/runs/run_20261026T211323Z`, exit 0): 24 configurations, two fresh processes each. The rule holds
+  everywhere: (a) is identical in both processes, (b) and (c) are within 1 %.
+- **E11** (`e11/runs/run_20261026T214914Z`, exit 0): 8 cells, 5 fresh processes per cell, 12 ABBA windows each,
+  nothing else running. The concurrency gate at the start passes (0.324). Steal time is about 1 %.
+- **Harness event.** A first launch of E11 (`e11/runs/run_20261026T212801Z`, `EXIT 137`, `ABORTED.md`) stopped on a
+  restart of the container after cells a1-a4 and b1. It gives no figure. The run above is the full relaunch under the
+  same README.
+- **E12** (`e12/runs/run_20261026T222859Z`, exit 0): 7 runs of 4,000 steps, seed 100, `M = 256`, `N = 512`; one
+  extension (`REF2_W256` at 0.002).
+- **E13** (`e13/runs/run_20261027T040908Z`, exit 0): 18 runs `passed` at 4,000 steps, seeds 0-2, full validation and
+  test splits of 9,765 windows of 512 bytes. Smoke: `e13/runs/smoke_20261027T040214Z`.
+- **Cost:** about 15 hours of wall time (preparation 0.2, E10 0.1, E11 0.5, E12 5.5, E13 8.8), against 17-20 in 15.4 and
+  12.6 re-estimated after the smoke. The stop at 24 hours was not reached.
+
+#### 15.8.2 Measured
+
+**E10, memory per token of this harness**, ratio constrained / dense (bytes in `e10/RESULTS.md`). The columns
+are (a) the tensors saved for the backward, token side, (b) the peak of a training step and (c) the peak of a prefill.
+Counted figures (estimated) are beside them:
+
+| Reading | (a) | (b) | (c) | Counted activations | Counted MACs |
+|---|---|---|---|---|---|
+| Equal counted MACs, `N = 128` (`E4a_L2`/`REF1`, `E4a_L4`/`REF2`, `E4a_L6`/`REF3`) | 1.61, 1.68, 1.71 | 1.53, 1.62, 1.67 | 0.79 | 0.50 | 0.88, 0.86, 0.86 |
+| Equal counted MACs, `N = 512` | 1.79, 1.88, 1.92 | 1.68, 1.81, 1.86 | 0.78 | 0.50 | 0.73, 0.71, 0.71 |
+| Equal counted MACs, `M = 256` (`L2`/`REF1`, `L4`/`REF2`, `h16` pair) | 1.59, 1.65, 1.64 | 1.55, 1.62, 1.62 | 0.78 | 0.50 | 0.79, 0.78, 0.78 |
+| Equal depth, `N = 128` (`E4a_L2`/`REF2`, `E4a_L4`/`REF4`) | 0.90, 0.89 | 0.91, 0.90 | 0.79 | 0.25 | 0.49, 0.46 |
+| Equal depth, `N = 512` | 1.00, 1.00 | 1.00, 1.00 | 0.78 | 0.25 | 0.39, 0.37 |
+| `IND_L4`/`E4a_L4`, `N` 128 / 512 | 0.93 / 0.95 | 0.94 / 0.95 | 1.05 / 1.08 | 1.00 | 0.55 / 0.68 |
+| Packed / `selected`, `E4a_L4`, `N` 128 / 512 | 0.74 / 0.83 | 0.75 / 0.84 | 0.57 / 0.56 | 1.00 | 1.00 |
+
+- The dense arms keep the same token-side bytes at `N = 128` and `N = 512` (`REF1`: 12,348 B per token at both),
+  while the counted scores term grows with `N`.
+- Weights, AdamW states and KV cache were not measured. They stay counted at 1.73-1.74 times the weights and states and
+  twice the KV cache in the pairs at equal counted multiply-adds.
+
+**E11, relative time** `r` = time(variant) / time(control), median over 5 processes of the per-process median over 12
+windows, [min–max]. The noise band is `delta` = 0.0975, set by cell a1, whose copy ratios are 1.063, 0.902, 0.950,
+1.070 and 0.933. The other cells keep their copy ratios within 0.05 of 1.
+
+| Cell | Variant / control | `r` | Outcome | Counted ratio | `r` / counted |
+|---|---|---|---|---|---|
+| a1 | one `E4a` layer / one dense layer, `M` 128, `N` 128 | 0.601 [0.559–0.669] | faster | 0.422 | 1.42 |
+| a2 | one layer, `M` 128, `N` 512 | 0.541 [0.537–0.565] | faster | 0.346 | 1.56 |
+| a3 | one layer, `M` 512, `N` 512 | 0.405 [0.394–0.446] | faster | 0.422 | 0.96 |
+| a4 | one layer, `M` 512, `N` 2,048 | 0.496 [0.462–0.508] | faster | 0.346 | 1.43 |
+| b1 | model `E4a_L4` / `REF2`, `N` 128 | 1.290 [1.239–1.325] | slower | 0.862 | 1.50 |
+| b2 | model `E4a_L4` / `REF2`, `N` 512 | 1.134 [1.091–1.228] | slower | 0.714 | 1.59 |
+| c1 | model `IND_L4` / `E4a_L4`, `N` 128 | 0.852 [0.825–0.895] | faster | 0.546 | 1.56 |
+| c2 | model `IND_L4` / `E4a_L4`, `N` 512 | 0.916 [0.871–0.954] | not resolved | 0.677 | 1.35 |
+
+The quotient `r` / counted is descriptive. The untimed phase pass (single-threaded, first process of each cell,
+descriptive) puts the plan of the routed tokens at 0.7-8.6 % of the fork-join, and the barrier plus launch at 6-30 %.
+
+**E12, rates at width** (seed 100, final validation bpb):
+
+| Arm | 0.002 | 0.004 | 0.008 | 0.016 | Selected |
+|---|---|---|---|---|---|
+| `REF2_W256` (centre 0.008) | 2.0118 (extension) | **1.9855** | 1.9959 | 2.0545 | 0.004 |
+| `E4a_L4_W256` (centre 0.004) | 1.9869 | **1.9862** | 2.1101 | — | 0.004 |
+
+- Both selected rates are interior; no arm ends at an edge.
+- `E4a_L4_W256` is flat between 0.002 and 0.004, and 0.124 higher at 0.008.
+- The other rates are computed under the rule of 15.4: `REF1_W256` 0.00504; `E4a_L2_W256` and the two `_h16` arms 0.004.
+
+**E13, the frontier at width** (`M = 256`, `N = 512`; median [min–max] over three seeds; counts estimated):
+
+| Arm | Valid bpb | Test bpb (beside) | Inference MACs per token | Parameters outside the embedding |
+|---|---|---|---|---|
+| `E4a_L2_W256` | 2.1925 [2.1721–2.2034] | 2.1643 | 552,960 | 642,816 |
+| `REF1_W256` | 2.1821 [2.1815–2.1834] | 2.1605 | 696,320 | 370,688 |
+| `E4a_L4_W256` | 1.9867 [1.9839–2.0045] | 1.9638 | 1,040,384 | 1,285,376 |
+| `E4a_L4_W256_h16` | 1.9435 [1.9422–1.9487] | 1.9247 | 1,040,384 | 1,285,376 |
+| `REF2_W256` | 1.9880 [1.9853–1.9971] | 1.9664 | 1,327,104 | 741,120 |
+| `REF2_W256_h16` | 1.9855 [1.9815–1.9857] | 1.9658 | 1,327,104 | 741,120 |
+
+The registered readings, `d_s` per seed 0, 1, 2 (validation):
+
+| Reading | Counted MACs saved | `d_s` | Outcome |
+|---|---|---|---|
+| `E4a_L2_W256` / `REF1_W256` | 20.6 % | −0.0094, +0.0091, +0.0213 | within `τ`, not dominating |
+| `E4a_L4_W256` / `REF2_W256` | 21.6 % | −0.0133, +0.0014, +0.0165 | within `τ`, not dominating |
+| equal depth `E4a_L2_W256` / `REF2_W256` | 58.3 % | +0.1750, +0.2072, +0.2153 | beyond `τ` |
+| 4 heads per group `E4a_L4_W256_h16` / `REF2_W256_h16` | 21.6 % | −0.0420, −0.0328, −0.0435 | within `τ`, dominates |
+| `i_s` = `d_s`(h16 pair) − `d_s`(h8 pair) | — | −0.0287, −0.0342, −0.0599 | favours four heads per group; `|i_s|/τ` 0.38, 0.46, 0.80 |
+
+- The test split gives the same outcomes. Its medians are +0.0022, −0.0026 and −0.0424 for the three pairs at equal
+  counted multiply-adds.
+- By position range (median, validation, descriptive): in every arm the ranges 128-255 and 256-511 lie within 0.002
+  of each other, and 0-127 is 0.06-0.08 higher.
+
+#### 15.8.3 Reading against the questions of 15.1
+
+1. **Memory: the counted saving of training activations is not reached by this harness** (measured, E10).
+   - At equal counted multiply-adds the constrained model keeps 1.6 to 1.9 times the dense model's saved tensors,
+     where the counter says 0.5. At equal depth it keeps 0.89-1.00, where the counter says 0.25.
+   - The prefill peak is lower, 0.78-0.79, at every depth and context (measured).
+   - The measurements refute the four-term activation model of the counter (queries, scores, attention outputs, FFN
+     activations) as a prediction of the memory of an implementation. They do not refute the constraint, of which no
+     native implementation exists. The advantage of training activations stated in 14.5 and 15.1 is now supported by
+     no measurement.
+   - Why (hypothesis, read from the numbers):
+     - the dense keys and values of every head, the norm and residual rows, the gathered rows and the logits are saved
+       but are not in the four terms;
+     - the CPU attention kernel stores no scores (the dense bytes do not move with `N`);
+     - the packed form pads each group to the largest count.
+   - About a quarter of the memory of the `selected` form of the first two series was its form (packed / `selected`
+     0.74-0.83, measured); the rest remains.
+2. **Time: one layer is faster, the model at equal counted multiply-adds is slower** (measured, E11, this executor and
+   machine).
+   - One constrained layer runs in 0.41-0.60 of the time of one dense layer, beyond `delta` in all four cells.
+   - The model `E4a_L4` runs in 1.29 (`N = 128`) and 1.13 (`N = 512`) of the time of `REF2`, beyond `delta`, although
+     the count says 0.86 and 0.71.
+   - **This slowdown follows to first order from the layer cells and the depth** (estimated, within the same run). At
+     equal counted multiply-adds the constrained model has twice the layers of the dense one, so its time ratio is
+     about `2 r_layer` when the shared costs (embedding, logits, route) are small:
+     - 2 × 0.601 = 1.20 against b1 1.29;
+     - 2 × 0.541 = 1.08 against b2 1.13.
+     The shared costs would pull the model ratio towards 1, so the residual of about 0.09 (`N = 128`) and 0.05 (512)
+     is what remains to explain beyond the layer cells. The hypothesis of the E11 summary (less work per layer to hide
+     the plan, the gathers and the padding behind) does not explain the bulk of the gap, since the layer cells already
+     pay those per layer. At most it bears on that residual (hypothesis, not isolated).
+   - A deeper constrained model breaks even in time only where `r_layer < 0.5`. In this run that holds only at
+     `M = 512`: a3 at 0.405; a4 at 0.496, at the bound (estimated). There is no cell at `M = 256`, so the time of the
+     pairs of E13 is not measured.
+   - At the layer level the quotient `r` / counted is 1.4-1.6 at `M = 128` and 0.96 at a3: the constrained layer reaches
+     its count only when the layer is wide (descriptive).
+   - `IND_L4` against `E4a_L4`: faster at `N = 128` (0.85, beyond `delta`) and not resolved at 512 (0.92). The cheaper
+     keys, values and queries of `IND` and the absence of the exchange vary together, and the executor keeps a barrier
+     per layer for `IND`, so neither effect is attributed.
+3. **Scale: at twice the width the constrained model stays within `τ` of dense at equal counted multiply-adds**
+   (measured, E13).
+   - With two heads per group (8 heads of 32) both pairs are within `τ` and neither dominates; each has one seed
+     negative and two positive.
+   - With four heads per group (16 heads of 16) the constrained model dominates in all three seeds, at 21.6 % fewer
+     counted multiply-adds.
+   - At equal depth it stays beyond `τ` (+0.18 to +0.22).
+   - **Cross-campaign** (outcomes only, against E9):
+     - equal depth is beyond in both campaigns;
+     - the two pairs at equal counted multiply-adds with two heads per group go from *dominates* at `M = 128` to
+       *within, not dominating* at 256.
+     - Width, rates (0.004 against 0.008-0.016) and a horizon not recalibrated vary together between the campaigns,
+       so the change is not attributed to the width.
+   - The non-dominance at 8 heads rests largely on one seed per arm: `E4a_L4_W256` spans 0.0206 (seed 2 at 2.0045),
+     `E4a_L2_W256` 0.0313, against 0.0019 for `REF1_W256`. The outcome *within* holds with a margin (largest `d_s`
+     +0.0213 against `τ` = 0.075); the absence of dominance does not have that margin.
+4. **Heads per group: the reading favours four heads per group** (measured, three seeds: a direction, not a size).
+   - Descriptive: the change of layout moves the constrained arm by −0.043 (median, 1.9867 → 1.9435) and the
+     dense arm by −0.003 (1.9880 → 1.9855).
+   - Per seed, from the `summary.json`: dense −0.0116, −0.0038, −0.0024; constrained −0.0403, −0.0380,
+     −0.0623.
+   - At fixed `M` and `G` the layout changes two things together: the heads each group owns (2 → 4) and the size of a
+     head (32 → 16). The dense arm absorbs what smaller heads do to any model, as 15.4 intended. What `i_s` cannot
+     separate is whether the constrained model gains from owning more heads per group or from an interaction between
+     the constraint and smaller heads.
+   - A cause is a hypothesis: under the constraint a token attends with the heads of its group only, two patterns at
+     8 heads and four at 16, while the dense model goes from 8 to 16.
+   - The rate of both `_h16` arms was not tuned (15.8.4).
+
+The series therefore answers its three questions under its protocol only:
+
+- the harness does not reach the counted saving of activations;
+- under this executor the deeper constrained model is slower than dense at equal counted multiply-adds, by about what
+  its doubled depth costs at the measured layer ratio;
+- at width 256 the quality result holds within `τ`, and dominates only with four heads per group.
+
+#### 15.8.4 Reserves of the review (2026-10-27)
+
+- **Rates.**
+  - E12 is one seed per rate.
+  - The rate of `E4a_L4_W256` is flat to a factor of two.
+  - Four of the six rates of E13 are computed, not swept: `REF1_W256`, `E4a_L2_W256` and both `_h16` arms.
+  - The `_h16` arms took the rate of their 8-head counterparts. A rate tuned for 16 heads could move `i_s` either way,
+    and the dominance of the `h16` pair rests on it.
+- **Horizon.** `H* = 4,000` was calibrated at `M = 128` on one pair (14.8.4) and is not recalibrated at width.
+- **E11.**
+  - `delta` comes from the smallest cell (a1). Under the fixed rule c2 stays not resolved (`1 − r` = 0.084); this is
+    stated, not re-read.
+  - Forward only: no backward, no decoding.
+  - The FFN is masked dense, and the padding of the packed form and the TorchScript overhead are part of the time.
+  - A native implementation may move every ratio either way.
+  - There is no cell at `M = 256`, so the time of the E13 pairs is not measured.
+- **E10.** One batch, one seed, float32, one thread, PyTorch's CPU attention kernel. Another kernel stores other
+  tensors, so the gap to the counter is a fact of this harness.
+- **Minor.**
+  - The README of E13 states the validation split as 39,062 windows, which is the count at `N = 128`. Its runs read
+    9,765 windows of 512 bytes, the same 5 MB split as E9.
+  - The record is not edited and no figure depends on it.
+
+#### 15.8.5 Status of the questions after the series
+
+| Question | Status |
+|---|---|
+| 15.1, 1 (memory) | answered for this harness: activations measured above dense at equal counted multiply-adds, prefill peak below (15.8.3, point 1); weights, AdamW states and KV cache still counted only |
+| 15.1, 2 (time) | answered for this executor and machine, forward only: layer faster, model at equal counted multiply-adds slower, by about what the doubled depth costs (15.8.3, point 2); `IND` against `E4a` resolved at `N = 128` only |
+| 15.1, 3 (scale) | answered under the protocol: within `τ` at width with two heads per group, dominates with four (15.8.3, points 3 and 4), with the reserves of 15.8.4 |
+| 14.8.5, coupling at equal counted multiply-adds | still open (not in this series) |
+| Absolute time, native implementation | not measured (decision 9 as amended by decision 14) |
+
+Proposals for the user, none started:
+
+- **Heads per group at `M = 128`.** `E4a_L4`/`REF2` with 16 heads of 8, with a rate swept for the `h16` layouts.
+- **Separating heads per group from head size.** At fixed `M` and `G` the two are tied, so separating them needs an
+  attention width other than `M`, which changes the counted multiply-adds. Its design is a question for the user.
+- **Time at the width of E13.** A layer cell at `M = 256` under the same executor.
+- **A fused or persistent executor**, without one join per layer. It would be a new E11 with its own README; it would
+  not re-read this one.
+- **A counter that separates the stored tensors** (keys and values, norm and residual rows, gathers, logits), so
+  that a counted memory can be compared with a measured one.
+- **A third dense point at width 256** (`REF3_W256`), so that the frontier at width can be interpolated as in 14.8.2.
+- Left open from 15.6: the `IND` family over depth, and a dense control spending the same counted multiply-adds
+  otherwise.
+
+## 16. Using the partition to run the HFFN FFN faster on CPU and GPU (analysis, written 2026-10-27)
+
+Written at the user's request from the discussion of the same day, before any run and outside the series of section
+15. Nothing here is measured: every cost is **estimated** (a calculation or a reading of the kernels of `current/`),
+every explanation of an expected effect is a **hypothesis**. It changes no step, decision or criterion of the plan;
+what it proposes is runtime work (`AGENTS.md` sections 5 and 6), not a step of this study.
+
+### 16.1 What the partition gives the FFN
+
+- After the constraint (C1)-(C2), group `g` receives, for each token routed to it, the dense vector `ζ_t[S_g]` of
+  `m = M / G = 32` coordinates. The FFN does not read the attention output itself: `ζ_t = RMSNorm(x_t + o_t)`, the
+  residual plus the norm over the `M` coordinates, restricted to `S_g`.
+- In E1 and E4a, `up_idx[r] ⊂ S_g` for every `r ∈ R_g` (`build_supports`: `torch.rand(H, m).topk(k)` plus `g m`). `S_g`
+  is a contiguous block of features and `R_g` a contiguous block of `n = 128` neurons. Renumbering the up indices
+  locally (`i − g m ∈ [0, 32)`) is exact: same parameters, same values, same order of slots.
+- Three consequences hold without any change of kernel (estimated):
+  - the input rows a group reads shrink from `M` to `m` (by `G`);
+  - a local index fits in one byte (`uint8`) instead of the `int16` of the runtime;
+  - with top-1 routing, the output `y_t` of a token comes from one group only. On CPU the runtime runs every group
+    over the same `N` tokens, writes one private buffer per group (`y_local`, `G × M × N`) and reduces the four
+    (`reduce_hidden_owned`). Under routing each group works on its own tokens, so each output column is written by one
+    group: the private buffers and their reduction are no longer needed, each group writes the columns of its tokens.
+    This holds for E4a (down over `M`) and for `IND` (down in `S_g`) alike; `IND` also limits the written rows to `m`.
+
+### 16.2 Why the up of a group is not a dense block
+
+The partition makes the *input* of a group dense; it does not make the *support* of its up dense. Each neuron draws
+its own 26 coordinates out of the 32 of `S_g`, independently of the others: the density inside the block is
+`26 / 32 = 81.25 %` (20 % over `M`), and two neurons of a group generally miss different coordinates. Writing the up
+of the group as one matrix `n × m` therefore puts 6 zeros per row, at different places in each row.
+
+| Form of the up of one group | Parameters | Exact | Multiply-adds per routed token per layer |
+|---|---|---|---|
+| compact list, 26 local indices per neuron (the HFFN form) | unchanged | yes | 128 × 26 = 3,328, plus the index reads |
+| dense block `128 × 32` with 6 frozen zeros per row | unchanged | yes, if the zeros are never trained (masked gradient and AdamW) | 4,096 (+23 %) |
+| `k_up = 32` (full block) | +3,072 per layer | no: another model | 4,096 |
+
+- A dense block without zeros needs `k_up = m`, that is a density of `1 / G` (`d25` at `G = 4`), or every neuron of a
+  group sharing one support. Both are new arms of the study (new models), not a new layout of the same model.
+- "One compact attention vector per neuron" is the gather itself: `n × k_up = 3,328` floats per routed token and
+  group instead of 32. Folding the per-neuron gather into the attention is not possible either: if the attention
+  produced, linearly, one output per neuron, it would fold into a dense `n × m` up; the residual and the RMS norm over
+  `M` sit between the attention and the FFN and block that fold.
+
+### 16.3 CPU (M1 G4 and x86)
+
+*Where the time of the up goes (estimated, from `hffn_compact_g4_inference.cpp`, lines 98-123).* Each worker walks
+its neurons one after the other. For each slot it loads one index and one weight, then runs a NEON FMA over the
+contiguous row of 128 tokens of the feature-major input; the 128 accumulators of the neuron sit in a stack array, so
+each group of 4 tokens costs a load of the accumulators, a load of the input, the FMA and a store. Per slot that is
+two scalar loads against about a hundred vector memory operations: the index is about 1 % of the memory accesses of
+the up. The zeros of 16.2 are never read. The index read is therefore not the cost to remove on CPU (estimated).
+
+*What a dense GEMM would buy.* Its advantage is not avoiding the index but reusing each loaded input vector in
+registers across several neurons (a register tile of neurons × tokens). That reuse needs neurons that share their
+inputs, which is what the zeros pay for: +23 % of multiply-adds (16.2) against fewer loads and stores (hypothesis on
+the balance).
+
+*Levers, in the order of their risk.*
+
+1. *Locality, free.* The rows `S_g` of one group are 32 × 128 × 4 B = 16 KB per 128-token batch, against 64 KB for
+   all of `M`. At `M = 128` both fit in the L1 data cache of the M1 performance cores; the gain should appear only at
+   larger `M` (hypothesis).
+2. *`uint8` local indices.* 5 bytes per up slot instead of 6 (−17 % of the bytes of the up parameter stream). Same
+   operations in the same order: exact bit for bit.
+3. *Routed down without reduction* (16.1): no private buffer and no reduction of four of them. The terms of an output
+   are the same (the other groups contributed zeros); keeping the place of the bias in the sum keeps it exact bit for
+   bit (estimated: the reduction reads `G M N` floats and the buffers hold as many; the direct write needs neither).
+4. *A register tile of neurons over the dense block with frozen zeros.* Not exact bit for bit (reduction order),
+   judged under a band against float64 (`runtime.md`, *Accuracy gates*). It reads the zeros of 16.2 and stores the up
+   of a group as an `n × m` block: under `AGENTS.md` section 3 that is a masked dense matrix, a control, not an HFFN
+   path, and at 81 % density it is outside the favourable regime of section 1. Running it as a production path is a
+   decision of the user, not an ablation the rules admit as such.
+
+### 16.4 GPU (Metal M1, CUDA)
+
+*Current structure.* Metal `hffn_inference_up` (generated by `current/runtime/gpu/m1/ffn/training/run_native_train_step.py`
+and run by `metal_hffn_training_forward_runner.mm`): one simdgroup of 32 lanes per neuron, 16 neurons per
+threadgroup; each lane owns 4 tokens of a 128-token tile; the index and the weight are uniform loads of the
+simdgroup, the input reads `x[i * N + t]` are coalesced, the loop is unrolled by 4. CUDA
+(`current/runtime/gpu/nvidia/common/kernels/hffn_cuda/kernels.py`): the same layout in `up_lane` and `up_tile`
+(`UNROLL = 4`, `UP_TILE = 128`), and `up_coop` (lanes over the slots, warp reduction) for `N ≤ 4`.
+
+*Where the index costs (hypothesis).* Not in bandwidth (a uniform 2-byte load per slot) but in latency: the input
+read depends on the index read, so each group of four slots waits for one dependent load before its four input loads
+can issue. The unroll by 4 hides part of it; nothing measures the rest.
+
+*Levers, in the order of their risk.*
+
+1. *The input tile of the group in threadgroup or shared memory.* The rows `S_g` of a 128-token tile are
+   32 × 128 × 4 B = 16 KB; the full `M = 128` tile is 64 KB. 16 KB fits in the 32 KB of threadgroup memory of the M1
+   (64 KB does not); every simdgroup of the threadgroup then reads its 26 inputs per token from on-chip memory with a
+   `uint8` local index. The HFFN format is kept, no zero is read, the order of the additions is unchanged: exact bit
+   for bit. It requires a threadgroup to hold neurons of one group only, which the contiguous `R_g` allows. This is
+   the most solid GPU lever of the partition (hypothesis). At width 256 (`m = 64`), the tile is 32 KB, the whole M1
+   limit: the token tile would have to shrink to 64 (calculation).
+2. *`uint8` local indices*: as on CPU; smaller effect if the cost is latency rather than bytes (hypothesis).
+3. *A block GEMM* on `simdgroup_matrix` (Metal) or tensor cores (CUDA) over the `n × m` block with frozen zeros. The
+   same objection under `AGENTS.md` section 3 as on CPU; in addition, tensor cores compute in TF32 or BF16, so FP32
+   parity would need a band against float64 that may not hold, and blocks of `128 × 32` are small for these units
+   (hypothesis).
+
+*Two costs the partition adds on GPU.* Routing needs a gather of the tokens of each group before the FFN and a
+scatter after it (route-major packing, as in `moe/`), two passes over `M × N` floats per layer (estimated). And the
+natural unit of parallelism on a GPU is the threadgroup, not one of four cores: the partition would be used there with
+a larger `G`, which is another model (decision 2).
+
+### 16.5 What E11 can and cannot say about this
+
+E11 times the packed form of the harness (`ffn_packed`: `zg @ w_up[ns, ms].t()`), that is the dense block of 16.2 with
+its zeros, in PyTorch, in every arm. It measures what the division of the work over four workers is worth against
+dense attention; it says nothing of the HFFN compact loop of 16.3-16.4 and does not choose between the forms of 16.2
+(15.6).
+
+### 16.6 What would settle it, in order
+
+1. *A profile of the current up*, before any change: on CPU the share of the up in the FFN step (the existing probes
+   measure the transposes, not the up), on Metal a System Trace and on CUDA Nsight Compute of `up_tile` (stalls on
+   the dependent load, cache hit rates), at `M = 128` and at a larger `M`. Without it, the index cost of 16.3-16.4
+   stays an estimate and a hypothesis, and no ablation is written from it (`AGENTS.md` section 3: no micro-kernel
+   without an integrated profile).
+2. *Single-mechanism ablations in `experiments/runtime/`*, each with its README, control `current/` and the light
+   protocol, on a model whose up supports lie in the blocks `S_g` (E1 or E4a): the shared-memory tile (16.4, lever 1),
+   the routed down without reduction (16.1), `uint8` local indices. They are exact bit for bit and judged on time and
+   memory.
+3. *The dense block with frozen zeros* (16.3 lever 4, 16.4 lever 3) is a control: it can be timed beside the HFFN path
+   to bound what a GEMM would give at 81 % density, never promoted without a decision of the user under section 3.
+
+No statement of speed-up on the HFFN runtime is made before step 2 has qualified runs.
+
+## 17. Fourth step: the frontier of quality against measured inference time (E14, written 2026-10-27)
+
+Written at the user's request on 2026-10-27, before any run. Every number in this section is **estimated** (a
+calculation, or figures of different campaigns combined) and every expected effect is a **hypothesis**. The README
+of E14 freezes what this section proposes, before its first run.
+
+### 17.1 Why
+
+The series so far read the constrained model at equal depth, at equal parameters and at equal **counted**
+multiply-adds. On 2026-10-27 the user set the criterion that decides whether the approximation is useful (decision 16,
+17.2): a mixture of experts also loses against a single dense model at equal depth or at equal quality; what makes it
+useful is a better quality per unit of compute it demands at inference. The same holds here: the question is whether
+the constrained family lies **above the frontier of quality against inference time** of the dense-attention family,
+not whether a constrained model matches a dense one of the same depth.
+
+Counted multiply-adds are not that time (15.8.3, point 2). A first frontier was built on 2026-10-27 from the figures
+already on record (**estimated**: bpb medians of E8 and E9, times from E11 only for `E4a_L4` against `REF2` and for
+`IND_L4` against `E4a_L4`; every dense time other than `REF2` derived from its counted multiply-adds or from its
+depth, `E4a_L2` and `E4a_L6` extrapolated as half and 1.5 times `E4a_L4`). Gap = bpb of the arm minus the dense family
+interpolated in log time at the arm's time; positive is worse:
+
+| Arm | `N = 128`, dense time by counted MACs | by depth | `N = 512`, by counted MACs | by depth |
+|---|---|---|---|---|
+| `E4a_L4` (time from E11) | +0.021 | +0.016 | +0.008 | +0.006 |
+| `IND_L4` (time from E11) | +0.111 | +0.109 | +0.108 | +0.108 |
+| `E4a_L2` (time extrapolated) | −0.020 | +0.006 | −0.041 | −0.023 |
+| `E4a_L6` (time extrapolated) | slower and worse than `REF4` | +0.008 | +0.048 | +0.043 |
+
+- The gains at equal counted multiply-adds of 14.8.2 (−0.085 and −0.145 for `E4a_L4`) do not survive the change of
+  axis: on time, `E4a_L4` lies on the dense frontier or just behind it, within `τ`, and `IND_L4` is behind it beyond
+  `τ` (estimated).
+- The sign of `E4a_L2` depends on the time assumed. With part of the cost shared between depths (time 0.70 of `REF2`
+  at `N = 128`, 0.65 at 512) its gaps become +0.011 and +0.004 (estimated).
+- None of this is a result: five of the eight times are not measured, the figures come from three campaigns, the
+  executor is that of E11 and only a forward over whole windows (prefill) was timed. E14 measures the time axis.
+
+### 17.2 Decision of the user recorded here (2026-10-27)
+
+16. **The criterion of usefulness is quality per inference time**, read on the frontier of quality against measured
+    inference time, as for a mixture of experts. Readings at equal depth, equal parameters and equal counted
+    multiply-adds stay as descriptions; counted multiply-adds are a proxy of time, not time. The decision is
+    prospective: the verdicts of sections 13 to 15 are unchanged and no run is re-read under it. The user speaks of
+    accuracy; the study records bits per byte (no next-byte accuracy is in the `summary.json` of E8, E9 or E13), so
+    the quality axis is the validation bpb, lower is better.
+
+Unchanged: decisions 2, 3, 7, 13, 14, 15; `τ = 0.075` bpb; the timing rule of 15.3 (decision 14).
+
+### 17.3 Fixed design
+
+- **No training.** The quality of every arm is its validation bpb per seed, **measured** in its own campaign: E8
+  (`N = 128`), E9 (`N = 512`), E13 (`M = 256`, `N = 512`). E14 measures only time.
+- **Arms and anchor.** Every arm of those campaigns is timed against one anchor per campaign, in the same process:
+  - `M = 128`, `N = 128` and `N = 512`: anchor `REF2`; variants `REF1`, `REF3`, `REF4`, `E4a_L2`, `E4a_L4`, `E4a_L6`,
+    `IND_L4` (7 cells per context);
+  - `M = 256`, `N = 512`: anchor `REF2_W256`; variants `REF1_W256`, `REF2_W256_h16`, `E4a_L2_W256`, `E4a_L4_W256`,
+    `E4a_L4_W256_h16` (5 cells).
+
+  The time of an arm is `t = t(arm) / t(anchor)`, the anchor at 1. Weights are random (time does not depend on their
+  values); inputs are bytes of the valid split, since the route depends on them.
+- **Executor.** That of E11 (`lib/executor.py`): four workers, one intra-op thread each, the packed hash form for the
+  constrained arms (`E4a` with a barrier per layer, `IND` on its blocks), the dense arms as in E11 (heads `H_g` of
+  every token on worker `g`, barrier, `W_O` and the FFN on a block of the tokens). The FFN is masked dense in every
+  arm. The concurrency gate of 15.3 runs at the start of each run.
+- **Two modes**, each a run of its own with its own `delta`:
+  - *Prefill*: one forward over whole windows, 8,192 tokens per call, as in E11.
+  - *Batched decoding*: one step of `B = 64` sequences (64 windows of the valid split at offsets drawn per process),
+    one new token each, with a KV cache of `N / 2` positions per sequence. The attention of a step is linear in the
+    length of the cache and the rest is constant, so the step at `N / 2` is the mean step over a window of `N`
+    (estimated). Per layer, constrained: worker `g` computes the keys and values of its heads `H_g` for the 64 tokens
+    (dense, decision 3) and appends them to the cache, then for the tokens routed to it the queries of `H_g`, the
+    scores against the cache of their sequence, `W_O^g` and FFN group `g`; dense: worker `g` computes the heads `H_g`
+    of the 64 tokens against the cache, barrier, then `W_O` and the FFN on 16 tokens. `B = 64` is the batch of the
+    training at `N = 128`; one value keeps the cells few, and the effect of `B` is not studied.
+- **Decoding path, new in the harness** (no KV cache exists in `lib/`): a preparation adds it, with two checks before
+  any timing: the logits of a decoded step equal those of the full forward at the same position within float32
+  rounding, for every arm of the three campaigns; the decoded step under the executor equals the sequential decoded
+  step. The packed form pads each group to its largest count at that step; the per-group counts are recorded.
+- **Timing rule.** That of 15.3 unchanged: five fresh processes per cell, every arm (anchor, copy of the anchor,
+  variant) built and warmed up (at least 30 calls and 5 seconds), 12 ABBA windows, slots of at least 0.2 second; per
+  cell the median over processes of the per-process median and [min–max]; `delta` = the largest
+  `|copy / anchor − 1|` over the cell-processes of the run; steal time and load recorded, nothing excluded after the
+  fact.
+
+### 17.4 Readings
+
+**The dense frontier.** Per campaign, mode and seed, the dense-attention arms of the campaign (`REF<L>`, and at
+`M = 256` also `REF2_W256_h16`) placed at (time, bpb of that seed); the frontier is their lower envelope (a dense arm
+slower and worse than another is not on it), interpolated linearly in log time between neighbouring points, as 14.8.2
+interpolated in `log C`. No extrapolation outside the range of dense times.
+
+**The gap of a constrained arm** `c` (`E4a_*`, `IND_L4`) for seed `s`: `g_{c,s} = bpb_s(c) − frontier_s(t_c)`.
+
+- Unfavourable reading `g⁺`: the time of `c` moved up by `delta` and every dense time moved down by `delta`.
+- Favourable reading `g⁻`: the reverse.
+
+**Outcomes**, per arm, mode and campaign:
+
+| Outcome | Rule |
+|---|---|
+| *above the frontier* | `max_s g⁺_{c,s} < 0` |
+| *below the frontier beyond `τ`* | `min_s g⁻_{c,s} > τ` |
+| *on the frontier* | otherwise; median `g` and [min–max] stated against `τ` |
+| *outside the range* | `t_c` beyond the fastest or slowest dense time under either reading: no frontier reading; read only as a pair against the nearest dense arm, `d_s` with the outcomes of 13.1 and *dominates* of 14.3, its time ratio beside |
+
+**The answer to decision 16**, per mode and campaign: *favourable* if at least one `E4a` arm is above the frontier;
+*unfavourable* if every `E4a` arm is below it beyond `τ`; otherwise *not resolved*, with the gaps stated. `IND_L4` is
+read the same way, as a control. The answers of the two modes are stated apart and not combined.
+
+**Beside, descriptive.** The counted multiply-adds of each arm and the quotient `t` / counted ratio (how far time
+follows the count on this executor); for decoding, the KV cache read and stored per decoded token (counted). At equal
+counted multiply-adds the constrained model is twice as deep and reads the keys and values of `n_heads / G` heads per
+layer, so it **reads** about `2 / G = 0.5` of the cache of the dense model per decoded token while it **stores** twice
+as much (calculation). Hence the hypothesis that decoding with a long cache is more favourable to the constraint than
+prefill; E14 is the first measurement that can contradict it.
+
+**Classes.** Times are measured (E14), bpb are measured (E8, E9, E13); each axis is compared only inside its own
+campaign. A gap combines the two by interpolation and is therefore **estimated**, as the frontier readings of 14.8.2
+were; the direct pairs (an arm against its anchor in time and in bpb) are measured.
+
+### 17.5 Cost and launching
+
+- Cells: 19 per mode for the frontier and 6 per mode for the pairs of 17.7, 50 in all. E11 took about 0.5 hour for 8
+  cells, so about **3.2 hours** of timing (deeper arms lengthen the build and warm-up, not the windows), and under
+  0.25 hour for the memory of 17.7; preparation (decoding path, arm `E2h`, their checks, smoke of every cell) about
+  1.5-2.5 hours of work and under 0.5 hour of compute. Total **about 4.5-5.5 hours** of session (estimated). After the
+  smoke the total is re-estimated from measured durations; above 6 hours the cells at `M = 256` are cut first and the
+  user is told.
+- On a Claude cloud session, on the branch `sparse-attention-cloud`, under a brief
+  `experiments/sparse_attention/CLOUD_E14.md` written before the start: preparation, prefill run, decoding run, a
+  summary. Each timing run alone on the machine. Folder `experiments/sparse_attention/common/llm/training/e14/`, a
+  README committed before the first run, its own records and `RESULTS.md`. A harness failure is not an attempt.
+- Nothing is promoted: E14 measures, it retains no model.
+
+### 17.6 What E14 will not show
+
+- No absolute time, no time on another machine, no training time, no native implementation: every ratio holds for
+  the PyTorch executor of E11 on the cloud machine, and a native implementation (16, or the fused executor of 15.8.5)
+  may move every point either way. A favourable answer here is not a statement on the HFFN runtime.
+- No new quality figure: the bpb are those of E8, E9 and E13, with their reserves (rates of the `_h16` arms, `H*` not
+  recalibrated at width, 14.8.4 and 15.8.4). No accuracy (decision 16).
+- At `M = 256` the dense frontier has three points (`REF1_W256`, `REF2_W256`, `REF2_W256_h16`); a constrained arm
+  slower than all of them is outside the range. `REF3_W256` (15.8.5) would extend it; it is a training run, not part
+  of E14.
+- One batch size, one cache length per context, no generation of whole sequences; the memory of the cache is counted,
+  not measured, outside the peak (e) of the pairs of 17.7.
+- No quality of the attention alone under the hash route: `E2h` is not trained (17.7, *Quality*).
+
+### 17.7 The attention alone at equal depth: arm `E2h` (added 2026-10-27, before any run)
+
+**Why.** No figure on record isolates the sparse attention, in time or in memory. The ratios of E10 and E11 compare
+`E4a` with `REF` (or the constrained layer with the dense one), where two things change together: the attention, and
+the routing of the FFN (routed in `E4a`, unrouted in `REF`). On the executor of E11 the FFN of a dense arm executes
+131,072 multiply-adds per token and layer (masked dense, 512 × 128 twice), the routed FFN 20,480; at `N = 128` about
+two thirds of the multiply-adds that `E4a` saves against dense come from the routing of the FFN, about half at
+`N = 512` (estimated, counted on the executor). Counted on the model, the attention alone of a constrained layer is
+0.47 of the dense one at `N = 128` and 0.36 at `N = 512`, and the whole layer 0.50 and 0.38 once the routed FFN is
+the same in both (estimated). The step of the ladder that varies only the attention is `E2` → `E3b` (section 8); under
+the hash route it was never built (13.4, *not run*; 13.5, question 1).
+
+**The arm.** `E2h` is `E4a` with the dense attention of `REF`: every head for every token, `W_O` dense; the FFN is that
+of `E4a` (inputs inside the blocks, as E1; token `t` uses group `g` given by the balanced byte hash of E4 (a)); same
+`M`, heads, `H`, `k`, embedding and output head. It has the parameters of `E2`: 12,288 more per layer than `E4a` at
+`M = 128` (`W_O`). Under the executor of E11: the heads as in the dense arms (heads `H_g` of every token on worker `g`,
+barrier), then the tail of `E4a` (`W_O`, dense, and FFN group `g` on the tokens routed to `g`, packed form padded as
+for `E4a`). In decoding: worker `g` computes the keys, values and queries of `H_g` for the 64 tokens against the cache,
+barrier, then `W_O` and FFN group `g` on the tokens routed to `g`. The checks of 17.3 apply to `E2h` (full forward
+against the sequential reference, decoded step against the full forward and against the sequential decoded step).
+
+Thus the pair `E4a` / `E2h` differs by the attention only: queries of `H_g` computed for the tokens routed to `g`,
+`W_O` block-diagonal, and the scheduling this allows (one barrier per layer instead of two). The scheduling is
+counted as part of the attention on purpose: spreading the attention over the workers of the HFFN groups is what the
+constraint is for (15.1, point 2). The pair `E2h` / `REF` differs by the routing of the FFN only.
+
+**Cells.** One depth, `L = 4` (the depth of `E4a_L4`, the central constrained arm of E8, E9 and E13, and of the cells
+b1-c2 of E11); the ratio at equal depth moves with depth only through the embedding and the output head (hypothesis),
+and a second depth answers no question of the decision. Per mode (prefill and batched decoding, as in 17.3):
+
+| Cell | Variant / anchor | `M` | `N` | What it isolates |
+|---|---|---|---|---|
+| p1 | `E4a_L4` / `E2h_L4` | 128 | 128 | the attention alone |
+| p2 | `E2h_L4` / `REF4` | 128 | 128 | the routing of the FFN alone |
+| p3 | `E4a_L4` / `E2h_L4` | 128 | 512 | the attention alone |
+| p4 | `E2h_L4` / `REF4` | 128 | 512 | the routing of the FFN alone |
+| p5 | `E4a_L4_W256` / `E2h_L4_W256` | 256 | 512 | the attention alone, at width |
+| p6 | `E2h_L4_W256` / `REF4_W256` | 256 | 512 | the routing of the FFN alone, at width |
+
+The heads per group are those of `E4a_L4_W256` in the three arms of p5-p6. `REF4_W256` and every `E2h` have no
+training run; time and memory need none (random weights, 17.3). The timing rule is that of 17.3: the anchor, its copy
+and the variant in the same processes, `delta` of the run (the two modes are two runs; the pairs may share them with
+the frontier cells).
+
+**Memory.** The quantities (a)-(c) of E10 (15.3) for the nine arms of p1-p6, measured again in one run (the E10 figures
+of `E4a_L4` and `REF4` are of another campaign and are not reused), plus (e) the peak of live tensor bytes of one
+decoded step (`B = 64`, cache of `N / 2`) by the method of (c). Rule of E10: two fresh processes, (a) identical, (b),
+(c) and (e) within 1 %, otherwise a harness failure. Counted beside: parameters and AdamW states (`E4a` / `E2h` 0.868
+per layer at `M = 128`), the KV cache stored (1 in both pairs, decision 3) and read per decoded token (`E4a` / `E2h`
+0.25 at equal depth; `E2h` / `REF4` 1), the activations of the counter.
+
+**Readings.** Per cell and mode: the ratio, median over processes and [min–max], and `delta`. A gain of the variant is
+stated only when `1 − ratio > delta`, a loss only when `ratio > 1 + delta`; otherwise *no difference within `delta`*.
+The memory ratios are stated as measured, without `delta`. Beside, descriptive: the counted ratio of each cell and the
+quotient measured / counted; the product p1 × p2 (and p3 × p4, p5 × p6), **estimated** since it combines two cells, read
+against the counted `E4a_L4` / `REF4`. The answers of the two modes and of the three contexts are stated apart.
+
+**Quality.** `E2h` has no bpb, so it is not on the frontier of 17.4 and the pairs give no quality per time. The price
+of the attention alone is measured only at `L = 1` under the position route (13.2: `E2` → `E3a` +0.116,
+`E3a` → `E3b` +0.113, each beyond `τ`); under the hash route and at depth it is not isolated. Training `E2h_L4` at
+`N = 128` and `N = 512` (seeds 0, 1, 2, the rate of `E4a_L4`) would place it, about 2 hours from the durations of 15.4
+(estimated); it is not part of E14 and is a decision of the user.
+
+**Limits.**
+
+- p2, p4 and p6 read the routing of the FFN against a masked dense FFN in PyTorch (15.3), which executes the whole
+  512 × 128 matrices; the unrouted FFN of the HFFN runtime executes its compact support only. These cells say nothing
+  of the HFFN runtime and overstate the gain of the routing there (hypothesis).
+- In prefill the dense heads call SDPA with `is_causal=True` and the constrained ones with an explicit mask over all
+  `N` positions; if the causal kernel skips the masked half of the scores, p1, p3 and p5 understate the gain of the
+  attention in prefill (hypothesis). The README of E14 records the SDPA kernel selected in each arm.
+- The ratios hold for the executor of E11 on the cloud machine (17.6, first point).
