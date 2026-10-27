@@ -37,5 +37,5 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | E10 | done | `e10/runs/run_20261026T211323Z` | 0 | counted activation saving (0.50 / 0.25) not reached: measured token-side 1.6-1.9x dense at equal counted MACs, 0.89-1.00 at equal depth; prefill peak 0.78; packed/selected 0.74-0.83 |
 | E11 | done | `e11/runs/run_20261026T214914Z` (first run `run_20261026T212801Z` interrupted by a container restart) | 0 | delta 0.0975; layer cells faster (r 0.40-0.60); b cells slower (1.29, 1.13); c1 faster (0.85), c2 not resolved |
 | E12 | done | `e12/runs/run_20261026T222859Z` | 0 | rates 0.004 (`REF2_W256`, one extension) and 0.004 (`E4a_L4_W256`); none at an edge |
-| E13 | not started | | | |
+| E13 | done | `e13/runs/run_20261027T040908Z` | 0 | width 256: within τ at equal counted MACs with 2 heads/group (not dominating); with 4 heads/group dominates (-0.042); equal depth beyond (+0.21); i_s favours four heads/group |
 | SUMMARY_E10_E13.md | not started | | | |

@@ -1,0 +1,42 @@
+04:09:08Z step e13 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e13/runs/run_20261027T040908Z
+04:09:17Z checks check_model.py: 203/203 passed (exit 0)
+04:11:58Z checks check_series.py: 44/44 passed (exit 0)
+04:13:34Z checks check_series3.py: 34/34 passed (exit 0)
+04:13:34Z stage final: 18 jobs, 4 workers x 1 thread(s)
+04:13:34Z start final/E4a_L4_W256_s1
+04:13:34Z start final/E4a_L4_W256_s0
+04:13:34Z start final/E4a_L4_W256_s2
+04:13:34Z start final/E4a_L4_W256_h16_s0
+06:22:41Z done  final/E4a_L4_W256_s1: exit 0, valid bpb 1.9866751580518502
+06:22:41Z start final/E4a_L4_W256_h16_s1
+06:24:58Z done  final/E4a_L4_W256_s0: exit 0, valid bpb 1.983858936484207
+06:24:58Z start final/E4a_L4_W256_h16_s2
+06:29:23Z done  final/E4a_L4_W256_s2: exit 0, valid bpb 2.004517174695492
+06:29:23Z start final/REF2_W256_s0
+06:35:33Z done  final/E4a_L4_W256_h16_s0: exit 0, valid bpb 1.9435342900120347
+06:35:33Z start final/REF2_W256_s1
+08:22:10Z done  final/REF2_W256_s0: exit 0, valid bpb 1.9971204246329675
+08:22:10Z start final/REF2_W256_s2
+08:27:57Z done  final/REF2_W256_s1: exit 0, valid bpb 1.9853061816851436
+08:27:57Z start final/E4a_L2_W256_s0
+08:57:52Z done  final/E4a_L4_W256_h16_s1: exit 0, valid bpb 1.9486947741667178
+08:57:52Z start final/E4a_L2_W256_s1
+08:59:15Z done  final/E4a_L4_W256_h16_s2: exit 0, valid bpb 1.9421987774886942
+08:59:15Z start final/E4a_L2_W256_s2
+09:42:36Z done  final/E4a_L2_W256_s0: exit 0, valid bpb 2.1720902197508116
+09:42:36Z start final/REF2_W256_h16_s0
+10:14:34Z done  final/E4a_L2_W256_s2: exit 0, valid bpb 2.2033750630043203
+10:14:34Z start final/REF2_W256_h16_s1
+10:16:34Z done  final/E4a_L2_W256_s1: exit 0, valid bpb 2.192494649151466
+10:16:34Z start final/REF2_W256_h16_s2
+10:18:46Z done  final/REF2_W256_s2: exit 0, valid bpb 1.9880376647669904
+10:18:46Z start final/REF1_W256_s0
+11:24:09Z done  final/REF1_W256_s0: exit 0, valid bpb 2.1815276894968885
+11:24:09Z start final/REF1_W256_s1
+11:53:40Z done  final/REF2_W256_h16_s0: exit 0, valid bpb 1.9855277605518913
+11:53:40Z start final/REF1_W256_s2
+12:25:42Z done  final/REF2_W256_h16_s1: exit 0, valid bpb 1.9815222149928704
+12:26:25Z done  final/REF2_W256_h16_s2: exit 0, valid bpb 1.9856578417768684
+12:28:42Z done  final/REF1_W256_s1: exit 0, valid bpb 2.1834167310371413
+12:59:29Z done  final/REF1_W256_s2: exit 0, valid bpb 2.1820851701333637
+12:59:29Z EXIT 0 

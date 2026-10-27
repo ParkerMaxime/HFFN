@@ -1,0 +1,10 @@
+{
+ "git_commit": "7355df10038bf09803e1da34f922069cb318fa8a",
+ "git_dirty_files": 1,
+ "torch": "2.14.1+cu130",
+ "python": "3.13.17",
+ "platform": "Linux-6.18.44-fc-v165-x86_64-with-glibc2.39",
+ "cpu_count": 4,
+ "torch_threads": 1,
+ "started_utc": "2026-10-27T04:13:40Z"
+}
