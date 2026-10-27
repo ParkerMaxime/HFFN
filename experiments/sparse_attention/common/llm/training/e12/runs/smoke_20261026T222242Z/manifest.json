@@ -1,0 +1,24 @@
+{
+ "step": "e12",
+ "mode": "smoke",
+ "started": "20261026T222242Z",
+ "jobs": {
+  "smoke/REF2_W256_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T222843Z",
+   "final_valid_bpb": 4.4482798131731,
+   "cause": null
+  },
+  "smoke/E4a_L4_W256_s0": {
+   "status": "passed",
+   "exit": 0,
+   "ended": "20261026T222859Z",
+   "final_valid_bpb": 4.459931930190701,
+   "cause": null
+  }
+ },
+ "ended": "20261026T222859Z",
+ "exit": 0,
+ "why": ""
+}

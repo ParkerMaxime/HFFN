@@ -1,0 +1,22 @@
+22:28:59Z step e12 mode run -> /home/user/HFFN/experiments/sparse_attention/common/llm/training/e12/runs/run_20261026T222859Z
+22:29:08Z checks check_model.py: 203/203 passed (exit 0)
+22:31:47Z checks check_series.py: 44/44 passed (exit 0)
+22:33:21Z checks check_series3.py: 34/34 passed (exit 0)
+22:33:21Z stage sweep: round with 6 jobs
+22:33:21Z start sweep/E4a_L4_W256_lr0.004_s100
+22:33:21Z start sweep/E4a_L4_W256_lr0.002_s100
+22:33:21Z start sweep/E4a_L4_W256_lr0.008_s100
+22:33:21Z start sweep/REF2_W256_lr0.004_s100
+00:13:24Z done  sweep/REF2_W256_lr0.004_s100: exit 0, valid bpb 1.985487925489033
+00:13:24Z start sweep/REF2_W256_lr0.008_s100
+00:29:10Z done  sweep/E4a_L4_W256_lr0.002_s100: exit 0, valid bpb 1.986904785824376
+00:29:10Z start sweep/REF2_W256_lr0.016_s100
+00:33:57Z done  sweep/E4a_L4_W256_lr0.004_s100: exit 0, valid bpb 1.9861930853686574
+01:53:41Z done  sweep/REF2_W256_lr0.008_s100: exit 0, valid bpb 1.9958510030961787
+02:19:46Z done  sweep/REF2_W256_lr0.016_s100: exit 0, valid bpb 2.054465494903337
+02:20:15Z done  sweep/E4a_L4_W256_lr0.008_s100: exit 0, valid bpb 2.1100809474398443
+02:20:15Z stage sweep: round with 1 jobs
+02:20:15Z start sweep/REF2_W256_lr0.002_s100
+04:00:44Z done  sweep/REF2_W256_lr0.002_s100: exit 0, valid bpb 2.0117824088675667
+04:00:44Z adaptive selection: {'REF2_W256': 0.004, 'E4a_L4_W256': 0.004} (at edge: {'REF2_W256': False, 'E4a_L4_W256': False}, extensions: {'REF2_W256': 1, 'E4a_L4_W256': 0})
+04:00:44Z EXIT 0 
