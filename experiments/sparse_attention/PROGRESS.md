@@ -45,8 +45,8 @@ Run paths are relative to `experiments/sparse_attention/common/llm/training/`.
 | Step | Status | Run | Exit | Verdict / what remains |
 |---|---|---|---|---|
 | prep4 | done | `prep4/runs/smoke_20261027T201311Z` | 0 | 219 + 44 + 34 + 82 checks pass; E2h packed = selected; decoded step = full forward (26 arms); gate 0.377 passed; SDPA = flash CPU kernel in all arms; total re-estimate ≈ 3.1 h, no cut |
-| E14 prefill | not started | | | |
-| E14 decoding | not started | | | |
-| E14 memory | not started | | | |
-| E14 analysis / RESULTS.md | not started | | | |
+| E14 prefill | done | `e14/runs/prefill_20261027T211841Z` (first run `prefill_20261027T205123Z` interrupted by a container restart) | 0 | delta 0.0623; gate 0.325; 25 cells x 5 processes |
+| E14 decoding | done | `e14/runs/decode_20261027T224704Z` | 0 | delta 0.0707; gate 0.337; decoding gaps larger than prefill |
+| E14 memory | done | `e14/runs/memory_20261028T001128Z` | 0 | rule of E10 holds; E4a/E2h (e) 1.6-6.0x |
+| E14 analysis / RESULTS.md | done | `e14/runs/analysis_20261028T001745Z` | — | decision 16 not resolved in 6/6 (mode x campaign); attention alone 0.65-0.72 of E2h in time |
 | SUMMARY_E14.md | not started | | | |
