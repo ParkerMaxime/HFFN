@@ -1,0 +1,20 @@
+00:12:57Z checks check_e14.py: 82/82 passed (exit 0)
+00:13:07Z memory E4a_L4 process 0: {"saved_total": 37814.34423828125, "saved_token_side": 37124.78173828125, "train_peak": 39444.7197265625, "prefill_peak": 5288.84375, "decode_peak_per_decoded_token": 7633.125}
+00:13:18Z memory E4a_L4 process 1: {"saved_total": 37814.34423828125, "saved_token_side": 37124.78173828125, "train_peak": 39444.7197265625, "prefill_peak": 5288.84375, "decode_peak_per_decoded_token": 7633.125}
+00:13:28Z memory E2h_L4 process 0: {"saved_total": 33879.34423828125, "saved_token_side": 33221.78173828125, "train_peak": 35509.7197265625, "prefill_peak": 4300.84375, "decode_peak_per_decoded_token": 4641.3125}
+00:13:38Z memory E2h_L4 process 1: {"saved_total": 33879.34423828125, "saved_token_side": 33221.78173828125, "train_peak": 35509.7197265625, "prefill_peak": 4300.84375, "decode_peak_per_decoded_token": 4641.3125}
+00:13:47Z memory REF4 process 0: {"saved_total": 42309.62548828125, "saved_token_side": 41652.06298828125, "train_peak": 43940.0009765625, "prefill_peak": 6656.0, "decode_peak_per_decoded_token": 4608.0}
+00:13:57Z memory REF4 process 1: {"saved_total": 42309.62548828125, "saved_token_side": 41652.06298828125, "train_peak": 43940.0009765625, "prefill_peak": 6656.0, "decode_peak_per_decoded_token": 4608.0}
+00:14:09Z memory E4a_L4_N512 process 0: {"saved_total": 42320.30908203125, "saved_token_side": 41627.74658203125, "train_peak": 43947.7314453125, "prefill_peak": 5210.35546875, "decode_peak_per_decoded_token": 21708.75}
+00:14:20Z memory E4a_L4_N512 process 1: {"saved_total": 42320.30908203125, "saved_token_side": 41627.74658203125, "train_peak": 43947.7314453125, "prefill_peak": 5210.35546875, "decode_peak_per_decoded_token": 21708.75}
+00:14:33Z memory E2h_L4_N512 process 0: {"saved_total": 32207.93408203125, "saved_token_side": 31547.37158203125, "train_peak": 33835.3564453125, "prefill_peak": 4209.85546875, "decode_peak_per_decoded_token": 4641.1875}
+00:14:45Z memory E2h_L4_N512 process 1: {"saved_total": 32207.93408203125, "saved_token_side": 31547.37158203125, "train_peak": 33835.3564453125, "prefill_peak": 4209.85546875, "decode_peak_per_decoded_token": 4641.1875}
+00:14:57Z memory REF4_N512 process 0: {"saved_total": 42312.57861328125, "saved_token_side": 41652.01611328125, "train_peak": 43940.0009765625, "prefill_peak": 6656.0, "decode_peak_per_decoded_token": 4608.0}
+00:15:08Z memory REF4_N512 process 1: {"saved_total": 42312.57861328125, "saved_token_side": 41652.01611328125, "train_peak": 43940.0009765625, "prefill_peak": 6656.0, "decode_peak_per_decoded_token": 4608.0}
+00:15:27Z memory E4a_L4_W256 process 0: {"saved_total": 73727.87158203125, "saved_token_side": 70998.74658203125, "train_peak": 74210.8564453125, "prefill_peak": 10331.85546875, "decode_peak_per_decoded_token": 43365.75}
+00:15:45Z memory E4a_L4_W256 process 1: {"saved_total": 73727.87158203125, "saved_token_side": 70998.74658203125, "train_peak": 74210.8564453125, "prefill_peak": 10331.85546875, "decode_peak_per_decoded_token": 43365.75}
+00:16:05Z memory E2h_L4_W256 process 0: {"saved_total": 64458.49658203125, "saved_token_side": 61857.37158203125, "train_peak": 64941.4814453125, "prefill_peak": 8497.85546875, "decode_peak_per_decoded_token": 7201.1875}
+00:16:25Z memory E2h_L4_W256 process 1: {"saved_total": 64458.49658203125, "saved_token_side": 61857.37158203125, "train_peak": 64941.4814453125, "prefill_peak": 8497.85546875, "decode_peak_per_decoded_token": 7201.1875}
+00:16:48Z memory REF4_W256 process 0: {"saved_total": 84701.14111328125, "saved_token_side": 82100.01611328125, "train_peak": 85184.1259765625, "prefill_peak": 13312.0, "decode_peak_per_decoded_token": 7424.0}
+00:17:11Z memory REF4_W256 process 1: {"saved_total": 84701.14111328125, "saved_token_side": 82100.01611328125, "train_peak": 85184.1259765625, "prefill_peak": 13312.0, "decode_peak_per_decoded_token": 7424.0}
+00:17:12Z EXIT 0 
