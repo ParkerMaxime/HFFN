@@ -1,0 +1,25 @@
+{
+ "cell": "n512-REF3",
+ "group": "frontier",
+ "campaign": "n512",
+ "variant": "REF3_N512",
+ "control": "REF2_N512",
+ "mode": "decode",
+ "context": 512,
+ "d_model": 128,
+ "variant_kind": "dense",
+ "control_kind": "dense",
+ "batch": 64,
+ "cache_positions": 256,
+ "position": 256,
+ "group_counts_of_the_step": {
+  "control": null,
+  "copy": null,
+  "variant": null
+ },
+ "reps": {
+  "control": 38,
+  "copy": 42,
+  "variant": 22
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "cell": "w256-REF2_W256_h16",
+ "group": "frontier",
+ "campaign": "w256",
+ "variant": "REF2_W256_h16",
+ "control": "REF2_W256",
+ "mode": "decode",
+ "context": 512,
+ "d_model": 256,
+ "variant_kind": "dense",
+ "control_kind": "dense",
+ "batch": 64,
+ "cache_positions": 256,
+ "position": 256,
+ "group_counts_of_the_step": {
+  "control": null,
+  "copy": null,
+  "variant": null
+ },
+ "reps": {
+  "control": 22,
+  "copy": 23,
+  "variant": 20
+ }
+}

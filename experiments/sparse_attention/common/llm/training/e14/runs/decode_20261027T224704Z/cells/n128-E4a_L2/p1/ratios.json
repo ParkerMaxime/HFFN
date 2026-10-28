@@ -1,0 +1,102 @@
+{
+ "windows": [
+  {
+   "window": 0,
+   "r_variant": 0.8683871993719641,
+   "r_copy": 1.0079599681256441,
+   "steal_jiffies": 6,
+   "user_jiffies": 199,
+   "total_jiffies": 489
+  },
+  {
+   "window": 1,
+   "r_variant": 0.8656393620404194,
+   "r_copy": 1.0272722135704544,
+   "steal_jiffies": 3,
+   "user_jiffies": 197,
+   "total_jiffies": 479
+  },
+  {
+   "window": 2,
+   "r_variant": 0.8472500018783287,
+   "r_copy": 1.0303206995747856,
+   "steal_jiffies": 2,
+   "user_jiffies": 195,
+   "total_jiffies": 466
+  },
+  {
+   "window": 3,
+   "r_variant": 0.8011810355690416,
+   "r_copy": 0.984587863398132,
+   "steal_jiffies": 6,
+   "user_jiffies": 196,
+   "total_jiffies": 483
+  },
+  {
+   "window": 4,
+   "r_variant": 0.8416299525283399,
+   "r_copy": 1.0360832546156806,
+   "steal_jiffies": 3,
+   "user_jiffies": 203,
+   "total_jiffies": 498
+  },
+  {
+   "window": 5,
+   "r_variant": 0.8856655079948599,
+   "r_copy": 0.9992430425619581,
+   "steal_jiffies": 4,
+   "user_jiffies": 210,
+   "total_jiffies": 491
+  },
+  {
+   "window": 6,
+   "r_variant": 0.7835743215926101,
+   "r_copy": 0.9546148488594998,
+   "steal_jiffies": 5,
+   "user_jiffies": 205,
+   "total_jiffies": 500
+  },
+  {
+   "window": 7,
+   "r_variant": 0.8218399104792053,
+   "r_copy": 0.9919674828000777,
+   "steal_jiffies": 5,
+   "user_jiffies": 214,
+   "total_jiffies": 516
+  },
+  {
+   "window": 8,
+   "r_variant": 0.8649801871712766,
+   "r_copy": 0.9723129935846025,
+   "steal_jiffies": 4,
+   "user_jiffies": 212,
+   "total_jiffies": 490
+  },
+  {
+   "window": 9,
+   "r_variant": 0.7902920774883762,
+   "r_copy": 0.9605727068482932,
+   "steal_jiffies": 5,
+   "user_jiffies": 190,
+   "total_jiffies": 471
+  },
+  {
+   "window": 10,
+   "r_variant": 0.8320834428510325,
+   "r_copy": 0.9665578628922945,
+   "steal_jiffies": 5,
+   "user_jiffies": 207,
+   "total_jiffies": 498
+  },
+  {
+   "window": 11,
+   "r_variant": 0.811077296731337,
+   "r_copy": 0.9699623059233284,
+   "steal_jiffies": 3,
+   "user_jiffies": 192,
+   "total_jiffies": 472
+  }
+ ],
+ "r_variant": 0.8368566976896863,
+ "r_copy": 0.9882776730991049
+}

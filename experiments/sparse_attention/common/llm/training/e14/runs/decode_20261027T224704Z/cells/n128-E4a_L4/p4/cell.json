@@ -1,0 +1,30 @@
+{
+ "cell": "n128-E4a_L4",
+ "group": "frontier",
+ "campaign": "n128",
+ "variant": "E4a_L4",
+ "control": "REF2",
+ "mode": "decode",
+ "context": 128,
+ "d_model": 128,
+ "variant_kind": "e4a",
+ "control_kind": "dense",
+ "batch": 64,
+ "cache_positions": 64,
+ "position": 64,
+ "group_counts_of_the_step": {
+  "control": null,
+  "copy": null,
+  "variant": [
+   16,
+   14,
+   17,
+   17
+  ]
+ },
+ "reps": {
+  "control": 45,
+  "copy": 44,
+  "variant": 35
+ }
+}

@@ -1,0 +1,31 @@
+{
+ "cell": "p2",
+ "group": "pair",
+ "campaign": "p2",
+ "variant": "E2h_L4",
+ "control": "REF4",
+ "isolates": "the routing of the FFN alone",
+ "mode": "decode",
+ "context": 128,
+ "d_model": 128,
+ "variant_kind": "e2h",
+ "control_kind": "dense",
+ "batch": 64,
+ "cache_positions": 64,
+ "position": 64,
+ "group_counts_of_the_step": {
+  "control": null,
+  "copy": null,
+  "variant": [
+   12,
+   18,
+   18,
+   16
+  ]
+ },
+ "reps": {
+  "control": 26,
+  "copy": 25,
+  "variant": 24
+ }
+}

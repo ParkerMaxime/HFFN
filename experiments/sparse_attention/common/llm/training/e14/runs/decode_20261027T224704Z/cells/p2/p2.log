@@ -1,0 +1,3 @@
+{"cell": "p2", "mode": "decode", "process": 2, "r_variant": 1.0224543862216033, "r_copy": 1.0150054496563115}
+/usr/local/lib/python3.13/dist-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(

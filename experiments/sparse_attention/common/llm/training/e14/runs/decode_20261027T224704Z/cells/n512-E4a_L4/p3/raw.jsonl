@@ -1,0 +1,84 @@
+{"cell": "n512-E4a_L4", "process": 3, "window": 0, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.2229093539999667}
+{"cell": "n512-E4a_L4", "process": 3, "window": 0, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.27606361899961485}
+{"cell": "n512-E4a_L4", "process": 3, "window": 0, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.1970722050000404}
+{"cell": "n512-E4a_L4", "process": 3, "window": 0, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.18599773099958838}
+{"cell": "n512-E4a_L4", "process": 3, "window": 0, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.24079466399962257}
+{"cell": "n512-E4a_L4", "process": 3, "window": 0, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.2208939210004246}
+{"cell": "n512-E4a_L4", "process": 3, "window": 0, "stat_delta_jiffies": {"user": 233, "nice": 0, "system": 21, "idle": 259, "iowait": 0, "irq": 0, "softirq": 12, "steal": 8}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 1, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.20923081599994475}
+{"cell": "n512-E4a_L4", "process": 3, "window": 1, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.23724406300061673}
+{"cell": "n512-E4a_L4", "process": 3, "window": 1, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.19782011799998145}
+{"cell": "n512-E4a_L4", "process": 3, "window": 1, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.18929617599951598}
+{"cell": "n512-E4a_L4", "process": 3, "window": 1, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.22725905900006182}
+{"cell": "n512-E4a_L4", "process": 3, "window": 1, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.20529934499973024}
+{"cell": "n512-E4a_L4", "process": 3, "window": 1, "stat_delta_jiffies": {"user": 223, "nice": 0, "system": 25, "idle": 243, "iowait": 0, "irq": 0, "softirq": 6, "steal": 4}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 2, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.19671819399991364}
+{"cell": "n512-E4a_L4", "process": 3, "window": 2, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.22644084799958364}
+{"cell": "n512-E4a_L4", "process": 3, "window": 2, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.20272129400018457}
+{"cell": "n512-E4a_L4", "process": 3, "window": 2, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.1902161710004293}
+{"cell": "n512-E4a_L4", "process": 3, "window": 2, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.22696155100038595}
+{"cell": "n512-E4a_L4", "process": 3, "window": 2, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.2215233309998439}
+{"cell": "n512-E4a_L4", "process": 3, "window": 2, "stat_delta_jiffies": {"user": 231, "nice": 0, "system": 14, "idle": 243, "iowait": 0, "irq": 0, "softirq": 5, "steal": 4}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 3, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.21843311300017376}
+{"cell": "n512-E4a_L4", "process": 3, "window": 3, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.23517343300045468}
+{"cell": "n512-E4a_L4", "process": 3, "window": 3, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.20686189299976832}
+{"cell": "n512-E4a_L4", "process": 3, "window": 3, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.20679956399999355}
+{"cell": "n512-E4a_L4", "process": 3, "window": 3, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.2398852699998315}
+{"cell": "n512-E4a_L4", "process": 3, "window": 3, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.22819375099970785}
+{"cell": "n512-E4a_L4", "process": 3, "window": 3, "stat_delta_jiffies": {"user": 230, "nice": 0, "system": 21, "idle": 259, "iowait": 0, "irq": 0, "softirq": 10, "steal": 6}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 4, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.2166753190003874}
+{"cell": "n512-E4a_L4", "process": 3, "window": 4, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.23581852900042577}
+{"cell": "n512-E4a_L4", "process": 3, "window": 4, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.20873107299939875}
+{"cell": "n512-E4a_L4", "process": 3, "window": 4, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.2071981869994488}
+{"cell": "n512-E4a_L4", "process": 3, "window": 4, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.23868066599970916}
+{"cell": "n512-E4a_L4", "process": 3, "window": 4, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.23784947300009662}
+{"cell": "n512-E4a_L4", "process": 3, "window": 4, "stat_delta_jiffies": {"user": 223, "nice": 0, "system": 29, "idle": 260, "iowait": 0, "irq": 0, "softirq": 12, "steal": 7}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 5, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.21290255100029754}
+{"cell": "n512-E4a_L4", "process": 3, "window": 5, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.24453187699964474}
+{"cell": "n512-E4a_L4", "process": 3, "window": 5, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.201217612999244}
+{"cell": "n512-E4a_L4", "process": 3, "window": 5, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.19812401199942542}
+{"cell": "n512-E4a_L4", "process": 3, "window": 5, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.2589223929999207}
+{"cell": "n512-E4a_L4", "process": 3, "window": 5, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.21400803199958318}
+{"cell": "n512-E4a_L4", "process": 3, "window": 5, "stat_delta_jiffies": {"user": 253, "nice": 0, "system": 21, "idle": 252, "iowait": 0, "irq": 0, "softirq": 14, "steal": 5}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 6, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.20464433999950415}
+{"cell": "n512-E4a_L4", "process": 3, "window": 6, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.2517399279995516}
+{"cell": "n512-E4a_L4", "process": 3, "window": 6, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.19288908999988053}
+{"cell": "n512-E4a_L4", "process": 3, "window": 6, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.20127255399984278}
+{"cell": "n512-E4a_L4", "process": 3, "window": 6, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.25211017099991295}
+{"cell": "n512-E4a_L4", "process": 3, "window": 6, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.2424828580005851}
+{"cell": "n512-E4a_L4", "process": 3, "window": 6, "stat_delta_jiffies": {"user": 241, "nice": 0, "system": 18, "idle": 261, "iowait": 0, "irq": 0, "softirq": 9, "steal": 7}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 7, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.23456875099964236}
+{"cell": "n512-E4a_L4", "process": 3, "window": 7, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.24777738499960833}
+{"cell": "n512-E4a_L4", "process": 3, "window": 7, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.20119610499932605}
+{"cell": "n512-E4a_L4", "process": 3, "window": 7, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.20431563500005723}
+{"cell": "n512-E4a_L4", "process": 3, "window": 7, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.24153879299956316}
+{"cell": "n512-E4a_L4", "process": 3, "window": 7, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.2107133409999733}
+{"cell": "n512-E4a_L4", "process": 3, "window": 7, "stat_delta_jiffies": {"user": 236, "nice": 0, "system": 18, "idle": 259, "iowait": 0, "irq": 0, "softirq": 12, "steal": 6}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 8, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.18691619800029002}
+{"cell": "n512-E4a_L4", "process": 3, "window": 8, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.24196474000018497}
+{"cell": "n512-E4a_L4", "process": 3, "window": 8, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.19153251399984583}
+{"cell": "n512-E4a_L4", "process": 3, "window": 8, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.19630762799988588}
+{"cell": "n512-E4a_L4", "process": 3, "window": 8, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.23301729800004978}
+{"cell": "n512-E4a_L4", "process": 3, "window": 8, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.19418190000033064}
+{"cell": "n512-E4a_L4", "process": 3, "window": 8, "stat_delta_jiffies": {"user": 221, "nice": 0, "system": 18, "idle": 240, "iowait": 0, "irq": 0, "softirq": 7, "steal": 4}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 9, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.20907600400005322}
+{"cell": "n512-E4a_L4", "process": 3, "window": 9, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.22915001900037169}
+{"cell": "n512-E4a_L4", "process": 3, "window": 9, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.21338014599950839}
+{"cell": "n512-E4a_L4", "process": 3, "window": 9, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.20067598300011014}
+{"cell": "n512-E4a_L4", "process": 3, "window": 9, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.23120595600084926}
+{"cell": "n512-E4a_L4", "process": 3, "window": 9, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.21608018799997808}
+{"cell": "n512-E4a_L4", "process": 3, "window": 9, "stat_delta_jiffies": {"user": 233, "nice": 0, "system": 20, "idle": 247, "iowait": 0, "irq": 0, "softirq": 10, "steal": 4}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 10, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.21700596700065944}
+{"cell": "n512-E4a_L4", "process": 3, "window": 10, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.25338298299993767}
+{"cell": "n512-E4a_L4", "process": 3, "window": 10, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.19855661200017494}
+{"cell": "n512-E4a_L4", "process": 3, "window": 10, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.19994328300072084}
+{"cell": "n512-E4a_L4", "process": 3, "window": 10, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.21075793900035933}
+{"cell": "n512-E4a_L4", "process": 3, "window": 10, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.211820799000634}
+{"cell": "n512-E4a_L4", "process": 3, "window": 10, "stat_delta_jiffies": {"user": 235, "nice": 0, "system": 18, "idle": 250, "iowait": 0, "irq": 0, "softirq": 10, "steal": 6}}
+{"cell": "n512-E4a_L4", "process": 3, "window": 11, "slot": 0, "arm": "control", "reps": 34, "seconds": 0.2136159849997057}
+{"cell": "n512-E4a_L4", "process": 3, "window": 11, "slot": 1, "arm": "copy", "reps": 37, "seconds": 0.24000410600001487}
+{"cell": "n512-E4a_L4", "process": 3, "window": 11, "slot": 2, "arm": "variant", "reps": 23, "seconds": 0.19764425699941057}
+{"cell": "n512-E4a_L4", "process": 3, "window": 11, "slot": 3, "arm": "variant", "reps": 23, "seconds": 0.18293053999968834}
+{"cell": "n512-E4a_L4", "process": 3, "window": 11, "slot": 4, "arm": "copy", "reps": 37, "seconds": 0.23817828100072802}
+{"cell": "n512-E4a_L4", "process": 3, "window": 11, "slot": 5, "arm": "control", "reps": 34, "seconds": 0.22071045900065656}
+{"cell": "n512-E4a_L4", "process": 3, "window": 11, "stat_delta_jiffies": {"user": 230, "nice": 0, "system": 17, "idle": 250, "iowait": 0, "irq": 0, "softirq": 5, "steal": 6}}

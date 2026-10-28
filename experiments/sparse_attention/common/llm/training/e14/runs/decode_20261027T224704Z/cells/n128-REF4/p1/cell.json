@@ -1,0 +1,25 @@
+{
+ "cell": "n128-REF4",
+ "group": "frontier",
+ "campaign": "n128",
+ "variant": "REF4",
+ "control": "REF2",
+ "mode": "decode",
+ "context": 128,
+ "d_model": 128,
+ "variant_kind": "dense",
+ "control_kind": "dense",
+ "batch": 64,
+ "cache_positions": 64,
+ "position": 64,
+ "group_counts_of_the_step": {
+  "control": null,
+  "copy": null,
+  "variant": null
+ },
+ "reps": {
+  "control": 48,
+  "copy": 52,
+  "variant": 21
+ }
+}

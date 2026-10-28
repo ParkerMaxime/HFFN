@@ -1,0 +1,162 @@
+22:48:33Z checks check_e14.py: 82/82 passed (exit 0)
+22:48:40Z concurrency gate at the start of the run: median ratio 0.337 (threshold 0.4) -> PASSED
+22:49:16Z decode n128-REF1 process 0: {"cell": "n128-REF1", "mode": "decode", "process": 0, "r_variant": 0.5661601987808776, "r_copy": 0.9912367002780527}
+22:49:52Z decode n128-REF1 process 1: {"cell": "n128-REF1", "mode": "decode", "process": 1, "r_variant": 0.5946076602304102, "r_copy": 1.0370099185719526}
+22:50:27Z decode n128-REF1 process 2: {"cell": "n128-REF1", "mode": "decode", "process": 2, "r_variant": 0.5731950702669704, "r_copy": 1.012023326931585}
+22:51:04Z decode n128-REF1 process 3: {"cell": "n128-REF1", "mode": "decode", "process": 3, "r_variant": 0.5966454609815455, "r_copy": 1.0212260611810555}
+22:51:41Z decode n128-REF1 process 4: {"cell": "n128-REF1", "mode": "decode", "process": 4, "r_variant": 0.5582788322849799, "r_copy": 0.9778783716392331}
+22:52:16Z decode n128-REF3 process 0: {"cell": "n128-REF3", "mode": "decode", "process": 0, "r_variant": 1.4295642276315452, "r_copy": 1.0001179335884376}
+22:52:50Z decode n128-REF3 process 1: {"cell": "n128-REF3", "mode": "decode", "process": 1, "r_variant": 1.4396670369646853, "r_copy": 0.9994453868592375}
+22:53:26Z decode n128-REF3 process 2: {"cell": "n128-REF3", "mode": "decode", "process": 2, "r_variant": 1.4833755427027304, "r_copy": 1.024297937670733}
+22:54:01Z decode n128-REF3 process 3: {"cell": "n128-REF3", "mode": "decode", "process": 3, "r_variant": 1.4301741189838282, "r_copy": 1.0101412717473588}
+22:54:38Z decode n128-REF3 process 4: {"cell": "n128-REF3", "mode": "decode", "process": 4, "r_variant": 1.4583985300788798, "r_copy": 1.039330407525948}
+22:55:13Z decode n128-REF4 process 0: {"cell": "n128-REF4", "mode": "decode", "process": 0, "r_variant": 1.8746913870992477, "r_copy": 1.0267882656765086}
+22:55:50Z decode n128-REF4 process 1: {"cell": "n128-REF4", "mode": "decode", "process": 1, "r_variant": 1.9771934996456908, "r_copy": 1.0227262420268013}
+22:56:26Z decode n128-REF4 process 2: {"cell": "n128-REF4", "mode": "decode", "process": 2, "r_variant": 1.9193366444104178, "r_copy": 0.9951688377328185}
+22:57:02Z decode n128-REF4 process 3: {"cell": "n128-REF4", "mode": "decode", "process": 3, "r_variant": 1.9340144046645067, "r_copy": 0.9862763082944361}
+22:57:37Z decode n128-REF4 process 4: {"cell": "n128-REF4", "mode": "decode", "process": 4, "r_variant": 1.9403714223515327, "r_copy": 0.9803805187274489}
+22:58:12Z decode n128-E4a_L2 process 0: {"cell": "n128-E4a_L2", "mode": "decode", "process": 0, "r_variant": 0.8302959937463443, "r_copy": 1.0134758619300661}
+22:58:47Z decode n128-E4a_L2 process 1: {"cell": "n128-E4a_L2", "mode": "decode", "process": 1, "r_variant": 0.8368566976896863, "r_copy": 0.9882776730991049}
+22:59:22Z decode n128-E4a_L2 process 2: {"cell": "n128-E4a_L2", "mode": "decode", "process": 2, "r_variant": 0.8161093616898046, "r_copy": 0.9946135256359135}
+22:59:58Z decode n128-E4a_L2 process 3: {"cell": "n128-E4a_L2", "mode": "decode", "process": 3, "r_variant": 0.8165806510536597, "r_copy": 1.002566671965701}
+23:00:34Z decode n128-E4a_L2 process 4: {"cell": "n128-E4a_L2", "mode": "decode", "process": 4, "r_variant": 0.8285152915360283, "r_copy": 1.0246036695018592}
+23:01:10Z decode n128-E4a_L4 process 0: {"cell": "n128-E4a_L4", "mode": "decode", "process": 0, "r_variant": 1.4641613449674518, "r_copy": 0.9903554480946689}
+23:01:46Z decode n128-E4a_L4 process 1: {"cell": "n128-E4a_L4", "mode": "decode", "process": 1, "r_variant": 1.4612250515477225, "r_copy": 1.013283586847854}
+23:02:24Z decode n128-E4a_L4 process 2: {"cell": "n128-E4a_L4", "mode": "decode", "process": 2, "r_variant": 1.4309560598379982, "r_copy": 1.0171637636284059}
+23:03:01Z decode n128-E4a_L4 process 3: {"cell": "n128-E4a_L4", "mode": "decode", "process": 3, "r_variant": 1.4084382709450471, "r_copy": 0.9867478263783878}
+23:03:38Z decode n128-E4a_L4 process 4: {"cell": "n128-E4a_L4", "mode": "decode", "process": 4, "r_variant": 1.4292393699952226, "r_copy": 1.006743324136278}
+23:04:14Z decode n128-E4a_L6 process 0: {"cell": "n128-E4a_L6", "mode": "decode", "process": 0, "r_variant": 1.9482538930813615, "r_copy": 1.0157674621454444}
+23:04:49Z decode n128-E4a_L6 process 1: {"cell": "n128-E4a_L6", "mode": "decode", "process": 1, "r_variant": 2.1144038031160197, "r_copy": 1.0414268574234353}
+23:05:26Z decode n128-E4a_L6 process 2: {"cell": "n128-E4a_L6", "mode": "decode", "process": 2, "r_variant": 2.048510581914472, "r_copy": 1.0165543617192963}
+23:06:02Z decode n128-E4a_L6 process 3: {"cell": "n128-E4a_L6", "mode": "decode", "process": 3, "r_variant": 2.0273747778404365, "r_copy": 1.0013538543050464}
+23:06:38Z decode n128-E4a_L6 process 4: {"cell": "n128-E4a_L6", "mode": "decode", "process": 4, "r_variant": 2.0356327013327986, "r_copy": 0.9939314452112046}
+23:07:14Z decode n128-IND_L4 process 0: {"cell": "n128-IND_L4", "mode": "decode", "process": 0, "r_variant": 1.40968717095344, "r_copy": 0.9651447077495228}
+23:07:50Z decode n128-IND_L4 process 1: {"cell": "n128-IND_L4", "mode": "decode", "process": 1, "r_variant": 1.3961082333540449, "r_copy": 0.9853139904858093}
+23:08:26Z decode n128-IND_L4 process 2: {"cell": "n128-IND_L4", "mode": "decode", "process": 2, "r_variant": 1.4592311359124017, "r_copy": 1.0181618770262333}
+23:09:04Z decode n128-IND_L4 process 3: {"cell": "n128-IND_L4", "mode": "decode", "process": 3, "r_variant": 1.3902841611763668, "r_copy": 0.98442086377733}
+23:09:40Z decode n128-IND_L4 process 4: {"cell": "n128-IND_L4", "mode": "decode", "process": 4, "r_variant": 1.4115205689972392, "r_copy": 1.0063888380003863}
+23:10:17Z decode n512-REF1 process 0: {"cell": "n512-REF1", "mode": "decode", "process": 0, "r_variant": 0.4933873771290355, "r_copy": 1.0309669834550266}
+23:10:55Z decode n512-REF1 process 1: {"cell": "n512-REF1", "mode": "decode", "process": 1, "r_variant": 0.4952016218848081, "r_copy": 1.0205463410980955}
+23:11:32Z decode n512-REF1 process 2: {"cell": "n512-REF1", "mode": "decode", "process": 2, "r_variant": 0.49209610146868, "r_copy": 1.0299764217743677}
+23:12:08Z decode n512-REF1 process 3: {"cell": "n512-REF1", "mode": "decode", "process": 3, "r_variant": 0.5073393120553675, "r_copy": 1.020609287273402}
+23:12:45Z decode n512-REF1 process 4: {"cell": "n512-REF1", "mode": "decode", "process": 4, "r_variant": 0.5014212795358646, "r_copy": 1.004838977170066}
+23:13:25Z decode n512-REF3 process 0: {"cell": "n512-REF3", "mode": "decode", "process": 0, "r_variant": 1.5986276814429612, "r_copy": 1.0124232363510852}
+23:14:05Z decode n512-REF3 process 1: {"cell": "n512-REF3", "mode": "decode", "process": 1, "r_variant": 1.638912164240809, "r_copy": 1.03930285620029}
+23:14:44Z decode n512-REF3 process 2: {"cell": "n512-REF3", "mode": "decode", "process": 2, "r_variant": 1.528796320788818, "r_copy": 1.0476839787615106}
+23:15:23Z decode n512-REF3 process 3: {"cell": "n512-REF3", "mode": "decode", "process": 3, "r_variant": 1.5212867277909807, "r_copy": 0.9971471751547243}
+23:16:01Z decode n512-REF3 process 4: {"cell": "n512-REF3", "mode": "decode", "process": 4, "r_variant": 1.543701600832211, "r_copy": 1.013043352295307}
+23:16:41Z decode n512-REF4 process 0: {"cell": "n512-REF4", "mode": "decode", "process": 0, "r_variant": 1.968553250482123, "r_copy": 1.0100774951629174}
+23:17:20Z decode n512-REF4 process 1: {"cell": "n512-REF4", "mode": "decode", "process": 1, "r_variant": 1.9681328386943069, "r_copy": 1.0261819212950214}
+23:17:59Z decode n512-REF4 process 2: {"cell": "n512-REF4", "mode": "decode", "process": 2, "r_variant": 2.151034633926214, "r_copy": 1.053586626184611}
+23:18:38Z decode n512-REF4 process 3: {"cell": "n512-REF4", "mode": "decode", "process": 3, "r_variant": 2.078344811546158, "r_copy": 0.9946469408510272}
+23:19:17Z decode n512-REF4 process 4: {"cell": "n512-REF4", "mode": "decode", "process": 4, "r_variant": 2.122353711568539, "r_copy": 1.04451239012919}
+23:19:55Z decode n512-E4a_L2 process 0: {"cell": "n512-E4a_L2", "mode": "decode", "process": 0, "r_variant": 0.774031583795161, "r_copy": 1.0093904735088304}
+23:20:33Z decode n512-E4a_L2 process 1: {"cell": "n512-E4a_L2", "mode": "decode", "process": 1, "r_variant": 0.7892482552636243, "r_copy": 1.030065578869488}
+23:21:11Z decode n512-E4a_L2 process 2: {"cell": "n512-E4a_L2", "mode": "decode", "process": 2, "r_variant": 0.8091577183260465, "r_copy": 1.0318406239111115}
+23:21:48Z decode n512-E4a_L2 process 3: {"cell": "n512-E4a_L2", "mode": "decode", "process": 3, "r_variant": 0.7722927631595312, "r_copy": 1.0472566749748182}
+23:22:26Z decode n512-E4a_L2 process 4: {"cell": "n512-E4a_L2", "mode": "decode", "process": 4, "r_variant": 0.7733879055460076, "r_copy": 1.0380100785413466}
+23:23:05Z decode n512-E4a_L4 process 0: {"cell": "n512-E4a_L4", "mode": "decode", "process": 0, "r_variant": 1.357241804627553, "r_copy": 0.9880985081405644}
+23:23:45Z decode n512-E4a_L4 process 1: {"cell": "n512-E4a_L4", "mode": "decode", "process": 1, "r_variant": 1.4790344002471554, "r_copy": 1.0706599131577799}
+23:24:25Z decode n512-E4a_L4 process 2: {"cell": "n512-E4a_L4", "mode": "decode", "process": 2, "r_variant": 1.4662827844184336, "r_copy": 1.0684717143438194}
+23:25:04Z decode n512-E4a_L4 process 3: {"cell": "n512-E4a_L4", "mode": "decode", "process": 3, "r_variant": 1.371434132146157, "r_copy": 1.010748748658958}
+23:25:42Z decode n512-E4a_L4 process 4: {"cell": "n512-E4a_L4", "mode": "decode", "process": 4, "r_variant": 1.3786514781913546, "r_copy": 0.9894303478373976}
+23:26:21Z decode n512-E4a_L6 process 0: {"cell": "n512-E4a_L6", "mode": "decode", "process": 0, "r_variant": 2.0876568607292727, "r_copy": 1.0431648108351164}
+23:27:00Z decode n512-E4a_L6 process 1: {"cell": "n512-E4a_L6", "mode": "decode", "process": 1, "r_variant": 2.235265122860536, "r_copy": 1.051733175258138}
+23:27:40Z decode n512-E4a_L6 process 2: {"cell": "n512-E4a_L6", "mode": "decode", "process": 2, "r_variant": 2.21834117759627, "r_copy": 1.0663790156175827}
+23:28:20Z decode n512-E4a_L6 process 3: {"cell": "n512-E4a_L6", "mode": "decode", "process": 3, "r_variant": 2.188873897488304, "r_copy": 1.0433975419080863}
+23:29:00Z decode n512-E4a_L6 process 4: {"cell": "n512-E4a_L6", "mode": "decode", "process": 4, "r_variant": 2.0756749318654317, "r_copy": 1.0238958038011585}
+23:29:39Z decode n512-IND_L4 process 0: {"cell": "n512-IND_L4", "mode": "decode", "process": 0, "r_variant": 1.3845616402769214, "r_copy": 1.0311630940936123}
+23:30:18Z decode n512-IND_L4 process 1: {"cell": "n512-IND_L4", "mode": "decode", "process": 1, "r_variant": 1.443279021552376, "r_copy": 1.062336457960277}
+23:30:56Z decode n512-IND_L4 process 2: {"cell": "n512-IND_L4", "mode": "decode", "process": 2, "r_variant": 1.5083829178489985, "r_copy": 1.0247861369037885}
+23:31:37Z decode n512-IND_L4 process 3: {"cell": "n512-IND_L4", "mode": "decode", "process": 3, "r_variant": 1.4608148398521767, "r_copy": 1.0384146630510287}
+23:32:15Z decode n512-IND_L4 process 4: {"cell": "n512-IND_L4", "mode": "decode", "process": 4, "r_variant": 1.418968351333429, "r_copy": 1.035218218318815}
+23:32:54Z decode w256-REF1_W256 process 0: {"cell": "w256-REF1_W256", "mode": "decode", "process": 0, "r_variant": 0.45700001971313253, "r_copy": 0.999740191597817}
+23:33:35Z decode w256-REF1_W256 process 1: {"cell": "w256-REF1_W256", "mode": "decode", "process": 1, "r_variant": 0.4480961838462406, "r_copy": 0.9986749698880992}
+23:34:15Z decode w256-REF1_W256 process 2: {"cell": "w256-REF1_W256", "mode": "decode", "process": 2, "r_variant": 0.46384923752541396, "r_copy": 1.0154946500287487}
+23:34:55Z decode w256-REF1_W256 process 3: {"cell": "w256-REF1_W256", "mode": "decode", "process": 3, "r_variant": 0.4719055650186176, "r_copy": 1.0047210366273251}
+23:35:36Z decode w256-REF1_W256 process 4: {"cell": "w256-REF1_W256", "mode": "decode", "process": 4, "r_variant": 0.4751402425497015, "r_copy": 1.0124674047958306}
+23:36:16Z decode w256-REF2_W256_h16 process 0: {"cell": "w256-REF2_W256_h16", "mode": "decode", "process": 0, "r_variant": 1.0535883312364853, "r_copy": 1.0045610457412883}
+23:36:57Z decode w256-REF2_W256_h16 process 1: {"cell": "w256-REF2_W256_h16", "mode": "decode", "process": 1, "r_variant": 1.0664514745883378, "r_copy": 1.0180575915341028}
+23:37:38Z decode w256-REF2_W256_h16 process 2: {"cell": "w256-REF2_W256_h16", "mode": "decode", "process": 2, "r_variant": 1.0687070139581558, "r_copy": 1.0501335307741324}
+23:38:19Z decode w256-REF2_W256_h16 process 3: {"cell": "w256-REF2_W256_h16", "mode": "decode", "process": 3, "r_variant": 1.0638087223023307, "r_copy": 1.0224365608227077}
+23:39:00Z decode w256-REF2_W256_h16 process 4: {"cell": "w256-REF2_W256_h16", "mode": "decode", "process": 4, "r_variant": 1.091963502266879, "r_copy": 1.033153138989522}
+23:39:42Z decode w256-E4a_L2_W256 process 0: {"cell": "w256-E4a_L2_W256", "mode": "decode", "process": 0, "r_variant": 0.6328302809453319, "r_copy": 1.0081237589510317}
+23:40:23Z decode w256-E4a_L2_W256 process 1: {"cell": "w256-E4a_L2_W256", "mode": "decode", "process": 1, "r_variant": 0.661382198172676, "r_copy": 1.0231485548549797}
+23:41:04Z decode w256-E4a_L2_W256 process 2: {"cell": "w256-E4a_L2_W256", "mode": "decode", "process": 2, "r_variant": 0.6894413729361227, "r_copy": 1.0245927837274327}
+23:41:46Z decode w256-E4a_L2_W256 process 3: {"cell": "w256-E4a_L2_W256", "mode": "decode", "process": 3, "r_variant": 0.640634584908248, "r_copy": 1.025503449703312}
+23:42:26Z decode w256-E4a_L2_W256 process 4: {"cell": "w256-E4a_L2_W256", "mode": "decode", "process": 4, "r_variant": 0.6307214423962266, "r_copy": 1.0152499422344652}
+23:43:11Z decode w256-E4a_L4_W256 process 0: {"cell": "w256-E4a_L4_W256", "mode": "decode", "process": 0, "r_variant": 1.2376259030420425, "r_copy": 1.0566976214957289}
+23:43:55Z decode w256-E4a_L4_W256 process 1: {"cell": "w256-E4a_L4_W256", "mode": "decode", "process": 1, "r_variant": 1.2455040086442515, "r_copy": 1.006561070189776}
+23:44:40Z decode w256-E4a_L4_W256 process 2: {"cell": "w256-E4a_L4_W256", "mode": "decode", "process": 2, "r_variant": 1.3327742909786484, "r_copy": 1.0107892320791771}
+23:45:25Z decode w256-E4a_L4_W256 process 3: {"cell": "w256-E4a_L4_W256", "mode": "decode", "process": 3, "r_variant": 1.2096708271839542, "r_copy": 1.0049005042802048}
+23:46:10Z decode w256-E4a_L4_W256 process 4: {"cell": "w256-E4a_L4_W256", "mode": "decode", "process": 4, "r_variant": 1.186535388145039, "r_copy": 1.0343355178442428}
+23:46:54Z decode w256-E4a_L4_W256_h16 process 0: {"cell": "w256-E4a_L4_W256_h16", "mode": "decode", "process": 0, "r_variant": 1.2335341099003023, "r_copy": 1.0054059457284201}
+23:47:38Z decode w256-E4a_L4_W256_h16 process 1: {"cell": "w256-E4a_L4_W256_h16", "mode": "decode", "process": 1, "r_variant": 1.2915550164303347, "r_copy": 1.0020755528638028}
+23:48:20Z decode w256-E4a_L4_W256_h16 process 2: {"cell": "w256-E4a_L4_W256_h16", "mode": "decode", "process": 2, "r_variant": 1.3167224326655038, "r_copy": 1.0162511175967759}
+23:49:04Z decode w256-E4a_L4_W256_h16 process 3: {"cell": "w256-E4a_L4_W256_h16", "mode": "decode", "process": 3, "r_variant": 1.3035902355947853, "r_copy": 1.0254211035604097}
+23:49:47Z decode w256-E4a_L4_W256_h16 process 4: {"cell": "w256-E4a_L4_W256_h16", "mode": "decode", "process": 4, "r_variant": 1.2290098381160321, "r_copy": 1.0355802695001342}
+23:50:24Z decode p1 process 0: {"cell": "p1", "mode": "decode", "process": 0, "r_variant": 0.7289127196056588, "r_copy": 1.0216020654035534}
+23:51:01Z decode p1 process 1: {"cell": "p1", "mode": "decode", "process": 1, "r_variant": 0.7202235535466506, "r_copy": 1.0257356415222678}
+23:51:37Z decode p1 process 2: {"cell": "p1", "mode": "decode", "process": 2, "r_variant": 0.7186904809547621, "r_copy": 1.0027951571120588}
+23:52:13Z decode p1 process 3: {"cell": "p1", "mode": "decode", "process": 3, "r_variant": 0.7034529873496467, "r_copy": 1.0089360892971628}
+23:52:49Z decode p1 process 4: {"cell": "p1", "mode": "decode", "process": 4, "r_variant": 0.7140706267634436, "r_copy": 1.0180768454743288}
+23:53:27Z decode p2 process 0: {"cell": "p2", "mode": "decode", "process": 0, "r_variant": 0.9661367508839876, "r_copy": 0.9884859329792579}
+23:54:04Z decode p2 process 1: {"cell": "p2", "mode": "decode", "process": 1, "r_variant": 1.0176156867451767, "r_copy": 0.9775925275673664}
+23:54:41Z decode p2 process 2: {"cell": "p2", "mode": "decode", "process": 2, "r_variant": 1.0224543862216033, "r_copy": 1.0150054496563115}
+23:55:16Z decode p2 process 3: {"cell": "p2", "mode": "decode", "process": 3, "r_variant": 1.0073097404779858, "r_copy": 0.9837166222074332}
+23:55:52Z decode p2 process 4: {"cell": "p2", "mode": "decode", "process": 4, "r_variant": 0.9896689813440978, "r_copy": 0.9972320560424824}
+23:56:33Z decode p3 process 0: {"cell": "p3", "mode": "decode", "process": 0, "r_variant": 0.6475319856581965, "r_copy": 1.019993267182162}
+23:57:13Z decode p3 process 1: {"cell": "p3", "mode": "decode", "process": 1, "r_variant": 0.6831467960029161, "r_copy": 1.0151457417762573}
+23:57:53Z decode p3 process 2: {"cell": "p3", "mode": "decode", "process": 2, "r_variant": 0.6970555003077727, "r_copy": 1.030681651075956}
+23:58:33Z decode p3 process 3: {"cell": "p3", "mode": "decode", "process": 3, "r_variant": 0.6479794587497705, "r_copy": 1.0240354297771828}
+23:59:13Z decode p3 process 4: {"cell": "p3", "mode": "decode", "process": 4, "r_variant": 0.6424554336031959, "r_copy": 1.0309711380629123}
+23:59:52Z decode p4 process 0: {"cell": "p4", "mode": "decode", "process": 0, "r_variant": 1.03246216280319, "r_copy": 1.0255924906437697}
+00:00:32Z decode p4 process 1: {"cell": "p4", "mode": "decode", "process": 1, "r_variant": 0.9969974771319062, "r_copy": 1.0070498209382635}
+00:01:11Z decode p4 process 2: {"cell": "p4", "mode": "decode", "process": 2, "r_variant": 1.0274872285640675, "r_copy": 1.002356584329466}
+00:01:52Z decode p4 process 3: {"cell": "p4", "mode": "decode", "process": 3, "r_variant": 1.0229861982548503, "r_copy": 1.014765596909747}
+00:02:32Z decode p4 process 4: {"cell": "p4", "mode": "decode", "process": 4, "r_variant": 1.0247908334133928, "r_copy": 1.0076311969429415}
+00:03:22Z decode p5 process 0: {"cell": "p5", "mode": "decode", "process": 0, "r_variant": 0.6385444388530507, "r_copy": 0.9878235063515426}
+00:04:10Z decode p5 process 1: {"cell": "p5", "mode": "decode", "process": 1, "r_variant": 0.6792152324507177, "r_copy": 1.0139078205884933}
+00:04:59Z decode p5 process 2: {"cell": "p5", "mode": "decode", "process": 2, "r_variant": 0.6991764315606293, "r_copy": 0.9978267622701551}
+00:05:46Z decode p5 process 3: {"cell": "p5", "mode": "decode", "process": 3, "r_variant": 0.6523127106654718, "r_copy": 0.980715545207884}
+00:06:35Z decode p5 process 4: {"cell": "p5", "mode": "decode", "process": 4, "r_variant": 0.6290062507756047, "r_copy": 0.9738188994404743}
+00:07:24Z decode p6 process 0: {"cell": "p6", "mode": "decode", "process": 0, "r_variant": 0.9322848924611908, "r_copy": 0.9980139294245345}
+00:08:10Z decode p6 process 1: {"cell": "p6", "mode": "decode", "process": 1, "r_variant": 0.9389304107687902, "r_copy": 1.0118917438406378}
+00:08:56Z decode p6 process 2: {"cell": "p6", "mode": "decode", "process": 2, "r_variant": 0.9303182583070202, "r_copy": 0.9798383035290358}
+00:09:44Z decode p6 process 3: {"cell": "p6", "mode": "decode", "process": 3, "r_variant": 0.933747063076081, "r_copy": 1.0076428900405543}
+00:10:32Z decode p6 process 4: {"cell": "p6", "mode": "decode", "process": 4, "r_variant": 0.9470047447309847, "r_copy": 1.0343028709640958}
+00:10:34Z # E14 decode: analysis (delta of the run = 0.0707)
+
+| cell | variant / anchor | r median [min–max] | outcome | counted ratio | r / counted | steal fraction |
+|---|---|---|---|---|---|---|
+| n128-REF1 | REF1 / REF2 | 0.573 [0.558–0.597] | gain (variant faster) | 0.566 | 1.01 | 0.0085 |
+| n128-REF3 | REF3 / REF2 | 1.440 [1.430–1.483] | loss (variant slower) | 1.434 | 1.00 | 0.0097 |
+| n128-REF4 | REF4 / REF2 | 1.934 [1.875–1.977] | loss (variant slower) | 1.869 | 1.03 | 0.0092 |
+| n128-E4a_L2 | E4a_L2 / REF2 | 0.829 [0.816–0.837] | gain (variant faster) | 0.520 | 1.59 | 0.0083 |
+| n128-E4a_L4 | E4a_L4 / REF2 | 1.431 [1.408–1.464] | loss (variant slower) | 0.910 | 1.57 | 0.0100 |
+| n128-E4a_L6 | E4a_L6 / REF2 | 2.036 [1.948–2.114] | loss (variant slower) | 1.299 | 1.57 | 0.0099 |
+| n128-IND_L4 | IND_L4 / REF2 | 1.410 [1.390–1.459] | loss (variant slower) | 0.467 | 3.02 | 0.0116 |
+| n512-REF1 | REF1_N512 / REF2_N512 | 0.495 [0.492–0.507] | gain (variant faster) | 0.547 | 0.91 | 0.0107 |
+| n512-REF3 | REF3_N512 / REF2_N512 | 1.544 [1.521–1.639] | loss (variant slower) | 1.453 | 1.06 | 0.0106 |
+| n512-REF4 | REF4_N512 / REF2_N512 | 2.078 [1.968–2.151] | loss (variant slower) | 1.906 | 1.09 | 0.0096 |
+| n512-E4a_L2 | E4a_L2_N512 / REF2_N512 | 0.774 [0.772–0.809] | gain (variant faster) | 0.444 | 1.74 | 0.0090 |
+| n512-E4a_L4 | E4a_L4_N512 / REF2_N512 | 1.379 [1.357–1.479] | loss (variant slower) | 0.794 | 1.74 | 0.0102 |
+| n512-E4a_L6 | E4a_L6_N512 / REF2_N512 | 2.189 [2.076–2.235] | loss (variant slower) | 1.144 | 1.91 | 0.0093 |
+| n512-IND_L4 | IND_L4_N512 / REF2_N512 | 1.443 [1.385–1.508] | loss (variant slower) | 0.476 | 3.03 | 0.0103 |
+| w256-REF1_W256 | REF1_W256 / REF2_W256 | 0.464 [0.448–0.475] | gain (variant faster) | 0.531 | 0.87 | 0.0103 |
+| w256-REF2_W256_h16 | REF2_W256_h16 / REF2_W256 | 1.066 [1.054–1.092] | no difference within delta | 1.000 | 1.07 | 0.0111 |
+| w256-E4a_L2_W256 | E4a_L2_W256 / REF2_W256 | 0.641 [0.631–0.689] | gain (variant faster) | 0.458 | 1.40 | 0.0101 |
+| w256-E4a_L4_W256 | E4a_L4_W256 / REF2_W256 | 1.238 [1.187–1.333] | loss (variant slower) | 0.854 | 1.45 | 0.0098 |
+| w256-E4a_L4_W256_h16 | E4a_L4_W256_h16 / REF2_W256 | 1.292 [1.229–1.317] | loss (variant slower) | 0.854 | 1.51 | 0.0098 |
+| p1 | E4a_L4 / E2h_L4 | 0.719 [0.703–0.729] | gain (variant faster) | 0.587 | 1.22 | 0.0092 |
+| p2 | E2h_L4 / REF4 | 1.007 [0.966–1.022] | no difference within delta | 0.829 | 1.22 | 0.0107 |
+| p3 | E4a_L4_N512 / E2h_L4_N512 | 0.648 [0.642–0.697] | gain (variant faster) | 0.474 | 1.37 | 0.0120 |
+| p4 | E2h_L4_N512 / REF4_N512 | 1.025 [0.997–1.032] | no difference within delta | 0.880 | 1.17 | 0.0111 |
+| p5 | E4a_L4_W256 / E2h_L4_W256 | 0.652 [0.629–0.699] | gain (variant faster) | 0.521 | 1.25 | 0.0122 |
+| p6 | E2h_L4_W256 / REF4_W256 | 0.934 [0.930–0.947] | no difference within delta | 0.845 | 1.10 | 0.0120 |
+
+Products of the pairs (estimated):
+- p1xp2: 0.724 (counted 0.487)
+- p3xp4: 0.664 (counted 0.417)
+- p5xp6: 0.609 (counted 0.440)
+00:10:34Z EXIT 0 
