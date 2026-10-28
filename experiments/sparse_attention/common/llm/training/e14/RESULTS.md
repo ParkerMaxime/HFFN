@@ -38,8 +38,8 @@ The median `|copy − 1|` is 0.020 (prefill) and 0.017 (decoding), the 95th perc
 | w256-E4a_L4_W256_h16 | E4a_L4_W256_h16 / REF2_W256 | 1.032 [1.002–1.063] | no difference | 1.292 [1.229–1.317] | slower | 0.784 / 0.854 |
 
 (faster / slower: beyond `delta` of the run; "no difference": within `delta`.) Counted multiply-adds of the dense arms follow time closely (`r` / counted 0.87-1.10); those of the constrained arms do
-not: `r` / counted is 1.26-1.67 in prefill and 1.40-1.91 in decoding (`E4a`), 2.2-3.0 for `IND_L4`. At equal depth the constrained model is slower than the dense one in this executor wherever the count
-promises less than about 0.8 of the dense time (`E4a_L4` / `REF2`: counted 0.86, measured 1.24 prefill, 1.43 decoding).
+not: `r` / counted is 1.26-1.67 in prefill and 1.40-1.91 in decoding (`E4a`), 2.2-3.0 for `IND_L4`. At the depth ratio of the central pair the constrained model is slower than the dense one (`E4a_L4` / `REF2`: counted 0.86, measured 1.24 in prefill and 1.43 in decoding, because it
+is twice as deep); at equal depth it is faster (`E4a_L2` / `REF2`: counted 0.49, measured 0.73 and 0.83).
 
 ## Estimated: the frontier and the gaps; answer to decision 16 (per mode and campaign, apart)
 
@@ -58,11 +58,11 @@ Gap `g` = bpb of the constrained arm minus the dense frontier at its time, per s
 
 - **No `E4a` arm is above the frontier of measured time in either mode**: the largest favourable value is the median gap of `E4a_L2` at `N` 512 in prefill (−0.008), whose unfavourable reading is positive in every seed (+0.033 … +0.055). In
   prefill at `M = 128` the constrained arms lie on the frontier within τ of it (gaps 0.015-0.022 at `N` 128, −0.008 and +0.019 at `N` 512); at equal counted multiply-adds E8-E9 read them as dominating: the change
-  of axis from counted multiply-adds to measured time removes the advantage and leaves them close to the frontier, as the first frontier of PLAN 17.1 estimated (+0.021 and +0.008 for `E4a_L4`; here +0.015 and +0.019).
+  of axis from counted multiply-adds to measured time removes the advantage and leaves them close to the frontier, of the size that the first frontier of PLAN 17.1 estimated for `E4a_L4` (+0.021 and +0.008; here +0.015 and +0.019).
 - **No `E4a` arm is below it beyond τ either**, so the answer is *not resolved* in all six cases (and not *unfavourable*: an `E4a_L6` arm or the `M = 256` arms, outside the range, count as neither).
 - **Decoding is less favourable than prefill, not more** (hypothesis of PLAN 17.4 contradicted): the gaps of the same arms are larger in decoding (`E4a_L4` +0.046 and +0.062 against +0.015 and +0.019; `E4a_L2` +0.073 and +0.070
-  against +0.022 and −0.008), the time ratios are higher (`E4a_L4` / `REF2`: 1.43 and 1.38 against 1.24 and 1.16), and at `M = 256` the constrained arms are 16-21 % slower than the dense arm at the same quality in decoding but within `delta`
-  of it in prefill. The two modes are two runs with their own anchor and `delta`; the comparison is of gaps on the bits-per-byte axis, descriptive.
+  against +0.022 and −0.008), the time ratios are higher (`E4a_L4` / `REF2`: 1.43 and 1.38 against 1.24 and 1.16), and at `M = 256` the constrained arms are 16 % and 21 % slower than the nearest dense arm in decoding, with equal or lower bits per byte, but within `delta` of `REF2_W256` in prefill
+  (0.987 and 1.032). The two modes are two runs with their own anchor and `delta`; the comparison is of gaps on the bits-per-byte axis, descriptive.
 - **At `M = 256` in prefill** `E4a_L4_W256_h16` lies at 1.032 [1.002–1.063] of `REF2_W256` (no difference within `delta`) with a bits per byte 0.046 lower (d −0.0458, all seeds negative: E13). The other dense arm, `REF2_W256_h16`, is at
   1.104 and 0.004 lower than `REF2_W256`. By the medians the 16-head constrained model is 6.5 % faster than `REF2_W256_h16` and 0.042 lower in bits per byte (the pair of E13), but a ratio of two ratios built through the anchor is a
   margin of the size of `delta` (0.062): descriptive, **not a frozen reading**, not resolved. The frozen rule reads the arm as outside the range and gives no frontier verdict.
@@ -81,7 +81,7 @@ Gap `g` = bpb of the constrained arm minus the dense frontier at its time, per s
 Products (estimated, two cells combined), measured against the counted `E4a_L4` / `REF4` (0.458, 0.369, 0.402): prefill p1 × p2 = 0.645, p3 × p4 = 0.639, p5 × p6 = 0.533; decoding 0.724, 0.664, 0.609.
 
 - **The sparse attention alone is faster at equal depth in both modes and at the three sizes**: 0.72, 0.69, 0.70 of `E2h` in prefill and 0.72, 0.65, 0.65 in decoding (gains beyond `delta`), against counted 0.54, 0.40, 0.46 and 0.59, 0.47, 0.52:
-  the measured gain is about half of the counted one. It includes the scheduling it allows (one barrier per layer instead of two, README of `prep4`).
+  the measured gain (28-35 %) is between half and three quarters of the counted one (41-60 %). It includes the scheduling it allows (one barrier per layer instead of two, README of `prep4`).
 - **The routing of the FFN alone** (against a masked dense FFN, which executes the whole matrices: an overstatement of its gain for the HFFN runtime, hypothesis, README) is faster in prefill (0.90, 0.93, 0.76) and **not
   distinguishable from the unrouted model in decoding** (1.007, 1.025, 0.934 with `delta` 0.0707; p6 has `1 − r` = 0.066).
 - Time by share, prefill at `N` 128: the attention alone carries the larger share of the time gap of `E4a_L4` against `REF4` (0.715 against 0.902), at `N` 512 likewise (0.685 against 0.932), at `M = 256` the two are closer (0.699, 0.764).
@@ -100,8 +100,8 @@ Products (estimated, two cells combined), measured against the counted `E4a_L4` 
 Counted activations (the counter): `E4a` / `E2h` 0.375, 0.292, 0.325; `E2h` / `REF4` 0.667, 0.857, 0.769. Parameters and AdamW states counted: `E4a` / `E2h` 0.868 (0.867 at `M = 256`), `E2h` / `REF4` 1; KV cache stored 1 in both pairs.
 Per decoded token (e), bytes: `E4a_L4` 7,633 (128), 21,709 (512), 43,366 (256); `E2h_L4` 4,641, 4,641, 7,201; `REF4` 4,608, 4,608, 7,424. Per token (a)/(b)/(c) of the nine arms: `analysis.json`.
 
-- **The sparse attention alone does not save activation memory in this harness**: the constrained model keeps 11-32 % more saved tensors than `E2h` at equal depth (counted: 0.29-0.38), and its prefill peak is 22-24 % higher; the
-  routing of the FFN alone saves memory (0.75-0.81 of the saved tensors, 0.63-0.65 of the prefill peak, against counted 0.67-0.86). The first is the result of E10 seen with the FFN held equal: the dense keys and values, the
+- **The sparse attention alone does not save activation memory in this harness**: the constrained model keeps 12-32 % more saved tensors than `E2h` at equal depth (counted: 0.29-0.38), and its prefill peak is 22-24 % higher; the
+  routing of the FFN alone saves memory (0.75-0.80 of the saved tensors, 0.63-0.65 of the prefill peak, against counted 0.67-0.86). The first is the result of E10 seen with the FFN held equal: the dense keys and values, the
   gathered rows and the padding of the packed form are stored (hypothesis, as E10).
 - **In decoding the packed constrained step has a peak 1.6 to 6.0 times that of `E2h`**, growing with the cache (`N` 128 → 512: 1.6 → 4.7) although it reads a quarter of the cache (counted): the step copies, for the sequences routed to a
   group, the cache slice of the heads of that group (README of `prep4`: *gather of the cache*, padded to the largest count of the step). It is a cost of this executor and the most likely cause (hypothesis, not isolated) of the
@@ -109,8 +109,8 @@ Per decoded token (e), bytes: `E4a_L4` 7,633 (128), 21,709 (512), 43,366 (256); 
 
 ## What E14 shows, and does not
 
-- **Measured:** on the frontier of quality against measured time, the constrained family is close to the dense frontier but never above it, in prefill (gaps ≤ 0.02 at `M = 128`) and further behind it in decoding (gaps 0.04-0.09), at every context and
-  width tried; the sparse attention alone is 28-35 % faster than the dense attention at equal depth in both modes while keeping 11-32 % more activation memory in this harness (up to 6 times the memory per decoded token); the routing of the
+- **Measured:** on the frontier of quality against measured time, the constrained family is close to the dense frontier but never above it, in prefill (gaps ≤ 0.022 at `M = 128`) and further behind it in decoding (gaps 0.046-0.092), at every context and
+  width tried; the sparse attention alone is 28-35 % faster than the dense attention at equal depth in both modes while keeping 12-32 % more activation memory in this harness (up to 6 times the memory per decoded token); the routing of the
   FFN alone gains 7-24 % of time in prefill and none distinguishable from noise in decoding.
 - **Estimated:** every gap, every product, every answer to decision 16 (*not resolved* in the six cases).
 - **Hypotheses, not tested:** the cause of the larger decoding gap and of the memory of the decoded step (the gather of the cache slices and the padding); that a native implementation moves the points; that the masked dense FFN overstates the gain of the routing.
@@ -119,6 +119,6 @@ Per decoded token (e), bytes: `E4a_L4` 7,633 (128), 21,709 (512), 43,366 (256); 
 ## Limits
 
 - This executor, this machine, forward only; masked dense FFN; the decoded step gathers the cache slices of the routed sequences and pads the four groups to the largest count (counts of process 0: `[14, 21, 13, 16]` at `N` 128, `[19, 17, 17, 11]` at 512).
-- Each run's `delta` is set by one cell-process; cells with ratios within a few hundredths of 1 are unresolved by the rule (`w256-E4a_L4_W256`, p2, p4, p6 in decoding, p6 `1 − r` = 0.066 against 0.0707). The concurrency gate passed in the three timing contexts with margins of 0.06-0.11 under 0.4.
+- Each run's `delta` is set by one cell-process; cells with ratios within a few hundredths of 1 are unresolved by the rule (`w256-E4a_L4_W256`, p2, p4, p6 in decoding, p6 `1 − r` = 0.066 against 0.0707). The concurrency gate passed at the start of both timing runs (0.325 and 0.337, threshold 0.4).
 - Bits per byte are those of E8, E9, E13 (three seeds each, rates of the middle depths and of the `_h16` arms computed, `H*` not recalibrated at width); at `M = 256` the dense frontier has three points, so all three constrained arms of the campaign
   fall outside its range under the shifts of `delta`; the frontier verdict is not defined there.
