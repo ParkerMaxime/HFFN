@@ -1,6 +1,7 @@
 """Once-per-batch cold API refusal suites, copied with source provenance.
 
-Context lifecycle faults and checkpoint faults: each one must be refused by the shared module under test.
+Context lifecycle and checkpoint helpers and faults.
+Only imports and names are adapted to the modules of this tree.
 """
 import copy
 import math

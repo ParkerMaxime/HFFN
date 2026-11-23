@@ -12,23 +12,10 @@ from pathlib import Path
 import torch
 from torch import nn
 
-from .padded_export import load_hffn_padded_training_layer
-from .compact_export import load_hffn_compact_g4_layer
+from hffn_pythia.compact_format import load_hffn_compact_g4_layer
 
 
 from hffn_pythia.dense_control import FixedSupportAdamW
-
-
-def _layer_masks(layer) -> tuple[torch.Tensor, torch.Tensor]:
-    up = torch.zeros((layer.d_ff, layer.d_model), dtype=torch.float32)
-    down = torch.zeros((layer.d_model, layer.d_ff), dtype=torch.float32)
-    max_group = int(layer.b_up_pad.shape[1])
-    for hidden in range(layer.d_ff):
-        group, row = divmod(hidden, max_group)
-        up_degree, down_degree = int(layer.up_deg[group, row]), int(layer.down_deg[group, row])
-        up[hidden, layer.up_idx_pad[group, row, :up_degree].long()] = 1.0
-        down[layer.down_idx_pad[group, row, :down_degree].long(), hidden] = 1.0
-    return up, down
 
 
 def _compact_layer_masks(layer) -> tuple[torch.Tensor, torch.Tensor]:
@@ -54,7 +41,7 @@ def build_fixed_support_pythia_adamw(model: nn.Module, export_dir: str | Path, *
         if compact.is_file():
             up, down = _compact_layer_masks(load_hffn_compact_g4_layer(compact))
         else:
-            up, down = _layer_masks(load_hffn_padded_training_layer(root / f"layer{index}" / "hffn_training_padded_v1.pt"))
+            raise FileNotFoundError(f"layer {index}: {compact} is missing; the padded export format is retired and only hffn_training_compact_g4_v2.pt is read")
         dense_up = block.mlp.dense_h_to_4h.weight
         dense_down = block.mlp.dense_4h_to_h.weight
         if dense_up.shape != up.shape or dense_down.shape != down.shape:

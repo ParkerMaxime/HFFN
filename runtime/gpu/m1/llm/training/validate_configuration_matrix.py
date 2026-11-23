@@ -55,7 +55,7 @@ def main() -> None:
             gpu_rows = []
             if args.gpu_parity:
                 for n in args.n:
-                    layout = layouts[str(n)]
+                    layout = "auto"  # the selected layout; a forced one is the forward test switch of two schedules only
                     gpu_rows.append(validate(specs[0], n, args.seed + model_size + density, layout))
                 torch.mps.synchronize()
             rows.append({

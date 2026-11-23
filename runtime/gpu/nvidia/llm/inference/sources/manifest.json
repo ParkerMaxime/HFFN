@@ -2,7 +2,7 @@
   "files": [
     {
       "path": "../../../../common/pythia/hffn_pythia/export.py",
-      "sha256": "3881ed36970f651c940a2bec8cfe847de4b20c61caf8043c88f63b551f7bea9f",
+      "sha256": "3f8945de43dbd61f0dd3d9bf847daae48e5365f563d5a6c2cb14cf5c34059527",
       "role": "reader of the compact exports (groups=True for the training runtime), shared with the Pythia inference leaves"
     },
     {

@@ -8,4 +8,6 @@
 set -uo pipefail
 cd "$(dirname "$0")"
 [ -z "${PYTORCH_ENABLE_MPS_FALLBACK:-}" ] || { echo "refused: PYTORCH_ENABLE_MPS_FALLBACK is set" >&2; exit 2; }
+# Gates at the same time, per model size (16 GB of memory; the model gates hold a float64 model).
+export HFFN_CHECK_LIMITS=${HFFN_CHECK_LIMITS-layer/pythia70m=4,layer/pythia160m=3,gates/pythia70m=3,gates/pythia160m=2}
 exec ../../../common/llm/training/check_core.sh "$PWD" "$@"

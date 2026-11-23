@@ -1,13 +1,16 @@
 from __future__ import annotations
 
 import math
-from typing import Dict
+from typing import TYPE_CHECKING, Dict
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from runtime.cpu.m1.ffn.training.models import HFFNCompactFFN, SparseMaskedReferenceFFN
+from runtime.cpu.m1.ffn.training.models import SparseMaskedReferenceFFN
+
+if TYPE_CHECKING:
+    from runtime.cpu.m1.ffn.training.shared_toy import HFFNToyFFN
 
 
 @torch.no_grad()
@@ -35,7 +38,7 @@ def evaluate(model: nn.Module, x: torch.Tensor, y: torch.Tensor, batch_size: int
 
 def train_one_epoch(
     reference: SparseMaskedReferenceFFN,
-    hffn: HFFNCompactFFN,
+    hffn: HFFNToyFFN,
     ref_opt: torch.optim.Optimizer,
     hffn_opt: torch.optim.Optimizer,
     x_train: torch.Tensor,

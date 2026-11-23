@@ -108,8 +108,8 @@ diagnostic, one session); this is why this leaf builds the OpenMP scheduler of t
 - down projection per output feature, over T contiguous groups of outputs, reading the same edges in output order
   (inverted scheme built at load time, no reduction): the compact inverse reduction route of the WANDA article.
 
-N = 1 takes the kernel's `decode` route, N >= 2 the `dual` route; beyond 96 tokens, the batch is processed in
-consecutive blocks. Each hidden value and each output is computed by a single thread, in slot order: the result
+N = 1 takes the kernel's `decode` route, N >= 2 the `dual` route; a block of N tokens is one native call for every N (the
+96-token tile lives inside the kernel). Each hidden value and each output is computed by a single thread, in slot order: the result
 depends neither on T nor on the partitions. Partitions are balanced by work (up slots per neuron, down edges per
 output): WANDA degrees are irregular.
 
@@ -140,7 +140,7 @@ absolute and relative logit gap) are reported without threshold.
 
 `tests/test_openmp_build.py` compiles the kernel twice from the shared source, with the OpenMP scheduler (this
 leaf) and with the private pool, runs both on a synthetic layer of irregular supports (degrees 0 to 60) and states:
-the outputs have the same bits for both schedulers and for T = 1, 2, 3, 8 (N = 1, then N up to 130, split in blocks);
+the outputs have the same bits for both schedulers and for T = 1, 2, 3, 8 (N = 1, then N up to 130);
 they are within 2e-5 of a float64 oracle; and, once PyTorch is imported, a single OpenMP runtime is mapped in the
 process after the OpenMP build is loaded.
 
@@ -224,13 +224,13 @@ not start a step after 4 hours and ends with `EXIT=124` (status `partial`) if it
   `nn.Linear`, on the same OpenMP team.
 - HFFN is slower than dense where the FFN is dense enough and the batch large (long prefill at high density): the
   expected boundary of the format. RESULTS.md gives the cells.
-- The `delta` noise band of the published run is large for a CPU run; cells close to 1 read *within delta*.
+- The `delta` noise band of the measured run is large for a CPU run; cells close to 1 read *within delta*.
 
 ## Provenance
 
 `sources/manifest.json` gives the origin and the SHA-256 of the files this leaf depends on outside its folder.
 `python -B tools/provenance.py` prints the tree digest, the kernel hash and the number of files that a run records;
-`--files` the hash of each file. On this version it prints `tree_sha256=5dbc047cb824d79db414fc7b09449f46603d9a2c5fb97cc699b9b38348cd0775` (29 files) once the prompt
+`--files` the hash of each file. On this version it prints `tree_sha256=0bfcf383bbac8fb4694d6db9a797feec2580aec289952dea108e7c2453aec7a6` (30 files) once the prompt
 tokens have been generated ("Requirements and assets"); without that file the tool prints another digest and one file fewer.
 The kernel was ported to x86_64 from the HFFN compact kernel of the Apple M1 CPU runtime.
 

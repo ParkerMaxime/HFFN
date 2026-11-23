@@ -11,9 +11,9 @@ Results: [RESULTS.md](RESULTS.md).
 | | |
 |---|---|
 | Degree of optimisation | **forward: the inference kernels of [`gpu/nvidia/common/kernels`](../../common/kernels/README.md)**, generated once at the shared level; training asks for the same up kernels with a `z` store. **Backward:** one kernel per quantity for every `N` (`grad_down`, `grad_hidden`, `grad_up`, a tile reduction when `N` > 256, `grad_x`), with fixed tiles of 256 tokens (128 for `grad_x`), not tuned per shape. A port, not a tuned set. |
-| Hardware | An NVIDIA GPU with CUDA 12, one device, PyTorch's default stream; kernels compiled at run time by NVRTC through CuPy. Measured on one Tesla T4 only. |
+| Hardware | An NVIDIA GPU with CUDA 12, one device, PyTorch's default stream; kernels compiled at run time by NVRTC through CuPy. Measured on one Quadro RTX 5000 (16 GB, compute capability 7.5) on a shared OVH cloud VM (4 vCPU) only. |
 | Models | An isolated FFN given by its compact arrays; homogeneous and irregular (exact offsets) supports, no padding. Checks on the test layer `homog_256_1024` and on real layers of Pythia exports. Timed cells: see RESULTS.md. |
-| Results | [RESULTS.md](RESULTS.md). There is no Nvidia LLM training leaf. |
+| Results | [RESULTS.md](RESULTS.md). The Nvidia LLM training leaf [`../../llm/training`](../../llm/training/README.md) takes its backward and update from this one. |
 
 ## Contents
 
@@ -63,7 +63,7 @@ layer); gate 5 sets its exit code and the other gates are listed apart.
 - **Without a GPU nothing runs.**
 - **Isolated FFN only:** a model-level training step on CUDA is not part of this tree.
 - **A port:** the thresholds and kernels come from the Apple M1 GPU runtime and were not tuned for CUDA.
-- **One Tesla T4** on a shared cloud VM; `delta` is reported, not applied.
+- **One Quadro RTX 5000 (16 GB, compute capability 7.5) on a shared OVH cloud VM (4 vCPU)**; `delta`, the noise band of the run, is applied as the root `RESULTS.md` states.
 - The gates measure the distance to float64 of a few steps, not a trajectory: no claim of convergence equivalence.
 
 ## Licence

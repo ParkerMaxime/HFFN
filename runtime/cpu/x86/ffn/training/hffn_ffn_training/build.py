@@ -10,6 +10,9 @@ kernel in its own leaf, which has no AVX2 flag; this leaf is judged with them.
 """
 from __future__ import annotations
 
+import importlib.util as _importlib_util
+import _imp
+import sys as _sys
 from pathlib import Path
 
 from hffn_x86_common.inference import FLAGS, INFERENCE, build, inference_lib, sha256  # noqa: F401
@@ -24,8 +27,27 @@ TRAINING = ROOT / "runtime/cpu/common/llm/training/native/hffn_compact_g4_traini
 HEADER = TRAINING.parent / "g4_contract.h"
 
 
+def _recipe():
+    key = "hffn_cpu_plain_dylib"
+    _imp.acquire_lock()
+    try:
+        if key not in _sys.modules:
+            spec = _importlib_util.spec_from_file_location(key, ROOT / "runtime/cpu/common/recipe/plain_dylib.py")
+            module = _importlib_util.module_from_spec(spec)
+            _sys.modules[key] = module
+            try:
+                spec.loader.exec_module(module)
+            except BaseException:
+                del _sys.modules[key]
+                raise
+        return _sys.modules[key]
+    finally:
+        _imp.release_lock()
+
+
 def training_lib() -> Path:
-    return build(TRAINING, BUILD, dependencies=(HEADER,))
+    return _recipe().build(TRAINING, BUILD, "g++", FLAGS, "so",
+                           extra_flags=("-DHFFN_G4_DOWN_TOKEN_CONTIGUOUS",), dependencies=(HEADER,))
 
 
 def sources() -> dict[str, str]:

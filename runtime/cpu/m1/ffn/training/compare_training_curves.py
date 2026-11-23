@@ -15,7 +15,7 @@ import torch
 import torch.nn.functional as F
 
 
-PROJECT_ROOT = next(p for p in Path(__file__).resolve().parents if (p/'runtime'/'common'/'pythia'/'hffn_pythia').is_dir())
+PROJECT_ROOT = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -264,7 +264,7 @@ def train_epoch(
     """Ordinary PyTorch MSE/autograd on both arms; shared Step owns native FFN work.
 
     Phase boundaries surround Python operations. Forward and MSE are measured
-    together; they are not the phases of a fused MSE.
+    together; these are different from the retired fused-MSE runtime phases.
     """
     model.train()
     n = int(x_train.shape[0])
@@ -466,8 +466,8 @@ def main() -> None:
             "tag": args.tag,
             "optimizer_path": "shared_step_native_adamw" if args.optimizer == "adamw" else "pytorch_sgd",
             "timing_perimeter": "ordinary_pytorch_mse_autograd_shared_ffn; Python phase walls; epoch includes minibatch indexing and input copy",
-            "phase_fields": "forward and loss are timed together: hffn_forward_loss_seconds",
-            "input_gradient_control": "full on both arms, or weights-only on both arms",
+            "legacy_phase_fields": "hffn_forward_seconds and hffn_loss_grad_y_seconds unavailable; use hffn_forward_loss_seconds",
+            "input_gradient_control": "full on both arms, or weights-only on both arms; this replaces the former always-full reference control",
         },
         "backends": {
             "reference": REFERENCE_BACKEND,

@@ -3,8 +3,8 @@ from collections import Counter
 import copy
 import hashlib
 import json
-import math
 import os
+import math
 from pathlib import Path
 import sys
 from recompute_api import inspect as inspect_api, corruption_controls as api_corruption_controls
@@ -146,7 +146,7 @@ def read(run,overrides=None):
     suffixes|={f'{model}_sparse{density}_ffn_only/export/manifest_compact_g4_v2.json' for model in MODELS for density in DENSITIES}
     suffixes.add('runtime/common/ffn/reference/fingerprints.json')
     if any(sum(path.endswith('/'+suffix) for path in p.get('assets',{}))!=1 for suffix in suffixes):issues.append('canonical asset provenance')
-    root=next(q for q in Path(__file__).resolve().parents if (q/'runtime'/'common'/'pythia'/'hffn_pythia').is_dir())
+    root=next(q for q in Path(__file__).resolve().parents if (q / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
     def asset_digest(suffix):
         values=[value for path,value in p.get('assets',{}).items() if path.endswith('/'+suffix)]
         return values[0] if len(values)==1 else None

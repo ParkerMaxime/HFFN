@@ -16,7 +16,7 @@ GROUPS = 4
 
 
 def balanced_groups(cost: torch.Tensor, groups: int = GROUPS) -> torch.Tensor:
-    """The partition of ``compact_export._balanced_group_offsets`` (and of the inference loader for T = groups)."""
+    """The partition of ``hffn_pythia.compact_format.balanced_group_offsets`` (and of the inference loader for T = groups)."""
     total, boundaries, cumulative, target = int(cost.sum()), [0], 0, 1
     for index, value in enumerate(cost.tolist()):
         cumulative += int(value)

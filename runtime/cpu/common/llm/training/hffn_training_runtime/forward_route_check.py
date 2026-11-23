@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import torch
 
-from .compact_export import HFFNCompactG4Layer, HFFNDualRoute
+from hffn_pythia.compact_format import HFFNCompactG4Layer, HFFNDualRoute
 
 
 @torch.no_grad()

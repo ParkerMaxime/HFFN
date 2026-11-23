@@ -5,7 +5,7 @@ inference, LLM training).
 
 | File | Role |
 |---|---|
-| `kernels/hffn_compact_g4_inference.cpp` | the HFFN compact kernel: vectorised over the token lanes (AVX2/FMA, scalar fallback), T threads, deterministic reductions, routes `decode`, `dual` and `baseline`, a slots entry and a pre-activation store used by the training step. Built with `-O3 -ffast-math`: parity is a tolerance, not a binary equality. |
+| `kernels/hffn_compact_g4_inference.cpp` | the HFFN compact kernel: vectorised over the token lanes (AVX2/FMA lanes; the scalar paths of the source are a labelled control, the build always passes `-mavx2 -mfma`), T threads, deterministic reductions, routes `decode`, `dual` and `baseline`, a slots entry and a pre-activation store used by the training step. Built with `-O3 -ffast-math`: parity is a tolerance, not a binary equality. |
 | `kernels/hffn_compact_g4_inference_n1.cpp` | a one-token sidecar that includes the kernel source and exports only the entry that stores the pre-activation (the training step at N = 1) |
 | `hffn_x86_common/inference.py` | build into `build/` (the library name carries the hash of the command and of the source) and the ctypes entries; imported as `hffn_x86_common` |
 

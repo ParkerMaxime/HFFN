@@ -7,8 +7,9 @@ import ctypes
 import sys
 from pathlib import Path
 
-# The compact inference leaf is `runtime/cpu/m1/llm/inference/compact`.
-_INFERENCE_LEAF = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir()) / "runtime/cpu/m1/llm/inference/compact"
+# The compact inference leaf is `runtime/cpu/m1/ffn/inference`; the tree root is the first parent
+# that contains `runtime/common/pythia`.
+_INFERENCE_LEAF = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir()) / "runtime/cpu/m1/ffn/inference"
 if str(_INFERENCE_LEAF) not in sys.path:
     sys.path.insert(0, str(_INFERENCE_LEAF))
 

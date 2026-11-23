@@ -1,56 +1,45 @@
-# Results — M1 GPU LLM inference (Pythia)
+# Results — M1 GPU LLM inference
 
 Evidence class: **measured** unless a line says otherwise, each figure read in a qualified run (status `passed`, exit code 0,
 full coverage) named in the heading of its table. The protocol, the use of `delta`, the machines, the runs that were not
 qualified and the limits that apply to every leaf are in [`../../../../../RESULTS.md`](../../../../../RESULTS.md). The run folders and the
 bench that produced them are not distributed: the figures can be read here, not regenerated from this tree.
 
-Pythia-410M, FFNs on the Metal HFFN kernels with attention, norms and head on PyTorch/MPS, against the same model with dense iso-support FFNs; prefill and decode of the whole request. Machine: Apple M1 GPU, 16 GB. Two runs, in two parts that are not compared with each other.
+Whole requests of Pythia-410M at 10, 20 and 80 % FFN density: prefill and decode, batch 1 and 4, dense PyTorch attention around the Metal FFN. Machine: Apple M1 Mac (16 GB, passively cooled). Run `m1-gpu-llm-inference/publication_20261110T051239Z_55600`; `delta` = 0.037.
+Arms: A (the version published before, v1), B (this version) and the dense control, in the same processes. "B / dense" below 1 means B is faster than the dense control; "B / A" below 1 means B is faster than A. A reading against A is a gain or a loss only beyond `delta` (a gain: `1 - ratio > delta`; no loss: `ratio <= 1 + delta`); a memory ratio against A is read at 2 % and is not moved by `delta`.
 
 ## Measured
 
-### Run `m1-gpu-llm-inference/publication_20261021T222112Z_45240`
+### Run `m1-gpu-llm-inference/publication_20261110T051239Z_55600`
 
-`delta` = 0.066 (pythia410m_sparse20 / decode_b1 / hffn), reported (GPU: not applied).
+`delta` = 0.037, applied.
 
-| Cell | Size | dense | hffn | hffn/dense [min–max] | processes d/h | reading |
-|---|---|---:|---:|---:|---:|---|
-| pythia410m_sparse20 | decode_b1 | 40.12 ms | 24.87 ms | 0.620 [0.561–0.592] | 10/10 | < 1 |
-| pythia410m_sparse20 | decode_b4 | 108.31 ms | 57.47 ms | 0.531 [0.495–0.508] | 10/10 | < 1 |
-| pythia410m_sparse20 | prefill_b1 | 61.69 ms | 49.92 ms | 0.809 [0.763–0.812] | 10/10 | < 1 |
-| pythia410m_sparse20 | prefill_b4 | 111.61 ms | 112.97 ms | 1.012 [0.977–1.019] | 10/10 | > 1 (inside reported delta) |
 
-| Cell | RSS dense / hffn (MB) | device dense / hffn (MB) | retained dense / hffn (MB) | retained hffn/dense | swap-outs |
-|---|---:|---:|---:|---:|---:|
-| pythia410m_sparse20 | 2427 / 1723 | 4446 / 2550 | 1621 / 1058 | 0.653 | 0 / 0 |
+| Cell | Size | Processes (dense/B/A) | B / dense median [min–max] | B / A median [min–max] | B vs A |
+|---|---|---|---|---|---|
+| pythia410m_sparse10 | decode_b1 | 3/3/3 | 0.535 [0.535–0.535] | 1.003 [1.003–1.003] | within delta |
+| pythia410m_sparse10 | decode_b4 | 3/3/3 | 0.464 [0.464–0.464] | 1.014 [1.014–1.014] | within delta |
+| pythia410m_sparse10 | prefill_b1 | 3/3/3 | 0.644 [0.644–0.644] | 1.003 [1.003–1.003] | within delta |
+| pythia410m_sparse10 | prefill_b4 | 3/3/3 | 0.773 [0.773–0.773] | 1.002 [1.002–1.002] | within delta |
+| pythia410m_sparse20 | decode_b1 | 10/10/10 | 0.571 [0.570–0.572] | 0.998 [0.993–0.998] | within delta |
+| pythia410m_sparse20 | decode_b4 | 10/10/10 | 0.536 [0.536–0.537] | 1.001 [1.000–1.001] | within delta |
+| pythia410m_sparse20 | prefill_b1 | 10/10/10 | 0.775 [0.773–0.781] | 0.999 [0.992–1.008] | within delta |
+| pythia410m_sparse20 | prefill_b4 | 10/10/10 | 1.025 [1.025–1.026] | 1.001 [1.000–1.003] | within delta |
+| pythia410m_sparse80 | decode_b1 | 3/3/3 | 0.880 [0.880–0.880] | 0.996 [0.996–0.996] | within delta |
+| pythia410m_sparse80 | decode_b4 | 3/3/3 | 0.895 [0.895–0.895] | 1.000 [1.000–1.000] | within delta |
+| pythia410m_sparse80 | prefill_b1 | 3/3/3 | 1.568 [1.568–1.568] | 1.000 [1.000–1.000] | within delta |
+| pythia410m_sparse80 | prefill_b4 | 3/3/3 | 2.524 [2.524–2.524] | 1.003 [1.003–1.003] | within delta |
 
-### Run `m1-gpu-llm-inference/publication_20261022T002142Z_56021`
+Memory, primary reading per cell (median over processes, bytes):
 
-`delta` = 0.017 (pythia410m_sparse80 / prefill_b4 / dense), reported (GPU: not applied).
-
-| Cell | Size | dense | hffn | hffn/dense [min–max] | processes d/h | reading |
-|---|---|---:|---:|---:|---:|---|
-| pythia410m_sparse10 | decode_b1 | 41.55 ms | 21.56 ms | 0.519 | 3/3 | < 1 |
-| pythia410m_sparse10 | decode_b4 | 113.03 ms | 51.28 ms | 0.454 | 3/3 | < 1 |
-| pythia410m_sparse10 | prefill_b1 | 66.04 ms | 42.10 ms | 0.637 | 3/3 | < 1 |
-| pythia410m_sparse10 | prefill_b4 | 117.55 ms | 86.69 ms | 0.737 | 3/3 | < 1 |
-| pythia410m_sparse80 | decode_b1 | 41.63 ms | 37.16 ms | 0.893 | 3/3 | < 1 |
-| pythia410m_sparse80 | decode_b4 | 112.20 ms | 96.51 ms | 0.860 | 3/3 | < 1 |
-| pythia410m_sparse80 | prefill_b1 | 66.67 ms | 104.98 ms | 1.575 | 3/3 | > 1 |
-| pythia410m_sparse80 | prefill_b4 | 117.78 ms | 281.98 ms | 2.394 | 3/3 | > 1 |
-
-| Cell | RSS dense / hffn (MB) | device dense / hffn (MB) | retained dense / hffn (MB) | retained hffn/dense | swap-outs |
-|---|---:|---:|---:|---:|---:|
-| pythia410m_sparse10 | 2417 / 1243 | 4446 / 2466 | 1621 / 938 | 0.578 | 0 / 0 |
-| pythia410m_sparse80 | 2428 / 3598 | 4446 / 4462 | 1621 / 1783 | 1.100 | 0 / 0 |
-
-## Reading
-
-- d20 (`m1-gpu-llm-inference/publication_20261021T222112Z_45240`, `delta` = 0.066, reported): decode 0.620 and 0.531, prefill 0.809 and 1.012 (prefill_b4 is inside `delta`).
-- d10 and d80 (`m1-gpu-llm-inference/publication_20261022T002142Z_56021`, `delta` = 0.017, reported): d10 is below 1 on every shape (0.454 to 0.737); at d80 decode is below 1 (0.893, 0.860) and prefill is above 1 (1.575, 2.394).
-- Memory: the HFFN arm retains 1058 MB at d20 against 1621 MB dense and samples 2550 against 4446 MB of device memory.
+| Cell | Reading | dense | B | A | B / dense | B / A | B vs A (2 %) |
+|---|---|---|---|---|---|---|---|
+| pythia410m_sparse10 | `footprint_timed_max_bytes` | 5,574,167,672 | 2,972,862,672 | 2,966,735,272 | 0.533 | 1.002 | within 2 % |
+| pythia410m_sparse20 | `footprint_timed_max_bytes` | 5,572,267,092 | 3,238,504,884 | 3,226,020,444 | 0.581 | 1.004 | within 2 % |
+| pythia410m_sparse80 | `footprint_timed_max_bytes` | 5,571,054,760 | 6,029,824,608 | 6,062,216,040 | 1.082 | 0.995 | within 2 % |
 
 ## Limits
 
-- The pooled median of a two-session cell can lie outside the [min-max] of its sessions (decode_b1 0.620 against [0.561-0.592]); both are reported.
-- The limits of [`../../../../../RESULTS.md`](../../../../../RESULTS.md) apply, in particular the noise band `delta`, the retained-bytes definition and the scope of the evidence.
+- B equals A within `delta` (0.037) and within 2 % of memory on every cell.
+- Form pair, without block lifecycle (written limit of the candidate).
+- One campaign, one machine; no figure here is compared with a figure of another entry or of the previous version. No claim of convergence equivalence, global speed-up or hardware generalisation.

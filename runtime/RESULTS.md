@@ -1,8 +1,9 @@
-# Results — publication bench v1
+# Results — publication bench v2
 
-Measured against the frozen pre-publication code of every leaf (see *Code provenance*), 18 qualified runs, 2026-10-21 and
-2026-10-22. This file gives the protocol, the runs, the reference cells, the storage figures, the reading and the limits
-shared by every leaf. Each leaf's own `RESULTS.md` holds its full tables.
+Measured on the frozen candidate of every leaf (see *Code provenance*), 16 qualified runs, 2026-11-09 and 2026-11-10. This
+file gives the protocol, the runs, the reading and the limits shared by every leaf. Each leaf's own `RESULTS.md` holds its
+full tables. v2 replaces v1 as the published version of the runtime; the decision to publish it with the losses written
+below as limits is the user's (verdict of 2026-11-10: "Oui, les 16 feuilles").
 
 Every figure carries its evidence class: **measured** (read in a run with status `passed`, exit code 0 and full
 coverage, named by its run), **estimated** (a calculation or a partial counter) or **hypothesis** (an explanation that no
@@ -10,225 +11,237 @@ control isolates). Unless a line says otherwise, a figure here is measured.
 
 ## What was measured
 
-For every covered leaf, the HFFN path against a **dense iso-support control** (the same fixed support, executed as the
-dense PyTorch model or layer of the leaf), on the same inputs:
+For each of the 16 leaves, three arms in the same processes: **A** (the version published before, v1), **B** (the version
+published here) and the **dense control** (the same fixed support executed as the dense PyTorch FFN or model of the leaf).
+Two leaves are published for the first time and run B and dense only: `gpu/m1/ffn/training` and `gpu/nvidia/llm/training`.
 
-- FFN leaves: one isolated FFN, at block sizes `N` of 1, 8, 64 and 512 tokens (inference), or the training step (forward,
-  backward, AdamW), on synthetic homogeneous exports of d_model 256, 512 and 1024, at densities from 5 % to 100 %.
-- LLM leaves: the whole request of a Pythia model (70M-410M family, the 410M cells here): prefill and decode for
-  inference, a training step for training, at 10, 20 and 80 % FFN density. A whole-model ratio is bounded by the dense
-  non-FFN parts (Amdahl): an FFN-only figure is never projected onto the model.
+- FFN leaves: one isolated FFN, at block sizes `N` of 1, 8, 64 and 512 tokens (inference), or the training step
+  (forward, backward, AdamW; x86 FFN training has no N = 1 cell), on ten synthetic cells: `512_2048` at 30 %, `512_2048` at
+  5, 10, 20, 50, 75, 90 and 100 % (`d005` to `d100`), `256_1024_d010` and `1024_4096_d010`. The reference cell is
+  `512_2048_d020`.
+- LLM leaves: the whole request of a Pythia model (410M at 10, 20 and 80 % FFN density; the Nvidia training leaf adds
+  Pythia-70M at 10, 50 and 80 %): prefill and decode (batch 1 and 4) for inference, a training step (batch 1, 32 or 128
+  tokens) for training. The reference cell is `pythia410m_sparse20`. A whole-model ratio is bounded by the dense non-FFN
+  parts: an FFN-only figure is never projected onto the model.
 
 Nothing here is a claim of convergence equivalence, of a global speed-up or of generalisation to other hardware.
 
 ## Protocol
 
-- One **fresh process per (cell, arm)**, arms in ABBA order, on the same inputs. An A/A (two instances of the same arm,
-  between processes) measures the noise of the run.
-- Warm-up: 10 calls and 3 s on CPU, 1 s on GPU, before the first timed window. Windows: 100 ms on CPU, 50 ms on GPU.
-- Ratio of a cell: the median over the HFFN processes of their process median, over the same for the dense control.
-- Reference cell (FFN `512_2048_d020`, Pythia-410M d20): 5 processes per arm and 2 sessions. Every other cell: 3
-  processes per arm, 1 session.
-- Gates before timing, in every process: copy identity (or process identity for LLM training), then the float64 gate of the
-  leaf. A failed gate fails the run.
-- `delta` = the largest `|copy / arm - 1|` of the run. On CPU it is **applied**: a gain is stated only when
-  `ratio + delta < 1`, a loss only when `ratio - delta > 1`, anything else is *within delta*. On GPU it is **reported**:
-  the ratio is read as it is, and the cells with `|ratio - 1| <= delta` are flagged.
-- Memory: `retained_bytes` is the adapter's count of the arm's own tensors (it does not see native buffers); RSS (and
-  device memory on GPU) is sampled over the timed phases.
-- The Mac 410M entries ran in two parts (d20, then d10 and d80), in different machine states.
-- Machines: x86 = AMD EPYC 9R14, 8 vCPU (AWS `c7a.2xlarge`); Nvidia = Tesla T4 (AWS `g4dn.xlarge`); M1 = an Apple M1
-  Mac with 16 GB, passively cooled.
+- Rule: *Timing and noise* of the repository (schedule, noise band, per-arm memory), with the full protocol of the branch
+  for a publication. The bench is prepared and frozen before the run and is not distributed.
+- Forms (how the arms share processes): **C**, the arms of a cell co-resident in one process and timed in ABBA order over
+  windows on the same inputs, an in-process dense copy as the A/A; **P**, one arm per process, A/A between processes of one
+  session; **pair**, the GPU form of the Nvidia and M1 GPU inference entries, the arm and its copy alternating call by call.
+  Each entry's form per cell is in the *Runs* table; the M1 GPU forms P and pair have no block lifecycle (written limit).
+- Before any timed window, in every process, gates: copy identity (form C: process identity of every instance), then the
+  float64 or token gate of the leaf. A failed gate fails the run.
+- Each arm is warmed up before its first timed call. On the M1 (passive cooling): a long warm-up, every arm rebuilt at each
+  block where the entry says so, the thermal state recorded before each process. The ratio of a cell is the median over
+  processes of the per-process median of the timed windows; [min–max] is over sessions.
+- Reference cell: 5 processes per arm and 2 sessions; every other cell: 3 processes and 1 session. A pooled two-session
+  median can lie outside the [min–max] of the per-session ratios when the sessions differ in level.
+- `delta` = the largest `|copy / arm - 1|` over the A/A pairs of the run, in-process copy for forms C and pair, between
+  processes of one session for form P. It is **applied**: a gain over A is stated only if `1 - ratio > delta`, no loss only
+  if `ratio <= 1 + delta`. A memory ratio is read at 2 % and is not moved by `delta`.
+- Criterion of replacement of A by B: B loses no time beyond `delta` and no memory beyond 2 % on the primary reading; a
+  gain is stated only beyond `delta`; a B that does not meet it needs a functional reason and the user's verdict.
+- Memory primary reading per cell: `retained_bytes` (form C), `device_memory_peak` (CUDA, forms P and pair),
+  `footprint_timed_max_bytes` (M1, P and pair), `rss_timed_max_bytes` (x86 P and pair). The peak of the process lifetime
+  includes the gates and is never read per arm.
+- Machines: M1 = an Apple M1 Mac with 16 GB, passively cooled; x86 = an OVH cloud VM, AMD EPYC-Milan, 8 vCPU; Nvidia = an
+  OVH cloud VM with one Quadro RTX 5000 (16 GB), 4 vCPU. x86 and Nvidia ran on shared VMs. In v1 the x86 figures came from
+  an AMD EPYC 9R14 and the Nvidia ones from a Tesla T4: **no figure of v1 is compared with a figure of v2**.
 - The run folders (configuration, provenance, raw observations) and the bench that produced them are **not distributed**:
   the figures can be read here but not regenerated from this tree. The checks of each leaf are in its `README.md`.
 
 ## Runs
 
-| Entry | Run | processes | wall (s) | `delta` | `delta` use |
-|---|---|---:|---:|---:|---|
-| x86 FFN inference | `x86-ffn-inference/publication_20261021T205721Z_36546` | 74 | 2660 | 0.025 | applied |
-| x86 FFN training | `x86-ffn-training/publication_20261021T215219Z_43759` | 74 | 2828 | 0.120 | applied |
-| x86 LLM inference | `x86-llm-inference/publication_20261021T224108Z_47493` | 32 | 3424 | 0.118 | applied |
-| x86 LLM training | `x86-llm-training/publication_20261021T234202Z_54659` | 32 | 3699 | 0.088 | applied |
-| Nvidia FFN inference | `nvidia-ffn-inference/publication_20261021T205618Z_36126` | 74 | 2285 | 0.129 | reported |
-| Nvidia FFN training | `nvidia-ffn-training/publication_20261021T214713Z_43110` | 74 | 2385 | 0.018 | reported |
-| Nvidia LLM inference | `nvidia-llm-inference/publication_20261021T223804Z_47324` | 32 | 2100 | 0.023 | reported |
-| M1 CPU FFN inference | `m1-cpu-ffn-inference/publication_20261021T204952Z_35029` | 74 | 2974 | 0.461 | applied |
-| M1 CPU FFN training | `m1-cpu-ffn-training/publication_20261021T225431Z_48006` | 74 | 2103 | 0.359 | applied |
-| M1 GPU FFN inference | `m1-gpu-ffn-inference/publication_20261022T003013Z_57076` | 74 | 998 | 0.372 | reported |
-| M1 GPU LLM inference d20 | `m1-gpu-llm-inference/publication_20261021T222112Z_45240` | 20 | 1597 | 0.066 | reported |
-| M1 GPU LLM inference d10+d80 | `m1-gpu-llm-inference/publication_20261022T002142Z_56021` | 12 | 504 | 0.017 | reported |
-| M1 GPU LLM training d20 | `m1-gpu-llm-training/publication_20261021T215425Z_43892` | 20 | 715 | 0.166 | reported |
-| M1 GPU LLM training d10 | `m1-gpu-llm-training/publication_20261022T123442Z_81919` | 6 | 404 | 0.004 | reported |
-| M1 CPU LLM inference d20 | `m1-cpu-llm-inference/publication_20261022T010704Z_62621` | 20 | 2747 | 0.044 | applied |
-| M1 CPU LLM inference d10+d80 | `m1-cpu-llm-inference/publication_20261022T104753Z_80203` | 12 | 2152 | 0.083 | applied |
-| M1 CPU LLM training d20 | `m1-cpu-llm-training/publication_20261022T021302Z_64319` | 20 | 2187 | 0.064 | applied |
-| M1 CPU LLM training d10+d80 | `m1-cpu-llm-training/publication_20261022T114358Z_81377` | 12 | 1832 | 0.044 | applied |
+| Entry | Run | Processes | Duration (s) | Forms | delta | A/A pairs |
+|---|---|---|---|---|---|---|
+| `m1-cpu-ffn-inference` | `m1-cpu-ffn-inference/publication_20261109T210137Z_34842` | 37 | 2912 | C | 0.341 | 148 |
+| `m1-cpu-ffn-training` | `m1-cpu-ffn-training/publication_20261109T215023Z_60616` | 37 | 3282 | C | 0.074 | 148 |
+| `m1-cpu-llm-inference` | `m1-cpu-llm-inference/publication_20261109T224516Z_86139` | 22 | 10847 | C + P | 0.110 | 88 |
+| `m1-cpu-llm-training` | `m1-cpu-llm-training/publication_20261110T014614Z_99837` | 48 | 6364 | P | 0.034 | 96 |
+| `m1-gpu-ffn-inference` | `m1-gpu-ffn-inference/publication_20261110T035231Z_6603` | 111 | 1613 | pair | 0.628 | 444 |
+| `m1-gpu-ffn-training` | `m1-gpu-ffn-training/publication_20261110T041933Z_36349` | 37 | 3177 | C | 0.298 | 148 |
+| `m1-gpu-llm-inference` | `m1-gpu-llm-inference/publication_20261110T051239Z_55600` | 48 | 2117 | pair | 0.037 | 192 |
+| `m1-gpu-llm-training` | `m1-gpu-llm-training/publication_20261110T054806Z_68384` | 9 | 1489 | P | 0.017 | 18 |
+| `nvidia-ffn-inference` | `nvidia-ffn-inference/publication_20261110T085635Z_76805` | 111 | 2921 | pair | 0.120 | 444 |
+| `nvidia-ffn-training` | `nvidia-ffn-training/publication_20261110T023725Z_3664` | 111 | 2316 | pair | 0.234 | 444 |
+| `nvidia-llm-inference` | `nvidia-llm-inference/publication_20261110T031657Z_5365` | 48 | 2228 | pair | 0.055 | 192 |
+| `nvidia-llm-training` | `nvidia-llm-training/publication_20261110T035523Z_9800` | 28 | 1638 | C + P | 0.217 | 56 |
+| `x86-ffn-inference` | `x86-ffn-inference/publication_20261110T085622Z_76740` | 37 | 3383 | C | 0.068 | 148 |
+| `x86-ffn-training` | `x86-ffn-training/publication_20261109T222243Z_75788` | 37 | 1941 | C | 0.474 | 111 |
+| `x86-llm-inference` | `x86-llm-inference/publication_20261109T232405Z_89492` | 16 | 4285 | C | 0.070 | 64 |
+| `x86-llm-training` | `x86-llm-training/publication_20261110T003615Z_94748` | 16 | 5961 | C | 0.035 | 32 |
 
-Three runs stopped at their time ceiling (`EXIT` 124) and were replaced by the d10(+d80) entries above. They are not
-qualified and give no number: `m1-gpu-llm-training/publication_20261022T000223Z_55072` (7 of 12 units done),
-`m1-cpu-llm-inference/publication_20261022T030940Z_64952` (11 of 12) and
-`m1-cpu-llm-training/publication_20261022T040352Z_65979` (11 of 12).
+Qualification guards, checked on every process record: 10,243 gate results, none with `passed` other than `true`;
+`swapouts_timed` 0 in every process; the thermal state of the 349 M1 processes reads no thermal warning. Every ratio of
+the run summaries, every `delta` and every primary memory ratio was recomputed from the raw observations by an
+independent script and reproduced exactly.
 
-The M1 thermal state read before each process was nominal throughout, and no swap-out was counted in any timed phase.
+**Unqualified, no number drawn**: `x86-ffn-inference/publication_20261109T211059Z_39791` and
+`nvidia-ffn-inference/publication_20261110T015128Z_608`, both `EXIT` 124 (the ceiling was reached under the first sizing;
+the entries were rerun under raised ceilings). They count for nothing here.
 
 ## Not covered
 
-- M1 GPU FFN training: no published leaf.
-- Nvidia LLM training: no leaf.
-- x86 FFN training has no N1 cell.
-- **M1 GPU, Pythia-410M d80, training, HFFN arm: `OOM`.** The cell does not fit the 16 GB Mac (it is swap-bound); no
-  figure exists for either arm. A memory fix is deferred to the next optimisation phase.
-- One cell is not admissible as stated: M1 CPU FFN inference, `512_2048_d010` N512 (limit 3 below).
+- `gpu/m1/llm/training`: Pythia-410M at 20 % and 80 % are out of the timed grid, by decision (the HFFN timed process fails
+  the swap guard in the smokes on the 16 GB Mac); the leaf's check covers every export at parity only.
+- `gpu/nvidia/llm/inference`: one export of the family (`O1`) is a failed export by decision of the user (2026-11-07); the
+  timing says nothing on it.
+- `gpu/m1/ffn/training`: no primary per-arm memory reading (below, limit 6).
+- x86 FFN training has no N = 1 cell.
+- MoE, multilayer and lateral variants are not part of this tree.
 
-## Measured: reference cells (median ratio hffn/dense; the full tables are in each leaf's `RESULTS.md`)
+## B against A, per entry
 
-"Loss" means slower than dense. FFN `512_2048_d020`, 5 processes per arm and 2 sessions:
+| Entry | delta | Cells with A | B/A median of cells | gain | within delta | loss | Memory cells with A | loss > 2 % | gain > 2 % |
+|---|---|---|---|---|---|---|---|---|---|
+| `m1-cpu-ffn-inference` | 0.341 | 40 | 1.000 | 0 | 40 | 0 | 10 | 0 | 0 |
+| `m1-cpu-ffn-training` | 0.074 | 40 | 0.769 | 28 | 9 | **3** | 10 | **2** | 0 |
+| `m1-cpu-llm-inference` | 0.110 | 12 | 0.999 | 4 | 8 | 0 | 3 | 0 | 1 |
+| `m1-cpu-llm-training` | 0.034 | 6 | 0.998 | 0 | 6 | 0 | 3 | 0 | 2 |
+| `m1-gpu-ffn-inference` | 0.628 | 40 | 1.006 | 0 | 40 | 0 | 10 | 0 | 0 |
+| `m1-gpu-ffn-training` | 0.298 | — (first publication) | | | | | — | | |
+| `m1-gpu-llm-inference` | 0.037 | 12 | 1.001 | 0 | 12 | 0 | 3 | 0 | 0 |
+| `m1-gpu-llm-training` | 0.017 | 2 | 1.435 | 0 | 0 | **2** | 1 | 0 | 0 |
+| `nvidia-ffn-inference` | 0.120 | 40 | 1.000 | 0 | 40 | 0 | 10 | 0 | 0 |
+| `nvidia-ffn-training` | 0.234 | 40 | 1.000 | 0 | 40 | 0 | 10 | 0 | 0 |
+| `nvidia-llm-inference` | 0.055 | 12 | 1.002 | 0 | 12 | 0 | 3 | 0 | 0 |
+| `nvidia-llm-training` | 0.217 | — (first publication) | | | | | — | | |
+| `x86-ffn-inference` | 0.068 | 40 | 1.204 | 0 | 2 | **38** | 10 | **10** | 0 |
+| `x86-ffn-training` | 0.474 | 30 | 0.725 | 7 | 23 | 0 | 10 | 0 | 0 |
+| `x86-llm-inference` | 0.070 | 12 | 1.036 | 0 | 9 | **3** | 3 | 0 | 0 |
+| `x86-llm-training` | 0.035 | 6 | 0.977 | 2 | 4 | 0 | 3 | 0 | 3 |
 
-| Entry | N1 | N8 | N64 | N512 | reading |
-|---|---:|---:|---:|---:|---|
-| x86 inference | 0.148 | 0.405 | 0.337 | 0.470 | gain at every N |
-| x86 training | — | 0.229 | 0.680 | 2.136 | gain N8 and N64, loss N512 |
-| Nvidia inference | 0.587 | 0.999 | 0.939 | 1.372 | <1 at N1; N8 and N64 inside `delta`; >1 at N512 |
-| Nvidia training | 0.630 | 0.715 | 0.757 | 1.297 | <1 at N1 to N64, >1 at N512 |
-| M1 CPU inference | 1.826 | 2.385 | 2.879 | 3.461 | loss at every N |
-| M1 CPU training | 0.199 | 0.159 | 1.067 | 5.119 | gain N1 and N8, within N64, loss N512 |
-| M1 GPU inference | 0.730 | 0.596 | 0.785 | 1.111 | <1 at N1 to N64; every cell inside `delta` except N8 |
+A cell is *gain* or *loss* only beyond `delta`. "Memory cells with A" counts the cells where the primary memory ratio of B
+over A is read at 2 %.
 
-Pythia-410M d20, whole model request, 5 processes per arm and 2 sessions:
+## Measured: reference cells (median ratio B/dense; the full tables are in each leaf's `RESULTS.md`)
 
-| Entry | decode_b1 | decode_b4 | prefill_b1 | prefill_b4 | b1_t32 | b1_t128 | reading |
-|---|---:|---:|---:|---:|---:|---:|---|
-| x86 inference | 0.588 | 0.606 | 0.692 | 0.724 | | | gain on every shape |
-| Nvidia inference | 0.937 | 0.916 | 1.302 | 1.366 | | | decode <1, prefill >1 |
-| M1 GPU inference | 0.620 | 0.531 | 0.809 | 1.012 | | | <1 except prefill_b4, which is inside `delta` |
-| M1 CPU inference | 0.710 | 0.643 | 1.328 | 2.105 | | | decode gain, prefill loss |
-| x86 training | | | | | 0.717 | 1.010 | gain t32, within t128 |
-| M1 GPU training | | | | | 0.715 | 1.056 | t32 <1, t128 inside `delta` |
-| M1 CPU training | | | | | 0.837 | 1.616 | gain t32, loss t128 |
+"Loss" means slower than dense. FFN `512_2048_d020`:
 
-The HFFN arm of the M1 CPU FFN inference row is the compact G4 runtime of `cpu/m1/llm/inference/compact`, not a separate
-padded kernel (limit 4).
+| Entry | N1 | N8 | N64 | N512 |
+|---|---:|---:|---:|---:|
+| x86 FFN inference | 0.263 | 0.470 | 0.448 | 0.770 |
+| x86 FFN training | | 0.719 | 0.844 | 1.301 |
+| Nvidia FFN inference | 0.688 | 1.186 | 1.034 | 1.441 |
+| Nvidia FFN training | 0.218 | 0.233 | 0.268 | 0.727 |
+| M1 CPU FFN inference | 1.502 | 1.487 | 1.656 | 2.526 |
+| M1 CPU FFN training | 0.214 | 0.118 | 0.507 | 1.926 |
+| M1 GPU FFN inference | 1.258 | 1.214 | 1.296 | 1.016 |
+| M1 GPU FFN training | 0.663 | 0.750 | 0.980 | 0.869 |
 
-## Storage per export (bytes)
+Pythia-410M `sparse20`, whole request or step:
 
-Synthetic homogeneous exports. The first column is the dense FP32 pair of matrices; the second is the payload of the
-export file (int64 indices, as stored); the third is a calculation (FP32 values, int16 indices, int32 offsets).
+| Entry | decode_b1 | decode_b4 | prefill_b1 | prefill_b4 | b1_t32 | b1_t128 |
+|---|---:|---:|---:|---:|---:|---:|
+| x86 LLM inference | 0.546 | 0.658 | 0.741 | 0.854 | | |
+| Nvidia LLM inference | 0.951 | 0.919 | 1.329 | 1.410 | | |
+| M1 GPU LLM inference | 0.571 | 0.536 | 0.775 | 1.025 | | |
+| M1 CPU LLM inference | 0.706 | 0.694 | 1.561 | 2.104 | | |
+| x86 LLM training | | | | | 0.799 | 1.045 |
+| Nvidia LLM training | | | | | 0.797 | 0.908 |
+| M1 CPU LLM training | | | | | 0.797 | 1.621 |
 
-| Cell | density | dense FP32, two matrices | export payload (int64 indices) | ideal compact (calculation) |
-|---|---|---:|---:|---:|
-| 512_2048_d005 | 0.05 | 8 388 608 | 1 509 118 | 644 718 |
-| 512_2048_d010 | 0.10 | 8 388 608 | 2 973 364 | 1 272 252 |
-| 512_2048_d020 | 0.20 | 8 388 608 | 5 915 604 | 2 533 212 |
-| 512_2048_d030 | 0.30 | 8 388 608 | 8 842 892 | 3 787 764 |
-| 512_2048_d050 | 0.50 | 8 388 608 | 14 727 834 | 6 309 882 |
-| 512_2048_d075 | 0.75 | 8 388 608 | 22 065 500 | 9 454 596 |
-| 512_2048_d090 | 0.90 | 8 388 608 | 26 470 824 | 11 342 592 |
-| 512_2048_d100 | 1.00 | 8 388 608 | 29 403 152 | 12 599 304 |
-| 256_1024_d010 | 0.10 | 2 097 152 | 700 666 | 321 652 |
-| 1024_4096_d010 | 0.10 | 33 554 432 | 11 833 670 | 5 067 478 |
+M1 GPU LLM training has no `sparse20` cell in the timed grid (410M at 10 %: 0.925 at `b1_t32`, 1.350 at `b1_t128`).
+Whether a ratio against dense is a gain or a loss is read against the `delta` of its run, given in each leaf's table: under
+a wide `delta` several of these cells are not distinguishable from 1.
 
-- The export file stores int64 indices: its payload exceeds the dense FP32 pair from d30.
-- The ideal compact layout is a calculation, not a file. It exceeds the dense pair between d50 and d75.
-- The runtime's own resident layout is what `retained_bytes` counts in the leaf tables (adapter count).
+## Storage (measured, `retained_bytes`, `512_2048` slice of M1 CPU FFN inference)
+
+The adapter's count of the arm's own tensors, in bytes: dense 8,398,848; B at d005 654,978, d010 1,282,512, d020
+2,543,472, d050 6,320,142, d075 9,464,856, d090 11,352,852, d100 12,609,564 (ratios to dense 0.078, 0.153, 0.303, 0.753,
+1.127, 1.352, 1.501). The compact layout is smaller than the dense pair up to a density between 50 and 75 %. It does not see
+native buffers; the other leaves' counts are in their tables.
 
 ## Reading
 
-- **Density decides the sign everywhere (measured, within each run).** On every hardware and both modes, the ratio rises
-  with density along the 512_2048 slice, and every entry has a density at and above which HFFN is slower than dense:
-  - x86 inference: between d50 and d75 for N >= 8; N1 stays a gain up to d100;
-  - x86 training: N512 is a gain at d05 (0.796) and a loss from d10 (1.290);
-  - Nvidia inference: from d50 for N >= 8 (N1 stays below 1 up to d75, where 0.978 is inside `delta`);
-  - Nvidia training: from d50 at every N;
-  - M1 CPU training: N512 is within `delta` at d05 (1.122) and a loss from d10 (2.108).
-  This is the boundary expected of the format at high density, reported and not hidden.
-- **Large blocks favour dense (measured).**
-  - On the training entries, N512 has the largest ratio of its cell on every cell: x86, Nvidia and M1 CPU, 10 of 10
-    cells each. On x86 inference it is also 10 of 10.
-  - The pattern is weaker on the other inference entries: N512 is the largest on 7 of 10 cells on M1 GPU, 6 of 10 on M1 CPU
-    and 5 of 10 on Nvidia.
-  - At d20 N512 in training, the ratio is 2.136 on x86, 1.297 on Nvidia and 5.119 on M1 CPU.
-  - Hypothesis, not isolated: at large N the dense GEMM reaches its throughput regime, while the gather and scatter of the
-    compact path do not.
-- **On the M1 CPU, FFN inference with this HFFN arm loses at d20 and above (measured).**
-  - The reference cell is a loss at every N, and so is every density from d20 up.
-  - The only gains beyond `delta` that are not confounded with the episode of limit 3 are at 1024_4096_d010, at N1 (0.380)
-    and N8 (0.202).
-  - Arithmetic (estimated): at d20 N512, the dense control runs at about 250 GMAC/s (2 x 512 x 2048 x 512 MAC in 4.26 ms)
-    and the HFFN arm at about 15 GMAC/s on its active MACs.
-  - Hypothesis, not isolated: the dense control uses the M1 matrix unit through Accelerate, which the compact G4 path
-    cannot use.
-- **Whole-model LLM requests.** Each figure covers the whole request, so the non-FFN dense parts bound every ratio.
-  - Decode at d10 and d20 is below 1 on every hardware; on CPU it is a gain beyond `delta`.
-  - Prefill at d10 and d20: below 1 on x86 (gain) and on M1 GPU, except prefill_b4 at d20 (1.012, inside `delta`); on M1
-    CPU a gain at d10 prefill_b1 (0.864) and a loss on the other three cells; on Nvidia below 1 at d10 (0.950 and 0.956)
-    and above 1 at d20 (1.302 and 1.366).
-  - At d80, prefill is slower than dense on every hardware (1.128 to 7.547). Decode is mixed: below 1 on M1 GPU (0.893,
-    0.860) and on Nvidia decode_b1 (0.921); a gain on x86 decode_b1 (0.806) with decode_b4 (0.922) within `delta`; a loss
-    on M1 CPU (1.367, 1.492) and above 1 on Nvidia decode_b4 (1.514).
-  - Training: b1_t32 is below 1 at d10 and d20 on every hardware, a gain beyond `delta` on CPU. b1_t128 is a gain only at
-    d10 on x86 (0.713) and on M1 CPU (0.944); it is within `delta` at d20 on x86, inside the reported `delta` at d20 on M1
-    GPU (1.056), below 1 at d10 on M1 GPU (0.914) and a loss at d20 on M1 CPU (1.616). d80 is a loss on both CPUs (1.569 to
-    5.800) and `OOM` on M1 GPU.
-- **Memory: retained bytes of the arm's own tensors (measured, adapter count).**
-  - On the CPU entries and on M1 GPU, HFFN retains less than dense at d10 and d20: FFN 512_2048_d020, 3 against 8 MB in
-    inference and 10 against 42 MB in training; 410M d20 inference, 1058 against 1621 MB; 410M d20 training, 3990 against
-    7291 MB on CPU and 4474 against 7291 MB on M1 GPU.
-  - On the Nvidia FFN entries it does not: 512_2048_d020 inference retains 9 against 8 MB, training 40 against 32 MB, and
-    256_1024_d010 training 11 against 7 MB. Nvidia device memory is nevertheless lower for HFFN at d20: 19 against 26 MB
-    in inference, 100 against 117 MB in training.
-  - On M1 GPU FFN inference the opposite holds: HFFN retains less but samples more device memory than dense on every cell
-    except 1024_4096_d010 (101 against 1083 MB); at d20 it samples 76 against 42 MB.
-  - Hypothesis: the gap is held outside the counted tensors, by buffers of the native path. The reverse sign of the two
-    counters is reported, not explained.
-  - At d80 the 410M inference model retains more than dense on every hardware (1783 to 1795 against 1621 MB).
-- **Why the d80 GPU training is `OOM` (hypothesis).** Measured: at d20 on M1 GPU, HFFN samples less device memory than
-  dense (8296 against 9479 MB); at d80 on M1 CPU, HFFN retains less than dense (6164 against 7291 MB) but its RSS is
-  higher (9081 against 7333 MB). Hypothesis, not isolated: the memory that exceeds the Mac at d80 is held outside the
-  counted tensors, in transient buffers of the d80 training path.
+- **Density decides the sign (measured, within each run).** Along the `512_2048` slice the ratio against dense rises with
+  density (for example M1 CPU FFN inference, `retained_bytes`, above). At the reference density (20 %) the ratio is below 1
+  at every N on x86 FFN inference (0.263 to 0.770) and on Nvidia FFN training (0.218 to 0.727), and above 1 at every N on
+  M1 CPU FFN inference (1.502 to 2.526) and on M1 GPU FFN inference (1.016 to 1.296); whether a ratio lies beyond `delta` is
+  read in each leaf's table. At high density, metadata and indirection make HFFN slower than dense; this is the expected
+  boundary of the format, reported and not hidden.
+- **Large blocks favour dense at the reference density (measured).** N512 is the largest ratio of the reference cell on
+  every FFN entry except `m1-gpu-ffn-inference` and `m1-gpu-ffn-training`. Hypothesis, not isolated: at large N the dense
+  GEMM reaches its throughput regime, while the gather and scatter of the compact path do not.
+- **Whole-model requests.** Each figure covers the whole request, so the dense non-FFN parts bound every ratio. At
+  `sparse20`, the decode ratio against dense is below 1 on every hardware (0.536 to 0.951), the prefill ratio is below 1 on
+  x86 and on the M1 GPU (except prefill_b4, 1.025) and above 1 on the M1 CPU and on Nvidia; the `delta` of each run is in the
+  leaf tables. At `sparse80` the primary memory reading of B exceeds dense in every LLM entry that has an 80 % cell, except
+  `x86-llm-training` (0.921).
+- **B against A.** B equals A within `delta` and 2 % on `m1-cpu-ffn-inference`, `m1-gpu-ffn-inference`,
+  `m1-gpu-llm-inference`, `nvidia-ffn-inference`, `nvidia-ffn-training` and `nvidia-llm-inference`, and on the time of
+  `m1-cpu-llm-training`; B gains over A on `m1-cpu-ffn-training` (28 cells), `x86-ffn-training` (7), `m1-cpu-llm-inference` (4)
+  and `x86-llm-training` (2), and on memory in `m1-cpu-llm-inference` (1 cell), `m1-cpu-llm-training` (2) and
+  `x86-llm-training` (3). B loses against A in four entries, described under *Limits* 1 to 4.
+- **Memory (measured).** On every LLM entry B reads below dense at 10 and 20 % (0.489 to 0.749). The readings differ by form
+  (`retained_bytes`, `footprint_timed_max_bytes`, `device_memory_peak`) and are not compared with each other.
 
 ## Limits
 
-1. **Not covered**: see *Not covered* above.
-2. **Separate parts are not compared.** The Mac 410M entries ran in two parts, d20 and then d10 + d80, in different
-   machine states, on different days. A ratio is read inside its part; the d20 and d10/d80 rows of one entry are not
-   compared with each other, and no trend across densities is drawn across parts. VM figures are not compared with M1
-   figures, nor with each other.
-3. **M1 CPU FFN inference: an episode in the run (measured: the dense process medians).** Processes 9 to 15 are
-   consecutive in time and cover 512_2048_d010 and the first half of session 0 of 512_2048_d020. In them, the dense medians
-   are about 3.8 times those of the neighbouring dense processes (at N512, 14.0 to 14.6 ms against 3.6 to 3.8 ms); the HFFN
-   process 11 is slower too (8.1 ms against 5.7 to 5.8 ms). The thermal state stayed nominal and the cause is not known.
-   This episode sets the `delta` of the run (0.461); it makes the 512_2048_d010 N512 "gain" (0.414) a product of the slow
-   dense processes, so that row is not admissible as a gain; on the reference cell it widens the session range, while
-   session 1 alone gives 3.58 at N512. No process was removed.
-4. **The HFFN arm of M1 CPU FFN inference is the compact G4 runtime** of `cpu/m1/llm/inference/compact` (exact offsets, no
-   padding), not a separate padded FFN kernel. Its figures describe that runtime on the synthetic exports.
-5. **Large `delta` on M1.** M1 CPU FFN inference 0.461; M1 CPU FFN training 0.359, set by `512_2048_d050` N1 hffn, where
-   the process spread is 65 %; M1 GPU FFN inference 0.372. On CPU it is applied, so many cells read *within delta*. On GPU
-   it is reported and not applied: 25 GPU cells lie inside the reported band and are flagged; their sign is not robust.
-6. **Pooled medians.** The ratio of a two-session cell is a pooled median. It can lie outside the [min-max] of the
-   per-session ratios when the sessions differ in level (M1 GPU LLM inference d20: decode_b1 0.620 against [0.561-0.592]).
-   Both are reported.
-7. **Memory figures.** RSS and device figures include the harness and, outside LLM training, both instances of the process
-   (arm and copy). `retained_bytes` does not see native buffers. On Nvidia FFN and M1 GPU FFN the counted and sampled
-   memories disagree in sign; this is not explained. The peak RSS of the processes includes the gates and is not used.
-8. **Provenance.** The VM runs record no git commit (the tree was pushed without git; its hashes are recorded). The Nvidia
-   GPU model is not in the provenance of the runs: it is the one of the instance type.
-9. **Scope of the evidence.** One campaign, one machine state per part. The bench gates check one step or one request per
-   process at the leaf's tolerance; the every-export parity of each leaf is its own `check.sh`. No convergence, trajectory
-   or hardware-generalisation claim is made. Whole-model ratios include the dense non-FFN parts.
-10. **Hypotheses that are not isolated:** the matrix unit for the M1 CPU dense control, the dense GEMM throughput regime at
-    large N, and native buffers outside `retained_bytes`. Each would need its own control.
-11. **Degree of optimisation.** This is a unified first version of the runtime. The kernels were judged on parity and on no
-    loss of time or memory against the earlier per-leaf versions, not tuned for speed. Several optimisation proposals,
-    each estimated above 2 % on the quantity its leaf is judged on, are not done; the figures above are the base they
-    would be measured against, not a ceiling.
+Written limits carried with their evidence class and run; each is a loss or a weakness of v2 that is **published, not
+repaired**. The verdict of the user of 2026-11-10 promoted v2 with these losses.
+
+1. **x86 FFN inference: time loss against A and memory loss against A (measured,
+   `x86-ffn-inference/publication_20261110T085622Z_76740`, `delta` 0.068).** B loses time beyond `delta` on 38 of 40 cells
+   (B/A median 1.204, range 1.078 to 1.692; reference cell: N1 1.638 [1.256–2.432], N8 1.125, N64 1.185, N512 1.318).
+   `retained_bytes` loses beyond 2 % on 10 of 10 cells (B/A 1.32 to 3.80); the difference B − A is 4,341,728 B on every
+   `512_2048` cell, 2,170,848 B at `256_1024_d010` and 8,683,488 B at `1024_4096_d010`, scaling with the hidden width and not
+   with the density (activation-bounded work space). Attribution to the whole-block call of the kernel (one call for the
+   block of N tokens) or to the AVX2 default build is a **hypothesis**: both reached B together and no control separates
+   them. The leaf's earlier promotions were judged on parity alone; this is the first timed reading against A.
+2. **x86 LLM inference: prefill loss against A (measured, `x86-llm-inference/publication_20261109T232405Z_89492`,
+   `delta` 0.070).** 3 of 12 cells: `sparse20 prefill_b4` 1.089, `sparse80 prefill_b1` 1.114, `sparse80 prefill_b4` 1.250;
+   decode is within `delta`. The leaf calls the same kernel as limit 1 (**hypothesis**, not isolated).
+3. **M1 GPU LLM training: time loss against A (measured, `m1-gpu-llm-training/publication_20261110T054806Z_68384`,
+   `delta` 0.017).** 410M at 10 %: B/A 1.396 (`b1_t32`) and 1.475 (`b1_t128`), memory 0.994. It is the price of the move of
+   the leaf onto the FFN training component of `gpu/m1/ffn/training`, judged on parity alone; the host-side bridging costs
+   (activation layout conversion, staging copies, output allocation, compact-gradient copy, handle conversion, transient
+   command objects, host synchronisation per call, native state allocated and not used) stay in the entry point of the leaf
+   and are **estimated**, declared in its README, not measured. 410M at 20 and 80 % are out of the timed grid.
+4. **M1 CPU FFN training: N1 loss and a memory excess against A (measured,
+   `m1-cpu-ffn-training/publication_20261109T215023Z_60616`, `delta` 0.074).** N1 loss on 3 of 40 cells (`d005` 1.132, `d010`
+   1.081, `d020` 1.076); memory +2.55 % (B/A 1.0255) on `512_2048_d005` and `256_1024_d010`, where the adapter counts the work
+   space `y_local` that A does not hold (**hypothesis**). The same entry gains on 28 cells (median B/A 0.769).
+5. **Bands too wide to discriminate (measured).** `delta` is 0.628 (`m1-gpu-ffn-inference`), 0.474 (`x86-ffn-training`),
+   0.341 (`m1-cpu-ffn-inference`), 0.298 (`m1-gpu-ffn-training`) and 0.234 (`nvidia-ffn-training`, one pair; 5 of 444 pairs
+   exceed 0.10). Under such a band "no loss" is a weak statement: a B up to 1.63 times slower than A in `m1-gpu-ffn-inference`
+   would still read "within delta". The rule is applied as written; the width is a limit of these entries.
+6. **`m1-gpu-ffn-training`: first publication, no primary memory reading per arm.** The adapter returns no `retained_bytes`
+   and form C holds every instance in one process. Only the growth at the first build remains (**estimated**; at
+   `512_2048_d020`: RSS 2.66, footprint 0.90, device 2.21 against dense). No memory claim is made for this leaf.
+7. **`nvidia-llm-training`: first publication** (B and dense only). **`nvidia-llm-inference`**: O1 is a failed export by user
+   verdict (2026-11-07).
+8. **Hardware changed between v1 and v2** (Tesla T4 to Quadro RTX 5000; AWS EPYC 9R14 to an OVH EPYC-Milan VM), and the x86
+   and Nvidia runs share their VMs. A comparison of v1 and v2 figures is not supported.
+9. **Other written limits.** M1 GPU forms P and pair without block lifecycle; the x86 Pythia-410M form C leaves a margin of
+   about 0.5 GiB on the 30 GB VM (one reading, peak RSS 31,675,084,800 B); the first timed window of some instances is slow
+   (for example the A instance of `x86-ffn-inference`, window 0 about ten times window 1) and is absorbed by the per-process
+   median, reported not removed; `retained_bytes` is not stated by the adapter for `m1-cpu-ffn-training`,
+   `x86-ffn-inference` and `x86-ffn-training`; a retained opt-in route of `gpu/m1/ffn/training` (`--owner-tile`) is a known
+   failing gate and is covered by neither the check nor the results.
+10. One campaign per entry, one machine each; no figure of one entry is compared with another's. No convergence
+    equivalence, global speed-up or hardware generalisation is claimed.
+11. **Degree of optimisation.** The kernels were judged on parity and, against the previous versions, on time and memory
+    only where the rule required it; they are not tuned for speed. Several proposals, each estimated above 2 % on the
+    quantity its leaf is judged on, are not done and are carried as written limits in the leaf folders' READMEs; the
+    figures above are the base they would be measured against, not a ceiling.
+
+## Full tables
+
+Each leaf's `RESULTS.md` holds the time table (B / dense and B / A, median [min–max] over processes and sessions) and the
+memory table of its run.
 
 ## Code provenance
 
-The figures were measured on the frozen pre-publication tree of each leaf. The tree published here differs from it only
-in path resolution (the folder is found from its own location and the assets from `HFFN_ASSETS`), comments, removed
-experimental switches and dropped diagnostics, bench adapters and launchers. The native sources are the same, or differ
-by comments only, with identical preprocessed output; the Python files are the same operations on the same buffers. This
-is a statement of equivalence by construction, not a re-measurement: the checks of each leaf (`README.md`) were re-run
-on the published tree, the timings were not.
+The figures were measured on the frozen candidate tree of each leaf. The tree published here differs from it in path
+resolution (the folder is found from its own location, the assets from `HFFN_ASSETS`), documentation, comments, removed
+experimental switches and dropped diagnostics; the native kernel sources are the same or differ by comments only (checked
+by a textual diff against the candidate). Where cleaning changed executed code (the switches of the Metal FFN runtime, the path
+of a temporary folder, renamed check variables), the targeted parity of the leaf was run on the cleaned copy alone outside
+the repository (`README.md`, *Verification state*). This is a statement of equivalence by construction and by targeted
+parity, not a re-measurement: the timings were not rerun.

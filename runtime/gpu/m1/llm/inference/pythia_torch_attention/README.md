@@ -74,7 +74,7 @@ It compares prefill logits and every KV-cache decode step with the dense fixed-s
 - **High density is the boundary of the format:** at d80 prefill is slower than dense (RESULTS.md).
 - **Only Pythia-410M was timed**; the other models are covered by the checks, not by the tables.
 - **Depends on the shared levels** (`native_transformer`, `common/pythia`): copy the `runtime/` tree, not the leaf alone.
-- **One Apple M1**, passively cooled; `delta` is reported, not applied, on GPU entries.
+- **One Apple M1**, passively cooled; `delta`, the noise band of each run, is applied as the root `RESULTS.md` states.
 - The Metal runtime keeps the vocabulary of a multi-bank design (`MoEFFN`, `e1b_hidden_banks_v1`); one bank and one route
   are used.
 

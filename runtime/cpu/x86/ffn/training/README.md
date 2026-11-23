@@ -12,7 +12,7 @@ Results: [RESULTS.md](RESULTS.md).
 | | |
 |---|---|
 | Degree of optimisation | **forward: the shared x86 inference kernel** ([`cpu/x86/common`](../../../../cpu/x86/common/README.md)), slots entry of its dual route with `z` stored; backward and AdamW: the G4 training kernel of [`cpu/common/llm/training`](../../../../cpu/common/llm/training/README.md). AVX2/FMA, four threads (one per group of hidden neurons), `-O3 -ffast-math`, no manual micro-kernel and no AVX-512, AMX, BF16 or INT8 path. One block of N tokens per call, N of at least 2: the decode path of the inference kernel (N = 1) does not store `z`. |
-| Hardware | Linux x86_64 with AVX2 and FMA; `g++` 9 or later. Measured on one AWS `c7a.2xlarge` (AMD EPYC 9R14, 8 vCPU). Other x86 CPUs were not tried. |
+| Hardware | Linux x86_64 with AVX2 and FMA; `g++` 9 or later. Measured on one shared OVH cloud VM: AMD EPYC-Milan, 8 vCPU, Linux 6.8, glibc 2.39. Other x86 CPUs were not tried. |
 | Models | an isolated FFN (`d_model`, `d_ff` up to 32767, GELU, float32) with an irregular or homogeneous fixed support given as a compact layer of the `hffn_training_compact_g4_v2` format. The 18 exports of the Pythia FFNs (70M, 160M, 410M at 6 densities) are the layers of the check. |
 | Results | [RESULTS.md](RESULTS.md): time and memory of one step against the dense iso-support control, per layer. |
 

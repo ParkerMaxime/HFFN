@@ -11,6 +11,8 @@ import torch
 
 from hffn_metal_llm import HFFNMetalAdamW, load_pythia_hffn_metal_for_training
 
+ROOT = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -25,7 +27,9 @@ def main() -> None:
     if not torch.backends.mps.is_available():
         raise RuntimeError("MPS is not available; run outside the GPU sandbox")
     torch.manual_seed(args.seed)
-    model, modules = load_pythia_hffn_metal_for_training(args.model_dir, args.export_dir)
+    model, modules = load_pythia_hffn_metal_for_training(
+        args.model_dir, args.export_dir, native_n=(args.seq_len,), library=ROOT / "runtime/gpu/m1/ffn/training/build/libhffn_train.dylib"
+    )
     optimizer = HFFNMetalAdamW(
         model, modules, lr=args.lr, weight_decay=args.weight_decay
     )
@@ -60,6 +64,7 @@ def main() -> None:
         "non_ffn_parameter_changed": bool((non_ffn_before - non_ffn).abs().max().item() > 0.0),
         "adamw_steps": optimizer.steps,
         "layouts": [module.runtime_for_n(args.seq_len).layout for module in modules],
+        "fused_post_attention": False,
     }, indent=2))
 
 

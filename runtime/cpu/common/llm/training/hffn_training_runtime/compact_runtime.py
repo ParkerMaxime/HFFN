@@ -10,7 +10,7 @@ from pathlib import Path
 
 import torch
 
-from .compact_export import G4_GROUPS, HFFNCompactG4Layer, HFFNDualRoute, build_dual_route
+from hffn_pythia.compact_format import G4_GROUPS, HFFNCompactG4Layer, HFFNDualRoute, build_dual_route
 from .compact_torch_extension import load_hffn_compact_torch_extension
 # The entry point of the leaf (one file per hardware, in the leaf's portion of the package): its default build folder,
 # the thread count and the smallest block of its inference forward, and the inference kernel it provides for the
@@ -48,7 +48,7 @@ class HFFNCompactG4TrainingRuntime:
             raise ValueError("dual_route_min_n must be positive")
         self.layers = tuple(layers)
         self.dual_route_min_n = int(dual_route_min_n)
-        self._routes: tuple[HFFNDualRoute, ...] = tuple(build_dual_route(x) for x in self.layers)
+        self._routes: tuple[HFFNDualRoute, ...] = tuple(build_dual_route(x, up=True) for x in self.layers)
         self.ops = load_hffn_compact_torch_extension(build_dir or DEFAULT_BUILD_DIR)
         self._inference = open_inference_forward(self.layers, self._routes)
         self._contexts: dict[int, _State] = {}
@@ -184,7 +184,7 @@ class HFFNCompactG4TrainingRuntime:
         from .compact_checkpoint import load_state_dict
         load_state_dict(self, payload)
 
-    # Single-layer API: thin adapters on the context API above, no other execution path.
+    # Single-layer API of the former padded runtime: thin adapters on the context API above, no other execution path.
     # An implicit forward is keyed by (layer, N) and consumed by the next backward of the same layer and N; several live
     # forwards of one layer and N use the context API. An entry whose context is no longer live (discarded, or consumed
     # through the context API) is replaced by the next implicit forward. The table is created on first use, so the members

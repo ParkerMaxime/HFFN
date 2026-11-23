@@ -104,7 +104,7 @@ def gate2(args) -> tuple[bool, dict]:
     if api_enabled:
         from capabilities import APIState
         if INFERENCE_MIN_N not in grid:
-            grid += (INFERENCE_MIN_N,)  # x86 N2: optional API check only; every other N is kept.
+            grid += (INFERENCE_MIN_N,)  # x86 N2: optional API check only; preserve every old N.
     for name, group in targets(args):
         for layer in group:
             api = APIState(layer, training, inference, Step, relative, INFERENCE_MIN_N) if api_enabled else None
@@ -127,7 +127,7 @@ def gate2(args) -> tuple[bool, dict]:
                     if api is not None:
                         api.observe(layer, x, grad_y, reference, n)
                         # Selected references are held once by APIState; do not
-                        # keep a second Step alive during API finalization.
+                        # keep a second old Step alive during API finalization.
                         del step, native, x, grad_y, reference
                 if api is not None:
                     observed = [dict(export=name, layer=layer.name, **row) for row in api.finalize()]

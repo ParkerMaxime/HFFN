@@ -5,8 +5,10 @@ quantity is read here. Validation controls may use dense FP64 equations.
 """
 from __future__ import annotations
 import argparse
+from concurrent.futures import ProcessPoolExecutor
 import hashlib
 import json
+import multiprocessing
 import os
 from pathlib import Path
 import platform
@@ -16,7 +18,7 @@ import traceback
 from types import SimpleNamespace
 
 HERE=Path(__file__).resolve().parent
-ROOT=next(p for p in HERE.parents if (p/'runtime'/'common'/'pythia'/'hffn_pythia').is_dir())
+ROOT=next(p for p in HERE.parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 MODELS={'pythia70m':6,'pythia160m':12,'pythia410m':24}
 DENSITIES=(10,20,30,50,70,80)
 SYNTH=('homog_256_1024','homog_512_2048','irreg_512_2048')
@@ -34,7 +36,8 @@ def write(path,value):path.write_text(json.dumps(value,indent=2,allow_nan=False)
 
 def source_inventory():
     roots=('runtime/common','runtime/cpu/common','runtime/cpu/m1/ffn/training',
-           'runtime/cpu/m1/llm/inference/compact','runtime/cpu/x86/common',
+           'runtime/cpu/m1/llm/inference/compact','runtime/cpu/m1/ffn/inference/native',
+           'runtime/cpu/m1/ffn/inference/torch_extension','runtime/cpu/m1/ffn/inference/hffn_inference_runtime','runtime/cpu/x86/common',
            'runtime/cpu/x86/ffn/training')
     paths=[]
     for rel in roots:
@@ -73,6 +76,20 @@ def plan(assets,mode,gates):
     return targets,groups,inventory
 
 
+def group_gates(name,items,mode,grid):
+    """Gates 2 and 3 of one group. A pure function of its arguments, in the parent or in a worker process."""
+    import torch
+    torch.set_num_threads(1)
+    import gates
+    from hffn_ffn_layers import layers
+    def selected(_):
+        return [(name,(gates.load(item) if isinstance(item,Path) else gates.from_compact(item,layers.load(item)[0]) for item in items))]
+    gates.targets=selected
+    gates.GATE_N=tuple([128,13,gates.INFERENCE_MIN_N]) if mode=='smoke' or name.startswith('synth/') else grid
+    second=gates.gate2(SimpleNamespace(api_check=True))
+    return second,(gates.gate3(SimpleNamespace()) if second[0] else None)
+
+
 def run(args):
     import torch
     torch.set_num_threads(1)
@@ -109,21 +126,20 @@ def run(args):
         rows.append(row)
         if row.get('passed') is not True:raise AssertionError('failed record '+str(row))
     original_targets,original_grid=gates.targets,gates.GATE_N
+    if args.mode=='run' and os.environ.get('HFFN_PENDING_ATTEMPT'):
+        write(out/'attempt.json',json.loads(os.environ['HFFN_PENDING_ATTEMPT']))
+    # The libraries are built above. Workers compute; this process alone writes, in the order of the plan.
+    pool=ProcessPoolExecutor(args.jobs,mp_context=multiprocessing.get_context('spawn')) if args.jobs>1 else None
+    futures=[pool.submit(group_gates,name,items,args.mode,original_grid) for name,items in groups] if pool else []
     try:
         for index,(name,items) in enumerate(groups):
-            def selected(_):
-                return [(name,(gates.load(item) if isinstance(item,Path) else gates.from_compact(item,layers.load(item)[0]) for item in items))]
-            gates.targets=selected
-            gates.GATE_N=tuple([128,13,gates.INFERENCE_MIN_N]) if args.mode=='smoke' or name.startswith('synth/') else original_grid
-            gargs=SimpleNamespace(api_check=True)
-            if index==0 and args.mode=='run' and os.environ.get('HFFN_PENDING_ATTEMPT'):
-                write(out/'attempt.json',json.loads(os.environ['HFFN_PENDING_ATTEMPT']))
-            ok,payload=gates.gate2(gargs)
+            second,third=futures[index].result() if pool else group_gates(name,items,args.mode,original_grid)
+            ok,payload=second
             write(out/f'gate2_{index:02d}.json',dict(passed=ok,**payload))
             for row in payload['rows']:emit(dict(gate='2',**row))
             for row in payload['api_rows']:emit(dict(gate='api',**row))
             if not ok:raise AssertionError('gate2/API failed '+name)
-            ok,payload=gates.gate3(SimpleNamespace())
+            ok,payload=third
             write(out/f'gate3_{index:02d}.json',dict(passed=ok,**payload))
             for row in payload['rows']:emit(dict(gate='3',**row))
             if not ok:raise AssertionError('gate3 failed '+name)
@@ -150,13 +166,14 @@ def run(args):
         write(out/'summary.json',dict(status='passed',records=len(rows),layers=sum(map(len,expected.values())),raw_sha256=sha(out/'raw.jsonl')))
         write(out/'manifest.json',dict(status='passed',planned=len(expected),done=len(expected)))
     finally:
+        if pool:pool.shutdown(wait=True,cancel_futures=True)
         gates.targets,gates.GATE_N=original_targets,original_grid
 
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--hardware',choices=('m1','x86'),required=True)
     p.add_argument('--mode',choices=('smoke','run'),required=True);p.add_argument('--assets',type=Path,required=True)
-    p.add_argument('--out',type=Path,required=True);args=p.parse_args()
+    p.add_argument('--out',type=Path,required=True);p.add_argument('--jobs',type=int,default=1);args=p.parse_args()
     try:run(args)
     except BaseException:
         traceback.print_exc();path=args.out/'manifest.json'

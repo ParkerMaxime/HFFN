@@ -7,7 +7,7 @@ end-to-end token check, the timing harness and the prompt tokens are shared with
 (`../../../../common/pythia/hffn_pythia`).
 
 This is a **validated port with its measured boundary**, not a tuned runtime. It is checked on 18 exports (parity per
-layer and end to end); its figures, on the one GPU where it was timed (a Tesla T4), are in RESULTS.md. The kernels and
+layer and end to end); its figures, on the one GPU where it was timed (one Quadro RTX 5000 (16 GB, compute capability 7.5) on a shared OVH cloud VM (4 vCPU)), are in RESULTS.md. The kernels and
 their selection thresholds are those of the Metal reference and were not tuned for CUDA.
 
 Results: [RESULTS.md](RESULTS.md) (this leaf) and [`../../../../RESULTS.md`](../../../../RESULTS.md) (protocol and limits of the whole tree).
@@ -17,7 +17,7 @@ Results: [RESULTS.md](RESULTS.md) (this leaf) and [`../../../../RESULTS.md`](../
 | | |
 |---|---|
 | Degree of optimisation | a port, not a tuned kernel set. The six kernels (three up, three down), their work distribution, the order of edges and sums, the `[feature, N]` layout and the selection thresholds are those of the Metal reference; the thresholds (cooperative reduction up to N = 4, up tiles from N = 64, "blocked" down from N = 64 if `d_ff` <= 4096 or N <= 128; the width bound is 4096 on CUDA) were measured on an Apple M1 and are **provisional** here: they were not remeasured on a CUDA GPU, and the kernel pairs were not timed. No kernel or threshold was changed for Pythia or for CUDA. |
-| Hardware | an NVIDIA GPU with CUDA 12, one device (`cuda:0`), PyTorch's default CUDA stream (the runtime refuses another one); kernels compiled at run time by NVRTC through CuPy. Measured on one Tesla T4 (compute capability 7.5) only; no other GPU was tried. |
+| Hardware | an NVIDIA GPU with CUDA 12, one device (`cuda:0`), PyTorch's default CUDA stream (the runtime refuses another one); kernels compiled at run time by NVRTC through CuPy. Measured on one Quadro RTX 5000 (16 GB, compute capability 7.5) on a shared OVH cloud VM (4 vCPU) only; no other GPU was tried. |
 | Models | the three Pythia models (GPT-NeoX, 70M, 160M, 410M), float32, with the FFN of every block pruned by WANDA at 10, 20, 30, 50, 70 and 80 % density, read from compact exports (18 exports). `d_model` must be a multiple of 16 (checked); the compact indices are 16-bit, so `d_model` and `d_ff` must stay below 32,768 (not checked by the code); one call takes 1 to 262,144 tokens. |
 | Results | [RESULTS.md](RESULTS.md); each figure carries its evidence class and the name of its qualified run. |
 
@@ -123,7 +123,7 @@ Declared deviations:
 |---|---|---|
 | <= 4 | `coop`: the 32 lanes reduce the edge list, input in token order | `coop`: same, per output |
 | 5 to 63 | `lane`: one lane per token | `tiled`: one thread per (output, token) |
-| >= 64 | `tile`: tiles of 128 tokens, 4 accumulators | `blocked` (2 tokens per thread) if `d_ff` <= 4096 or N <= 128, otherwise `tiled` (shared `BLOCK_MAX_WIDTH` = 4096, chosen from timings on a T4 at d_ff 3072 and 4096 that are not distributed) |
+| >= 64 | `tile`: tiles of 128 tokens, 4 accumulators | `blocked` (2 tokens per thread) if `d_ff` <= 4096 or N <= 128, otherwise `tiled` (shared `BLOCK_MAX_WIDTH` = 4096, chosen from timings on a Tesla T4 (an earlier GPU) at d_ff 3072 and 4096 that are not distributed) |
 
 Each hidden value and each output is written by a single thread: no atomics, no scatter. The `coop` kernels add 32
 partial sums through a tree of shuffles; the others add in slot order.
@@ -217,7 +217,7 @@ kernel pairs and thresholds.
 
 ## Known limits
 
-- One GPU (a shared cloud Tesla T4), one execution per run, one boot: the three sessions follow each other and measure
+- One GPU (one Quadro RTX 5000 (16 GB, compute capability 7.5) on a shared OVH cloud VM (4 vCPU)), one execution per run, one boot: the three sessions follow each other and measure
   repeatability from one process to another, not from one day or one instance to another. The absolute time of an arm
   can change level from one execution to another: ratios are read within an execution, milliseconds are not quoted.
 - The dense arm keeps one copy of its FFN weights and has no A/A. On the x86 CPU, two dense models of one process

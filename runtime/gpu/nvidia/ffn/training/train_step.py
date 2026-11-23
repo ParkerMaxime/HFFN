@@ -21,7 +21,7 @@ GATE2_FACTOR = 10.0          # per-group distance to float64 within this factor 
 GATE2_FLOOR = 1e-7           # relative floor of the control distance (a control at 0 distance would give a zero tolerance)
 GATE3_CONDITIONING = 100.0   # entries whose float64 |gradient| >= this factor times the dense float32 group distance
 GATE3_RELATIVE = 1e-5
-GATE5_OWN_GRADIENT_RELATIVE = 1e-5    # gate 5, fixed before any run
+GATE5_OWN_GRADIENT_RELATIVE = 1e-5    # gate 5 (form D 2026-10-12, local form 2026-10-17, same bound), fixed before any run
 ORACLE_TOKENS = 64           # token chunk of the float64 oracle
 
 
@@ -200,7 +200,7 @@ def gate3(train, layer, groups: dict, masks: dict, before: dict) -> dict:
     """One AdamW step against the float64 closed form on conditioned entries (relative GATE3_RELATIVE).
 
     The closed form is fed the build's own float32 gradient of the step (`groups`, hidden-major), so that the gate
-    judges the update and not the gradient already judged by gate 2.
+    judges the update and not the gradient already judged by gate 2 (rule of 2026-10-11).
 
     The updated value is compared relative to max(|updated|, |previous|) (the magnitude the operation works at); the
     moments plainly relative. Entries below the conditioning threshold are counted, not compared."""
@@ -290,15 +290,15 @@ def gate5_local(train, layer, case, x: torch.Tensor, masks: dict, steps: int = 5
     float64 closed form started from the build's actual pre-update float32 parameters and moments, fed the build's actual
     gradient of that step, its step number (the build's counter, which must equal the nominal one) and the nominal
     hyper-parameters; on the conditioned entries of `masks`, at every step: the value relative to max(|reference|,
-    |previous|, lr) (lr nominal, the unit of one update) and the moments as gate 3 (m relative to
+    |previous|, lr) (lr nominal, the unit of one update: rule of 2026-10-19) and the moments as gate 3 (m relative to
     max(|m_ref|, beta1 |m_prev|, (1 - beta1) |g|), v plainly relative), all within GATE5_OWN_GRADIENT_RELATIVE. Biases
     are compared and recorded, not judged.
     Pass B (decay only): from the same initial state, `steps` steps on a zero upstream gradient; the build's parameters
     after the last step against the float64 chain fed the build's gradients (zero by the equations), relative to
     max(|reference|, |initial|). With zero moments the update term vanishes, so this pass isolates the decoupled decay,
     whose omission sits at the per-step bound in pass A (lr x weight_decay = 1e-5); a non-zero gradient read in it fails.
-    The cumulative own-gradient replay of pass A (read at the last step on the same masks, relative to
-    max(|reference|, |initial|)) is recorded with the bound of the per-step gate as a limit; it does not gate. A group whose mask is
+    The cumulative own-gradient replay of pass A (the former form D, read at the last step on the same masks, relative to
+    max(|reference|, |initial|)) is recorded with its former bound as a limit; it does not gate. A group whose mask is
     empty fails closed; every parameter and moment must stay finite. The build is left in the state it had on entry."""
     n = x.shape[0]
     perm = output_major_order(layer)
@@ -357,7 +357,7 @@ def gate5_local(train, layer, case, x: torch.Tensor, masks: dict, steps: int = 5
                    "pass": conditioned > 0 and worst <= GATE5_OWN_GRADIENT_RELATIVE and decay_err <= GATE5_OWN_GRADIENT_RELATIVE}
         ok &= rows[p]["pass"]
         cumulative = _rel(end[p][0], replay[p][0], torch.maximum(replay[p][0].abs(), start[p][0].abs()), mask) if conditioned else float("inf")
-        record[p] = {"relative": cumulative, "bound": GATE5_OWN_GRADIENT_RELATIVE, "exceeded": cumulative > GATE5_OWN_GRADIENT_RELATIVE}
+        record[p] = {"relative": cumulative, "former_bound": GATE5_OWN_GRADIENT_RELATIVE, "exceeded": cumulative > GATE5_OWN_GRADIENT_RELATIVE}
     counted = counters == list(range(1, steps + 1))
     zero_gradients = decay_gradient == 0.0   # pass B must stay a decay-only check, not a cumulative replay
     return {"pass": ok and finite and counted and zero_gradients, "finite": finite, "step_counter": counters, "decay_gradient_max": decay_gradient,

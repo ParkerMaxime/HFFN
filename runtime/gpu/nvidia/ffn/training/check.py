@@ -6,7 +6,7 @@ For each (layer, N) of `CASES`: the gates of the step as it stands in this leaf.
   3 AdamW update against its float64 closed form, on the conditioned entries;
   4 same bits twice from the same state, supports and offsets unchanged;
   5 five steps, each update against the float64 closed form from the build's own pre-update state and gradient, plus five
-    decay-only steps (local form, tolerance 1e-5); the cumulative own-gradient replay is printed as a record, not a gate.
+    decay-only steps (local form, tolerance 1e-5); the cumulative form-D replay is printed as a record, not a gate.
 Then the guards of the partial workspace: no buffer growth in a step after `reserve`, a refusal beyond 32-bit indexing.
 N covers one tile (1, 33, 100, 128), a one-token last tile (257), partial last tiles (300, 2100) and exact tiles (512, 1024).
 """

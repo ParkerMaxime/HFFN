@@ -168,6 +168,8 @@ inline __m256 gelu_lanes(__m256 value) {
 }
 #endif
 inline int tile_for(int n) { return std::min(n, 128); }
+// Tokens held in registers by the lane routines (12 ymm accumulators of 8 lanes); a block of N tokens is walked in tiles of this size inside the neuron loop.
+constexpr int kTokenTile = 96;
 // `groups` holds threads + 1 offsets partitioning [0, size).
 inline void validate(int threads, const int32_t* groups, int size, int n, int h, int f) {
     if (threads < 1 || threads > kMaxThreads || n <= 0 || h <= 0 || f <= 0 || groups[0] != 0 || groups[threads] != size) throw std::runtime_error("invalid compact dimensions or partition");
@@ -193,7 +195,7 @@ struct OutputJob {
 // x_t in its `groups` range) or the reduction of the hidden-owned slabs (uniform split in `parts`).
 struct FeatureJob { const float* source; float* destination; const int32_t* groups; int n, h; const float* bias; int parts; };
 
-// N = 8, scalar builds only (AVX2 builds take hidden_group_lanes for every N up to 96).
+// N = 8, scalar builds only (AVX2 builds take the lane routines for every N, in tiles of 96).
 template <int kBatch, int kTile>
 inline void hidden_group_fixed(const HiddenJob& job, int group) {
     for (int tile_start = 0; tile_start < kBatch; tile_start += kTile) {
@@ -297,63 +299,79 @@ inline void hidden_group_slot_inner_fixed(const HiddenJob& job, int group) {
 // read once for the whole batch, as the fixed paths) with the batch held in
 // kChunks ymm accumulators; the last chunk is masked.
 template <int kChunks, bool kPartial>
-inline void hidden_group_lanes(const HiddenJob& job, int group) {
-    const int n = job.n;
+inline void hidden_row_lanes(const HiddenJob& job, int group, int hidden, int start, int m) {
+    const int n = job.n;  // row stride of the whole block; the tile covers tokens [start, start + m), m <= 96
     // Full chunks use plain loads/stores; only a partial last chunk is masked.
-    const __m256i tail = lane_mask(n - 8 * (kChunks - 1));
+    const __m256i tail = lane_mask(m - 8 * (kChunks - 1));
     auto load = [&](const float* source, int chunk) { return chunk + 1 < kChunks || !kPartial ? _mm256_loadu_ps(source + 8 * chunk) : _mm256_maskload_ps(source + 8 * chunk, tail); };
     auto store = [&](float* destination, int chunk, __m256 value) { if (chunk + 1 < kChunks || !kPartial) _mm256_storeu_ps(destination + 8 * chunk, value); else _mm256_maskstore_ps(destination + 8 * chunk, tail, value); };
-    for (int hidden = job.groups[group]; hidden < job.groups[group + 1]; ++hidden) {
+    {
         __m256 value[kChunks];
         for (int chunk = 0; chunk < kChunks; ++chunk) value[chunk] = _mm256_set1_ps(job.b_up[hidden]);
         for (int slot = job.up_offsets[hidden]; slot < job.up_offsets[hidden + 1]; ++slot) {
-            const float* input = job.x + static_cast<size_t>(job.up_idx[slot]) * n;
+            const float* input = job.x + static_cast<size_t>(job.up_idx[slot]) * n + start;
             const __m256 weight = _mm256_set1_ps(job.up_val[slot]);
             for (int chunk = 0; chunk < kChunks; ++chunk) value[chunk] = _mm256_fmadd_ps(load(input, chunk), weight, value[chunk]);
         }
         // Without materialisation (baseline route) the activations of one hidden
         // row live in a stack scratch: the [F, N] activation rows are never touched.
         alignas(32) float scratch[8 * kChunks];
-        float* active = job.materialize_activation ? job.activation + static_cast<size_t>(hidden) * n : scratch;
+        float* active = job.materialize_activation ? job.activation + static_cast<size_t>(hidden) * n + start : scratch;
         // GELU, 8 lanes per erf call for every N. Full chunks are stored first and processed in
         // place, so that no accumulator is live across the calls; a partial last chunk goes
         // from its register (reloading a masked store is slow), its lanes past N not stored.
         const int full_chunks = kPartial ? kChunks - 1 : kChunks;
         // A caller that passes a z buffer distinct from the activation (training) also keeps the pre-activation.
         if (job.materialize_activation && job.z != job.activation) {
-            float* pre = job.z + static_cast<size_t>(hidden) * n;
+            float* pre = job.z + static_cast<size_t>(hidden) * n + start;
             for (int chunk = 0; chunk < kChunks; ++chunk) store(pre, chunk, value[chunk]);
         }
         for (int chunk = 0; chunk < full_chunks; ++chunk) _mm256_storeu_ps(active + 8 * chunk, value[chunk]);
         if (kPartial) _mm256_maskstore_ps(active + 8 * full_chunks, tail, gelu_lanes(value[full_chunks]));
         for (int chunk = 0; chunk < full_chunks; ++chunk) _mm256_storeu_ps(active + 8 * chunk, gelu_lanes(_mm256_loadu_ps(active + 8 * chunk)));
         if (job.write_down) for (int slot = job.down_offsets[hidden]; slot < job.down_offsets[hidden + 1]; ++slot) {
-            float* output = job.y_local + (static_cast<size_t>(group) * job.h + job.down_idx[slot]) * n;
+            float* output = job.y_local + (static_cast<size_t>(group) * job.h + job.down_idx[slot]) * n + start;
             const __m256 weight = _mm256_set1_ps(job.down_val[slot]);
             for (int chunk = 0; chunk < kChunks; ++chunk) store(output, chunk, _mm256_fmadd_ps(load(active, chunk), weight, load(output, chunk)));
         }
     }
 }
 
-// Returns false when the batch is outside the register-blocked range. Out of line
-// (keeps hidden_group small).
-__attribute__((noinline)) bool hidden_group_lanes_dispatch(const HiddenJob& job, int group) {
-    if (job.begin != 0 || job.end != job.n || job.n > 96) return false;
-    switch ((job.n + 7) / 8) {
-        case 1: if (job.n % 8) hidden_group_lanes<1, true>(job, group); else hidden_group_lanes<1, false>(job, group); return true;
-        case 2: if (job.n % 8) hidden_group_lanes<2, true>(job, group); else hidden_group_lanes<2, false>(job, group); return true;
-        case 3: if (job.n % 8) hidden_group_lanes<3, true>(job, group); else hidden_group_lanes<3, false>(job, group); return true;
-        case 4: if (job.n % 8) hidden_group_lanes<4, true>(job, group); else hidden_group_lanes<4, false>(job, group); return true;
-        case 5: if (job.n % 8) hidden_group_lanes<5, true>(job, group); else hidden_group_lanes<5, false>(job, group); return true;
-        case 6: if (job.n % 8) hidden_group_lanes<6, true>(job, group); else hidden_group_lanes<6, false>(job, group); return true;
-        case 7: if (job.n % 8) hidden_group_lanes<7, true>(job, group); else hidden_group_lanes<7, false>(job, group); return true;
-        case 8: if (job.n % 8) hidden_group_lanes<8, true>(job, group); else hidden_group_lanes<8, false>(job, group); return true;
-        case 9: if (job.n % 8) hidden_group_lanes<9, true>(job, group); else hidden_group_lanes<9, false>(job, group); return true;
-        case 10: if (job.n % 8) hidden_group_lanes<10, true>(job, group); else hidden_group_lanes<10, false>(job, group); return true;
-        case 11: if (job.n % 8) hidden_group_lanes<11, true>(job, group); else hidden_group_lanes<11, false>(job, group); return true;
-        case 12: if (job.n % 8) hidden_group_lanes<12, true>(job, group); else hidden_group_lanes<12, false>(job, group); return true;
-        default: return false;
+// One neuron, one tile of m <= 96 tokens: the number of 8-lane chunks picks the register-blocked routine.
+inline void hidden_row_tile(const HiddenJob& job, int group, int hidden, int start, int m) {
+    switch ((m + 7) / 8) {
+        case 1: if (m % 8) hidden_row_lanes<1, true>(job, group, hidden, start, m); else hidden_row_lanes<1, false>(job, group, hidden, start, m); return;
+        case 2: if (m % 8) hidden_row_lanes<2, true>(job, group, hidden, start, m); else hidden_row_lanes<2, false>(job, group, hidden, start, m); return;
+        case 3: if (m % 8) hidden_row_lanes<3, true>(job, group, hidden, start, m); else hidden_row_lanes<3, false>(job, group, hidden, start, m); return;
+        case 4: if (m % 8) hidden_row_lanes<4, true>(job, group, hidden, start, m); else hidden_row_lanes<4, false>(job, group, hidden, start, m); return;
+        case 5: if (m % 8) hidden_row_lanes<5, true>(job, group, hidden, start, m); else hidden_row_lanes<5, false>(job, group, hidden, start, m); return;
+        case 6: if (m % 8) hidden_row_lanes<6, true>(job, group, hidden, start, m); else hidden_row_lanes<6, false>(job, group, hidden, start, m); return;
+        case 7: if (m % 8) hidden_row_lanes<7, true>(job, group, hidden, start, m); else hidden_row_lanes<7, false>(job, group, hidden, start, m); return;
+        case 8: if (m % 8) hidden_row_lanes<8, true>(job, group, hidden, start, m); else hidden_row_lanes<8, false>(job, group, hidden, start, m); return;
+        case 9: if (m % 8) hidden_row_lanes<9, true>(job, group, hidden, start, m); else hidden_row_lanes<9, false>(job, group, hidden, start, m); return;
+        case 10: if (m % 8) hidden_row_lanes<10, true>(job, group, hidden, start, m); else hidden_row_lanes<10, false>(job, group, hidden, start, m); return;
+        case 11: if (m % 8) hidden_row_lanes<11, true>(job, group, hidden, start, m); else hidden_row_lanes<11, false>(job, group, hidden, start, m); return;
+        default: if (m % 8) hidden_row_lanes<12, true>(job, group, hidden, start, m); else hidden_row_lanes<12, false>(job, group, hidden, start, m); return;
     }
+}
+
+// Whole block in one call: the neuron loop is the outer loop, the tokens are walked in tiles of at
+// most kTokenTile inside it (one tile for N <= kTokenTile, the case of the former kernel). A token's
+// arithmetic (bias, slots in order, GELU, down slots in order) does not depend on its tile.
+// Out of line (keeps hidden_group small). Returns false only for a job that is not the whole block.
+__attribute__((noinline)) bool hidden_group_lanes_dispatch(const HiddenJob& job, int group) {
+    if (job.begin != 0 || job.end != job.n) return false;
+    for (int hidden = job.groups[group]; hidden < job.groups[group + 1]; ++hidden)
+        for (int start = 0; start < job.n; start += kTokenTile) hidden_row_tile(job, group, hidden, start, std::min(kTokenTile, job.n - start));
+    return true;
+}
+
+// The whole-group form kept for the N = 1 training sidecar (hffn_compact_g4_inference_n1.cpp): one tile of
+// job.n tokens (job.n <= 96) per neuron, the same instantiation and the same bits as the former routine.
+template <int kChunks, bool kPartial>
+inline void hidden_group_lanes(const HiddenJob& job, int group) {
+    for (int hidden = job.groups[group]; hidden < job.groups[group + 1]; ++hidden)
+        hidden_row_lanes<kChunks, kPartial>(job, group, hidden, 0, job.n);
 }
 #endif
 
@@ -394,7 +412,7 @@ inline void hidden_group(const HiddenJob& job, int group) {
     if (job.write_down && job.begin == 0) { float* slab = job.y_local + static_cast<size_t>(group) * job.h * job.n; std::fill(slab, slab + static_cast<size_t>(job.h) * job.n, 0.0f); }
     if (job.n == 1 && !job.write_down) { decode_up_group(job, group); return; }
 #if HFFN_HAS_AVX2
-    // Up to 96 tokens the batch of a hidden row stays in ymm registers, for every N.
+    // The lane routines tile the tokens (kTokenTile = 96) inside the neuron loop: one call for every N.
     if (hidden_group_lanes_dispatch(job, group)) return;
 #else
     if (job.begin == 0 && job.end == 8 && job.n == 8) { hidden_group_fixed<8, 8>(job, group); return; }
@@ -449,19 +467,19 @@ inline void hidden_group(const HiddenJob& job, int group) {
 // read once for the whole batch, kChunks ymm accumulators per output row, plain
 // loads for full chunks and a mask only for a partial last chunk.
 template <int kChunks, bool kPartial, bool kSlots>
-inline void output_group_lanes(const OutputJob& job, int group) {
-    const int n = job.n;
-    const __m256i tail = lane_mask(n - 8 * (kChunks - 1));
-    for (int output = job.groups[group]; output < job.groups[group + 1]; ++output) {
+inline void output_row_lanes(const OutputJob& job, int output, int start, int m) {
+    const int n = job.n;  // row stride of the whole block; the tile covers tokens [start, start + m), m <= 96
+    const __m256i tail = lane_mask(m - 8 * (kChunks - 1));
+    {
         __m256 value[kChunks];
         for (int chunk = 0; chunk < kChunks; ++chunk) value[chunk] = _mm256_set1_ps(job.b_down[output]);
         for (int slot_index = job.offsets[output]; slot_index < job.offsets[output + 1]; ++slot_index) {
-            const float* active = job.activation + static_cast<size_t>(job.hidden[slot_index]) * n;
+            const float* active = job.activation + static_cast<size_t>(job.hidden[slot_index]) * n + start;
             const __m256 weight = _mm256_set1_ps(job.weights[kSlots ? job.slots[slot_index] : slot_index]);
             for (int chunk = 0; chunk < kChunks; ++chunk)
                 value[chunk] = _mm256_fmadd_ps(chunk + 1 < kChunks || !kPartial ? _mm256_loadu_ps(active + 8 * chunk) : _mm256_maskload_ps(active + 8 * chunk, tail), weight, value[chunk]);
         }
-        float* destination = job.y_t + static_cast<size_t>(output) * n;
+        float* destination = job.y_t + static_cast<size_t>(output) * n + start;
         for (int chunk = 0; chunk < kChunks; ++chunk) {
             if (chunk + 1 < kChunks || !kPartial) _mm256_storeu_ps(destination + 8 * chunk, value[chunk]);
             else _mm256_maskstore_ps(destination + 8 * chunk, tail, value[chunk]);
@@ -470,23 +488,30 @@ inline void output_group_lanes(const OutputJob& job, int group) {
 }
 
 template <bool kSlots>
-inline bool output_group_lanes_dispatch(const OutputJob& job, int group) {
-    if (job.n > 96) return false;
-    switch ((job.n + 7) / 8) {
-        case 1: if (job.n % 8) output_group_lanes<1, true, kSlots>(job, group); else output_group_lanes<1, false, kSlots>(job, group); return true;
-        case 2: if (job.n % 8) output_group_lanes<2, true, kSlots>(job, group); else output_group_lanes<2, false, kSlots>(job, group); return true;
-        case 3: if (job.n % 8) output_group_lanes<3, true, kSlots>(job, group); else output_group_lanes<3, false, kSlots>(job, group); return true;
-        case 4: if (job.n % 8) output_group_lanes<4, true, kSlots>(job, group); else output_group_lanes<4, false, kSlots>(job, group); return true;
-        case 5: if (job.n % 8) output_group_lanes<5, true, kSlots>(job, group); else output_group_lanes<5, false, kSlots>(job, group); return true;
-        case 6: if (job.n % 8) output_group_lanes<6, true, kSlots>(job, group); else output_group_lanes<6, false, kSlots>(job, group); return true;
-        case 7: if (job.n % 8) output_group_lanes<7, true, kSlots>(job, group); else output_group_lanes<7, false, kSlots>(job, group); return true;
-        case 8: if (job.n % 8) output_group_lanes<8, true, kSlots>(job, group); else output_group_lanes<8, false, kSlots>(job, group); return true;
-        case 9: if (job.n % 8) output_group_lanes<9, true, kSlots>(job, group); else output_group_lanes<9, false, kSlots>(job, group); return true;
-        case 10: if (job.n % 8) output_group_lanes<10, true, kSlots>(job, group); else output_group_lanes<10, false, kSlots>(job, group); return true;
-        case 11: if (job.n % 8) output_group_lanes<11, true, kSlots>(job, group); else output_group_lanes<11, false, kSlots>(job, group); return true;
-        case 12: if (job.n % 8) output_group_lanes<12, true, kSlots>(job, group); else output_group_lanes<12, false, kSlots>(job, group); return true;
-        default: return false;
+inline void output_row_tile(const OutputJob& job, int output, int start, int m) {
+    switch ((m + 7) / 8) {
+        case 1: if (m % 8) output_row_lanes<1, true, kSlots>(job, output, start, m); else output_row_lanes<1, false, kSlots>(job, output, start, m); return;
+        case 2: if (m % 8) output_row_lanes<2, true, kSlots>(job, output, start, m); else output_row_lanes<2, false, kSlots>(job, output, start, m); return;
+        case 3: if (m % 8) output_row_lanes<3, true, kSlots>(job, output, start, m); else output_row_lanes<3, false, kSlots>(job, output, start, m); return;
+        case 4: if (m % 8) output_row_lanes<4, true, kSlots>(job, output, start, m); else output_row_lanes<4, false, kSlots>(job, output, start, m); return;
+        case 5: if (m % 8) output_row_lanes<5, true, kSlots>(job, output, start, m); else output_row_lanes<5, false, kSlots>(job, output, start, m); return;
+        case 6: if (m % 8) output_row_lanes<6, true, kSlots>(job, output, start, m); else output_row_lanes<6, false, kSlots>(job, output, start, m); return;
+        case 7: if (m % 8) output_row_lanes<7, true, kSlots>(job, output, start, m); else output_row_lanes<7, false, kSlots>(job, output, start, m); return;
+        case 8: if (m % 8) output_row_lanes<8, true, kSlots>(job, output, start, m); else output_row_lanes<8, false, kSlots>(job, output, start, m); return;
+        case 9: if (m % 8) output_row_lanes<9, true, kSlots>(job, output, start, m); else output_row_lanes<9, false, kSlots>(job, output, start, m); return;
+        case 10: if (m % 8) output_row_lanes<10, true, kSlots>(job, output, start, m); else output_row_lanes<10, false, kSlots>(job, output, start, m); return;
+        case 11: if (m % 8) output_row_lanes<11, true, kSlots>(job, output, start, m); else output_row_lanes<11, false, kSlots>(job, output, start, m); return;
+        default: if (m % 8) output_row_lanes<12, true, kSlots>(job, output, start, m); else output_row_lanes<12, false, kSlots>(job, output, start, m); return;
     }
+}
+
+// Whole block in one call: the output-feature loop is the outer loop, tokens walked in tiles of at most
+// kTokenTile inside it (one tile for N <= kTokenTile, as the former kernel). Same slot order per token.
+template <bool kSlots>
+inline bool output_group_lanes_dispatch(const OutputJob& job, int group) {
+    for (int output = job.groups[group]; output < job.groups[group + 1]; ++output)
+        for (int start = 0; start < job.n; start += kTokenTile) output_row_tile<kSlots>(job, output, start, std::min(kTokenTile, job.n - start));
+    return true;
 }
 #endif
 
@@ -642,7 +667,12 @@ inline void run_groups(Kind kind, const HiddenJob& hidden_job, const OutputJob& 
 #endif
 
 inline void run_hidden(const HiddenJob& base, int threads) {
+#if HFFN_HAS_AVX2
+    // The lane routines walk the tokens in tiles of kTokenTile inside the neuron loop: one dispatch for the block.
+    const int tile = base.n;
+#else
     const int tile = tile_for(base.n);
+#endif
     // N = 1 runs its groups on the calling thread; from N = 2 the groups run in
     // parallel (a pool round trip costs ~2 us).
     if (base.n <= 1) { for (int group = 0; group < threads; ++group) hidden_group(base, group); return; }

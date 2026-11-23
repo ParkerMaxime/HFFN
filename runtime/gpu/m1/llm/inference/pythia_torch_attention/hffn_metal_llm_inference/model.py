@@ -13,7 +13,7 @@ from pathlib import Path
 import torch
 from torch import nn
 
-# The FFN kernel is the package `native_transformer.hffn` of this leaf.
+# The FFN kernel is the one of the sibling lineage `native_transformer`: its package root is this leaf.
 _LEAF = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir()) / "runtime/gpu/m1/llm/inference"
 if str(_LEAF) not in sys.path:
     sys.path.insert(0, str(_LEAF))

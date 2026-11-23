@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import gc
 import json
+import traceback
 from pathlib import Path
 
 import torch
@@ -55,9 +57,37 @@ def validate(path: Path, values_n: list[int], layouts: list[str], seed: int) -> 
     }
 
 
+def judged(path: Path, args) -> dict:
+    result = validate(path, args.n, args.layouts, args.seed)
+    failures = [row for row in result["rows"] if not row["finite"] or row["max_abs_error"] > args.atol]
+    result["gate"] = {"atol": args.atol, "passed": not failures, "failures": failures}
+    return result
+
+
+def validate_export(args) -> int:
+    """Every layer of an export in one process: one record and one line `ok|FAIL <export> <layer>` per layer."""
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    failed = 0
+    for directory in sorted(args.export_dir.glob("layer*"), key=lambda p: int(p.name[len("layer"):])):
+        try:
+            result = judged(directory / "hffn_training_compact_g4_v2.pt", args)
+            (args.output_dir / f"{directory.name}.json").write_text(json.dumps(result, indent=2) + "\n")
+            passed = result["gate"]["passed"]
+        except Exception:
+            traceback.print_exc()
+            passed = False
+        print(f"{'ok  ' if passed else 'FAIL'} {args.export_dir.parent.name} {directory.name}", flush=True)
+        failed = failed or not passed
+        gc.collect()
+        torch.mps.empty_cache()
+    return int(failed)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--layer", type=Path, required=True)
+    parser.add_argument("--layer", type=Path)
+    parser.add_argument("--export-dir", type=Path, help="every layer of this export; needs --output-dir")
+    parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--n", type=int, nargs="+", default=[1, 8, 32, 128, 256, 512])
     parser.add_argument(
         "--layouts",
@@ -73,9 +103,10 @@ def main() -> None:
         raise RuntimeError("MPS is not available; run outside the GPU sandbox")
     if any(n < 1 for n in args.n):
         raise ValueError("N values must be positive")
-    result = validate(args.layer, args.n, args.layouts, args.seed)
-    failures = [row for row in result["rows"] if not row["finite"] or row["max_abs_error"] > args.atol]
-    result["gate"] = {"atol": args.atol, "passed": not failures, "failures": failures}
+    if args.export_dir is not None:
+        raise SystemExit(validate_export(args))
+    result = judged(args.layer, args)
+    failures = result["gate"]["failures"]
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, indent=2) + "\n")

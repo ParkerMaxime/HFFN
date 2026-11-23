@@ -10,7 +10,7 @@ from pathlib import Path
 
 import torch
 
-ROOT = next(p for p in Path(__file__).resolve().parents if (p/'runtime'/'common'/'pythia'/'hffn_pythia').is_dir())
+ROOT = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 LLM_LEAF = ROOT/'runtime/gpu/m1/llm/inference'
 for path in (LLM_LEAF/'pythia_torch_attention', LLM_LEAF):
     if str(path) not in sys.path:

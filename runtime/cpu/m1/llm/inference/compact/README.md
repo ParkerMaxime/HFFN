@@ -4,16 +4,18 @@ Inference runtime of the Pythia models (70M, 160M, 410M) pruned by WANDA, and of
 (arm64, macOS). Only the FFNs are executed by HFFN; embeddings, attention, LayerNorm, KV cache and head stay in PyTorch. The
 kernel is the **compact G4** kernel: the hidden neurons are split into four fixed groups (the calling thread owns group 0,
 three workers own the others), each group has its own private reduction buffer, the reduction is deterministic, and the
-supports are exact (offsets, no padding). It is also the forward of the M1 CPU training leaves (`../../../ffn/training`,
-`../../training`): they call it through `hffn_inference_runtime/dual_entry.py`.
+supports are exact (offsets, no padding). The kernel, its PyTorch binding and the runtime (`HFFNCompactG4InferenceRuntime`) live
+in the sibling leaf [`../../../ffn/inference`](../../../ffn/inference/README.md), which owns them; this leaf is the Pythia
+consumer of that runtime (loader, model, checks). The same runtime is the forward of the M1 CPU training leaves
+(`../../../ffn/training`, `../../training`): they call it through its `dual_entry.py`.
 
-Results: [RESULTS.md](RESULTS.md) (the isolated FFN and Pythia-410M).
+Results: [RESULTS.md](RESULTS.md) (Pythia-410M, this leaf and the M1 CPU isolated-FFN leaf, which has its own table).
 
 ## Scope
 
 | | |
 |---|---|
-| Degree of optimisation | one kernel with three entries (decode N = 1, a baseline route and a dual route that avoids the reduction), four fixed groups, vectorised in plain C++ and left to the compiler (`-O3 -ffast-math`). No manual micro-kernel, no matrix unit (the dense control uses Apple's Accelerate matrix unit; the compact path cannot). |
+| Degree of optimisation | one kernel with the entries of a deterministic route (`hffn_inference_runtime/forward_route.py`: decode at N = 1, a fused entry, a stores entry and a dual entry that avoids the reduction), four fixed groups, vectorised in plain C++ and left to the compiler (`-O3 -ffast-math`). No manual micro-kernel, no matrix unit (the dense control uses Apple's Accelerate matrix unit; the compact path cannot). The route of a call is a function of N and of the outputs asked, the same for every consumer. Not tuned for speed beyond that: optimisation proposals estimated above 2 % are not done and are not claimed. |
 | Hardware | Apple M1 (arm64), macOS, `clang++`. Measured on one Mac with 16 GB, passively cooled. Not tried on other Apple chips or on other arm64 machines. |
 | Models | the three Pythia models (GPT-NeoX, float32) with the FFN of every block pruned by WANDA at 10, 20, 30, 50, 70 and 80 % density, read from compact exports (18 exports); an isolated FFN given in the same compact layout. |
 | Results | [RESULTS.md](RESULTS.md); each statement carries its evidence class. |
@@ -22,20 +24,17 @@ Results: [RESULTS.md](RESULTS.md) (the isolated FFN and Pythia-410M).
 
 ```
 check.sh                          verification without timing (below)
-hffn_inference_runtime/           the runtime
-  compact_format.py               reader of the compact layer (hffn_training_compact_g4_v2) and the dual-route tables
-  compact_runtime.py              HFFNCompactG4InferenceRuntime: workspaces per (layer, N), routes, calls
-  compact_model.py                the Pythia MLP replacement (no autograd state)
-  compact_inference_loader.py     direct Pythia loader (non-FFN weights from model.safetensors, FFN from the export)
-  compact_torch_extension.py      build and load of the native extension (into build/)
-  dual_entry.py                   the dual entry that also stores z and h, bound once for the M1 training leaves
-hffn_pythia_m1/                   the shared Pythia loader (common/pythia) bound to this runtime
-native/hffn_compact_g4_inference.cpp          the kernel
-torch_extension/hffn_compact_inference_torch_binding.cpp   its PyTorch binding
+hffn_pythia_m1/                   the shared Pythia loader (common/pythia) bound to the M1 CPU runtime
 checks/                           parity per layer (gate 1) and end to end (gate 2)
 ```
 
-The leaf finds `common/pythia` as the first ancestor folder that holds it: use it, and copy it, as the `runtime/` tree.
+The runtime it calls is in [`../../../ffn/inference`](../../../ffn/inference/README.md): `hffn_inference_runtime/`
+(`compact_runtime.py`, `compact_model.py`, `compact_inference_loader.py`, `compact_torch_extension.py`, `dual_entry.py`,
+`forward_route.py`), `native/hffn_compact_g4_inference.cpp` and `torch_extension/`. The compact layer reader is
+`common/pythia/hffn_pythia/compact_format.py`.
+
+The leaf finds `common/pythia` and the isolated-FFN leaf as the first ancestor folder that holds them: use it, and copy it,
+as the `runtime/` tree.
 
 ## Requirements and assets
 
@@ -46,7 +45,7 @@ The leaf finds `common/pythia` as the first ancestor folder that holds it: use i
 - Build: the extension is built into `build/` at the first call. Without Ninja, the explicit `clang++ -O3 -ffast-math
   -std=c++17 -fPIC -dynamiclib -pthread` command builds it; with Ninja installed, `torch.utils.cpp_extension.load` is tried
   first with the same flags. The two recipes do not produce the same machine code (the bodies of the kernel functions are
-  equal, some cold code and binding symbols differ); the published figures come from the command recipe, so install nothing
+  equal, some cold code and binding symbols differ); the measured figures come from the command recipe, so install nothing
   that provides Ninja when reproducing a figure.
 
 ## Fairness of the two arms
@@ -63,7 +62,8 @@ Per call, on a block of N tokens: the up projection and the GELU per hidden neur
 projection. N = 1 takes the decode entry. The baseline route accumulates each group's contribution into its private
 `y_local[4, d_model, N]` and reduces the four buffers in a fixed order; the dual route reads the same edges in output order
 (a reverse schedule built at load time) and needs no reduction. The runtime's `execution` is `baseline` (the default of the
-loader), `dual_route` or `adaptive` (dual from `dual_route_min_n` = 64 tokens). Compact: values, indices, offsets (and the
+loader), `dual_route` or `adaptive` (dual from `dual_route_min_n` = 64 tokens); the last two are labelled controls, not the
+production configuration. The route taken by a call (decode, fused, stores or dual entry) is chosen by `forward_route.route`. Compact: values, indices, offsets (and the
 reverse schedule). Dense: `x`, `z`, `h`, `y` and their buffers, one set per (layer, N), allocated once. `W_up`, `W_down`
 and the masks are never materialised outside the dense arm and the oracle of the checks.
 
@@ -95,23 +95,24 @@ Moving both to the shared level is open.
 
 ## Known limits
 
-- **The isolated-FFN figures** of `RESULTS.md` were obtained by this runtime on isolated-FFN exports, through a loader of
-  those exports that is not published: this leaf's loader reads the Pythia layer files. A layer built in the compact layout
-  can be given to `HFFNCompactG4InferenceRuntime` directly.
-- **Unused options.** The runtime keeps the options of its constructor (`execution`, `dual_route_min_n`, the batch-splitting
-  switches `batch_split32`, `batch_split16`, `batch_split16_min_n`, `batch_split16_t96`, `batch_split_t96_size`). The loader's
-  defaults are the configuration that was measured (`execution="baseline"`, `batch_split32` on, a split of 96); the other
-  values are not covered by a check or a figure here.
+- **The isolated-FFN figures** (M1 CPU FFN inference, [`../../../ffn/inference`](../../../ffn/inference/RESULTS.md)) were obtained
+  by this runtime on isolated-FFN exports, through a loader of those exports that is not published: this leaf's loader reads
+  the Pythia layer files. A layer built in the compact layout can be given to `HFFNCompactG4InferenceRuntime` directly.
+- **Unused options.** The runtime keeps the options `execution` and `dual_route_min_n` of its constructor. The loader's default
+  is the configuration that was measured (`execution="baseline"`); the other values are labelled controls, not covered by a
+  figure here.
 - **High density:** HFFN is slower than dense where the FFN is dense enough, and in prefill on this hardware (see
   RESULTS.md): the expected boundary of the format.
 - A float32 execution is not token-identical to another: the criterion rests on the near-tie band of Gate 2.
 - One machine, one boot; no other arm64 hardware was tried.
-- The `batch_split` policy keys on a sequence length of 32 or 96 and on the token count: other shapes take the unsplit path.
+- The stores entry, which serves the training leaves, is taken at exactly N = 8 (`STORES_N`); N = 2 to 7 is not a stores range
+  and no timed cell covers it (written limit).
 
 ## Provenance
 
 The kernel is the compact G4 kernel of the Apple M1 CPU runtime; the x86 kernel and the training kernel derive from it. See
-[RESULTS.md](RESULTS.md) for the runs.
+[RESULTS.md](RESULTS.md) for the runs. Versions of the M1 CPU consumers of this runtime: this leaf (Pythia inference), the
+M1 CPU FFN and LLM training leaves.
 
 ## Licence
 

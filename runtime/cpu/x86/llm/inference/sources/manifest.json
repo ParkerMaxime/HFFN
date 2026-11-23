@@ -2,7 +2,7 @@
   "files": [
     {
       "path": "../../common/kernels/hffn_compact_g4_inference.cpp",
-      "sha256": "7fbd2d5581c68c7b8d9a321de1b7a05282cad7fae076e1b8cbcc46cfbfdaab7c",
+      "sha256": "da465b03dc2e24f4c59cd889a7983ae203d1547e6c6b95c6c10cc939048cdfb1",
       "role": "HFFN compact G4 inference kernel for x86_64 (AVX2/FMA); the group scheduler is a compile-time choice (private persistent pool by default, OpenMP team with -DHFFN_GROUPS_OPENMP)"
     },
     {
@@ -12,7 +12,7 @@
     },
     {
       "path": "../../../../common/pythia/hffn_pythia/export.py",
-      "sha256": "3881ed36970f651c940a2bec8cfe847de4b20c61caf8043c88f63b551f7bea9f",
+      "sha256": "3f8945de43dbd61f0dd3d9bf847daae48e5365f563d5a6c2cb14cf5c34059527",
       "role": "reader of the compact exports (groups=True for the training runtime), shared with the Pythia inference leaves"
     },
     {

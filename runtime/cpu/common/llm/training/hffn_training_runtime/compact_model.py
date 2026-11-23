@@ -4,7 +4,7 @@ from pathlib import Path
 import time
 import torch
 from torch import nn
-from .compact_export import HFFNCompactG4Layer, load_hffn_compact_g4_layer
+from hffn_pythia.compact_format import HFFNCompactG4Layer, load_hffn_compact_g4_layer
 from .compact_runtime import HFFNCompactG4TrainingRuntime
 
 class _Fn(torch.autograd.Function):

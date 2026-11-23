@@ -75,6 +75,9 @@ class Step:
         self._adamw_config = config
         self.layer, self.n_max, self.n_min = layer.clone(), n, n_min
         self.training, self.inference = training, inference
+        bind_layer = getattr(type(inference), "bind_layer", None)  # class-level: the M1 owner kernel only (x86 kernels and trace doubles have none)
+        if bind_layer is not None:
+            bind_layer(inference, self.layer)
         s, h, f = self.layer, layer.d_model, layer.d_ff
         empty = lambda *shape: torch.zeros(*shape, dtype=torch.float32)  # noqa: E731
         # Work buffers, flat, reserved for n tokens: (name, rows, layout [N, rows] if True else [rows, N]).

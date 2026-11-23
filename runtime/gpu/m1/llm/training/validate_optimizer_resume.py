@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Checkpoint/resume gate for compact parameters and both AdamW arms."""
+"""Checkpoint/resume gate for compact parameters and both AdamW arms (the holder is a NativeBackwardMLP, the moments are
+read back through ``optimizer.moments``)."""
 
 from __future__ import annotations
 
@@ -11,20 +12,25 @@ from pathlib import Path
 import torch
 from torch import nn
 
+import sys
 from hffn_metal_llm import (
     HFFNMetalAdamW,
-    HFFNMetalMLP,
     load_compact_wanda_layer,
     load_training_checkpoint,
     save_training_checkpoint,
 )
 
 
+from native_ffn_adapter import NativeBackwardMLP  # noqa: E402  (the holder carries the adapter)
+
+LIBRARY = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir()) / "runtime/gpu/m1/ffn/training/build/libhffn_train.dylib"
+
+
 class TinyTrainingState(nn.Module):
     def __init__(self, spec) -> None:
         super().__init__()
         self.base = nn.Parameter(torch.randn(31, device="mps"))
-        self.mlp = HFFNMetalMLP(0, spec)
+        self.mlp = NativeBackwardMLP(0, spec, LIBRARY)
 
 
 def main() -> None:

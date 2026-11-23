@@ -19,7 +19,7 @@ else
     models=$("$PY" -B -c "import hffn_pythia_m1; from hffn_pythia.assets import models_dir; print(models_dir())") || exit 2
     exports=$("$PY" -B -c "import hffn_pythia_m1; from hffn_pythia.assets import exports_dir; print(exports_dir())") || exit 2
 fi
-"$PY" -B -m py_compile hffn_pythia_m1/*.py hffn_inference_runtime/*.py checks/*.py || exit 1
+"$PY" -B -m py_compile hffn_pythia_m1/*.py ../../../ffn/inference/hffn_inference_runtime/*.py checks/*.py || exit 1
 failed=0
 count=0
 for export_dir in "$exports"/*_sparse*_ffn_only/export; do

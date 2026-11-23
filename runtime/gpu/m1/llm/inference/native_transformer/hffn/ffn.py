@@ -213,9 +213,9 @@ class MoEFFN:
             up_args += [stored[b].up_offsets, stored[b].up_index, stored[b].up_weights]
         rows_aligned = False
         if bank_major:
-            # Regimes and down modes are chosen at run time in bank-major kernels, so their libraries are keyed
-            # by the plan structure only (fewer pipelines, less driver memory). Row strides are rounded up to
-            # 16 floats when the padded buffers keep their capacity.
+            # Regimes and down modes are chosen at run time in bank-major kernels, so their
+            # libraries are keyed by the plan structure only (fewer pipelines, less driver memory).
+            # Row strides are rounded up to 16 floats when the padded buffers keep their capacity.
             sizes = self._aligned_sizes(layer, segments, ns)
             rows_aligned = sizes is not None
             if self.bank_widths is not None:

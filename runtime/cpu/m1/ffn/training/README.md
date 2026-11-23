@@ -11,7 +11,7 @@ Results: [RESULTS.md](RESULTS.md).
 
 | | |
 |---|---|
-| Degree of optimisation | **forward: the kernel of the sibling inference leaf** ([`../../llm/inference/compact`](../../llm/inference/compact/README.md), dual route, entry that stores `z`, from N = 1), loaded as built there (no second forward). Backward and AdamW: the G4 training kernel of [`cpu/common/llm/training`](../../../../cpu/common/llm/training/README.md). Four fixed groups, plain C++ under `-O3 -ffast-math`, no manual micro-kernel. One block of N tokens per call. |
+| Degree of optimisation | **forward: the kernel of the sibling inference leaf** ([`../inference`](../inference/README.md), the owner of the M1 CPU forward: its dual and stores entries, which store `z`, chosen by `forward_route.route`), loaded as built there (no second forward). Backward and AdamW: the G4 training kernel of [`cpu/common/llm/training`](../../../../cpu/common/llm/training/README.md). Four fixed groups, plain C++ under `-O3 -ffast-math`, no manual micro-kernel. One block of N tokens per call. |
 | Hardware | Apple M1 (arm64), macOS, `clang++`. One machine, passively cooled. |
 | Models | an isolated FFN (`d_model`, `d_ff` up to 32767, GELU, float32), with an irregular or homogeneous fixed support, given as a compact layer of the `hffn_training_compact_g4_v2` format. The 18 exports of the Pythia FFNs (70M, 160M, 410M at 6 densities) are the layers of the parity check. |
 | Results | [RESULTS.md](RESULTS.md): time and memory of one step against the dense iso-support control, per layer. |
@@ -41,7 +41,7 @@ is used and copied as the `runtime/` tree.
   `pythia/exports/<model>_sparse<P>_ffn_only/export/` with their `manifest_compact_g4_v2.json`. The toy tools read their
   datasets from `homogeneous/models/<cell>/dataset/`. The synthetic layers of the check come from the deterministic
   generator of `common/ffn`, not from assets.
-- The inference library is built by the sibling leaf into its own `build/` the first time, then loaded as it is.
+- The inference library is built by the sibling leaf `../inference` into its own `build/` the first time, then loaded as it is.
 
 ## Checks
 

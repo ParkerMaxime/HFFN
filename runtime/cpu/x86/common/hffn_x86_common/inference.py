@@ -12,8 +12,11 @@ from __future__ import annotations
 
 import ctypes
 import hashlib
+import _imp
+import importlib.util as _importlib_util
 import os
 import subprocess
+import sys as _sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve()
@@ -32,17 +35,26 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _recipe():
+    key = "hffn_cpu_plain_dylib"
+    _imp.acquire_lock()
+    try:
+        if key not in _sys.modules:
+            spec = _importlib_util.spec_from_file_location(key, ROOT / "runtime/cpu/common/recipe/plain_dylib.py")
+            module = _importlib_util.module_from_spec(spec)
+            _sys.modules[key] = module
+            try:
+                spec.loader.exec_module(module)
+            except BaseException:
+                del _sys.modules[key]
+                raise
+        return _sys.modules[key]
+    finally:
+        _imp.release_lock()
+
+
 def build(source: Path, build_dir: Path, extra_flags: tuple[str, ...] = (), dependencies: tuple[Path, ...] = ()) -> Path:
-    command = ["g++", *FLAGS, *extra_flags, str(source)]
-    content = source.read_text() + "".join(path.read_text() for path in dependencies)
-    tag = hashlib.sha256((" ".join(command) + content).encode()).hexdigest()[:12]
-    lib = build_dir / f"{source.stem}.{tag}.so"
-    if not lib.exists():
-        build_dir.mkdir(exist_ok=True)
-        partial = lib.with_suffix(f".{os.getpid()}.tmp")
-        subprocess.run([*command, "-o", str(partial)], check=True)
-        partial.rename(lib)
-    return lib
+    return _recipe().build(source, build_dir, "g++", FLAGS, "so", extra_flags, dependencies)
 
 
 def inference_lib() -> Path:

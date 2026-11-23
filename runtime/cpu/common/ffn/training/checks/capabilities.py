@@ -1,7 +1,8 @@
-"""Check-only CPU training API coverage, using the existing gate2 oracle.
+"""Draft check-only CPU training API coverage, using the existing gate2 oracle.
 
-No production path imports this module. Numerical local-form helpers are
-self-contained; there is no second layer equation. Refusal/fault suites and
+No production path imports this module. Numerical local-form helpers are a
+small adaptation of an earlier numerics module; there is no
+second layer equation. Refusal/fault suites and
 actual M1 callers are separate, not claimed by these seven per-layer rows.
 """
 from __future__ import annotations
@@ -18,7 +19,7 @@ from hffn_ffn_training.module import HFFNTrainFFN
 from hffn_ffn_training.contexts import HFFNContextFFN
 from hffn_ffn_training import checkpoint
 
-ROOT = next(path for path in Path(__file__).resolve().parents if (path / 'runtime' / 'common' / 'pythia' / 'hffn_pythia').is_dir())
+ROOT = next(path for path in Path(__file__).resolve().parents if (path / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 COMMON = ROOT / 'runtime/cpu/common/ffn/training/hffn_ffn_training'
 P = ('up_val', 'down_val', 'b_up', 'b_down')
 G = ('grad_up', 'grad_down', 'grad_b_up', 'grad_b_down')
@@ -173,9 +174,9 @@ class APIState:
         for name, item, filename in (('step', step_type, 'step.py'), ('module', HFFNTrainFFN, 'module.py'),
                                      ('contexts', HFFNContextFFN, 'contexts.py')):
             actual = Path(sys.modules[item.__module__].__file__).resolve()
-            if actual != (COMMON / filename).resolve(): raise RuntimeError('API check requires the shared ' + name)
+            if actual != (COMMON / filename).resolve(): raise RuntimeError('API check requires the actual module ' + name)
             self.bindings[name] = str(actual.relative_to(ROOT))
-        if Path(checkpoint.__file__).resolve() != (COMMON / 'checkpoint.py').resolve(): raise RuntimeError('API checkpoint import is not the shared one')
+        if Path(checkpoint.__file__).resolve() != (COMMON / 'checkpoint.py').resolve(): raise RuntimeError('API checkpoint import is not the shared module')
         self.bindings['checkpoint'] = str(Path(checkpoint.__file__).resolve().relative_to(ROOT))
         self.module_events, self.control_events = [], []
         mk = tuple(Trace(kernel, self.module_events) for kernel in self.kernels)

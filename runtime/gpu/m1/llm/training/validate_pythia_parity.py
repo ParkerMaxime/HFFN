@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """One-step full-model gate of the M1 GPU training runtime on the shared float64 oracle.
 
-The dense float32 control (MPS) and the HFFN Metal model run the same training step; each is judged
+The dense float32 control (MPS) and the HFFN Metal model run the same step; each is judged
 against a float64 reference of the same model and token ids (built on the CPU), by the shared gates of `hffn_pythia.training_gate`
 (loss, gradient groups) and `update_gate_core` (the first AdamW step against its closed form). Two float32 arms are not compared
-step by step; the five direct quantities are reported without a verdict.
+step by step; the five former direct quantities are reported without a verdict.
 
 Exit code 0: every gate holds and both fault injections are detected. 1: a gate failed or a fault was not detected. 3: only the
 update gate is inconclusive because the dense control itself fails it. The JSON is written (stdout, and `--out`) in every case.
@@ -164,7 +164,9 @@ def main() -> int:
     gc.collect()
     torch.mps.empty_cache()
 
-    hffn, modules = load_pythia_hffn_metal_for_training(args.model_dir, args.export_dir)
+    hffn, modules = load_pythia_hffn_metal_for_training(
+        args.model_dir, args.export_dir, native_n=(args.seq_len,), library=ROOT / "runtime/gpu/m1/ffn/training/build/libhffn_train.dylib"
+    )
     hffn_optimizer = HFFNMetalAdamW(hffn, modules, lr=args.lr, weight_decay=args.weight_decay)
     hyper = (hffn_optimizer.weight_decay, hffn_optimizer.beta1, hffn_optimizer.beta2, hffn_optimizer.eps)
     guards["optimizer_hyperparameters_equal"] = kept["hyper"] == hyper

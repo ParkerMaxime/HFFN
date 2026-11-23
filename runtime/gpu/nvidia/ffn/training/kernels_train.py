@@ -17,7 +17,7 @@ read or written.
 
 Dispatch per N.
   forward   as `HFFNRuntime.forward`: up `coop` N <= 4, `lane` N < 64, `tile` N >= 64; down `coop` N <= 4,
-            `blocked` N >= 64 and (d_ff <= 4096 or N <= 128), `tiled` otherwise (the runtime's `up_mode`,
+            `blocked` N >= 64 and (d_ff <= 2560 or N <= 128), `tiled` otherwise (the runtime's `up_mode`,
             `down_mode` and `force`). The input is also copied feature-major for every N (the backward reads it).
   backward  one kernel per quantity for every N, the grid only grows with N; `tiles = ceil(N / GRAD_TILE)`,
             GRAD_TILE = 256 tokens (fixed, not tuned per shape or N):

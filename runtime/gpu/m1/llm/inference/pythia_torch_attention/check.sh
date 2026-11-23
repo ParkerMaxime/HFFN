@@ -15,6 +15,11 @@ label="$2"; shift 2
 case "$label" in *[!A-Za-z0-9_]*|"") echo "label: letters, digits and _ only" >&2; exit 2;; esac
 python=${HFFN_PYTHON:-python}
 here=$PWD
+root=$here
+while [ ! -d "$root/runtime/common/pythia/hffn_pythia" ]; do
+    [ "$root" = "/" ] && { echo "tree root not found" >&2; exit 2; }
+    root=$(dirname "$root")
+done
 [ -n "${HFFN_ASSETS:-}" ] || { echo "HFFN_ASSETS is not set" >&2; exit 2; }
 exports=$HFFN_ASSETS/pythia/exports
 [ -d "$exports" ] || { echo "no exports at $exports" >&2; exit 2; }
@@ -32,15 +37,9 @@ body() {
     for name in "$@"; do
         layers=$(cd "$exports/$name/export" && ls -d layer* | sed 's/^layer//' | sort -n)
         [ -n "$layers" ] || { echo "FAIL $name: no layer"; failed=1; continue; }
-        for k in $layers; do
-            expected=$((expected + 1))
-            file="$exports/$name/export/layer$k/hffn_training_compact_g4_v2.pt"
-            if "$python" -B validate_wanda_inference_layer.py --layer "$file" --output "$run/layer/$name/layer$k.json" > /dev/null; then
-                echo "ok   $name layer$k"
-            else
-                echo "FAIL $name layer$k"; failed=1
-            fi
-        done
+        expected=$((expected + $(printf '%s\n' $layers | grep -c .)))
+        # One process per export; a crash loses the layers that follow, which then count as not passed.
+        "$python" -B validate_wanda_inference_layer.py --export-dir "$exports/$name/export" --output-dir "$run/layer/$name" || failed=1
     done
     "$python" -I - "$run/layer" "$expected" <<'PY' || failed=1
 import json, sys

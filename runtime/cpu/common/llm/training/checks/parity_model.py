@@ -70,39 +70,23 @@ def hffn_gradients(model, ids):
     return float(loss), ffn, other
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--model-dir", type=Path, required=True)
-    parser.add_argument("--export-dir", type=Path, required=True)
-    parser.add_argument("--tokens", type=Path, required=True)
-    parser.add_argument("--batch", type=int, default=2)
-    parser.add_argument("--seq-len", type=int, default=32)
-    parser.add_argument("--gate", action="store_true", help="judge the gate and return its exit code")
-    parser.add_argument("--out", type=Path)
-    args = parser.parse_args()
-    ids = torch.tensor(json.loads(args.tokens.read_text())["tokens"][:args.batch * args.seq_len]).view(args.batch, args.seq_len)
-    torch.set_num_threads(4)
-    # The supports, then the float64 reference first; each float32 evaluation is then reduced to its distances and
-    # freed, so that the process never holds more than the reference, one model and one set of gradients.
-    model, _runtime = load_pythia_hffn_compact_g4_for_training(args.model_dir, args.export_dir)
-    supports = [flat_support(block.mlp) for block in model.gpt_neox.layers]
-    del model, _runtime
-    dense = dense_model(args.model_dir, args.export_dir).double()
-    reference = dense_gradients(dense, ids, supports)
-    del dense
-    gc.collect()
+def model_gate(args, ids, supports, reference) -> int:
+    """Everything after the float64 reference. Returns the exit code."""
     dense = dense_model(args.model_dir, args.export_dir)
     dense32 = {}
-    for threads in (4, 1):
+    for threads in (4,) if args.gate else (4, 1):   # the verdict reads the 4-thread control; 1 thread is a diagnostic
         torch.set_num_threads(threads)
         dense32[threads] = dense_gradients(dense, ids, supports)
     torch.set_num_threads(4)
     dense.zero_grad(set_to_none=True)
     del dense
     gc.collect()
-    rows = {"dense32_threads4": distance(dense32[4], reference), "dense32_threads1": distance(dense32[1], reference)}
-    between = {"dense32_threads1_vs_threads4": distance(dense32[1], dense32[4])}
-    del dense32[1]
+    rows = {"dense32_threads4": distance(dense32[4], reference)}
+    between = {}
+    if 1 in dense32:
+        rows["dense32_threads1"] = distance(dense32[1], reference)
+        between["dense32_threads1_vs_threads4"] = distance(dense32[1], dense32[4])
+        del dense32[1]
     if args.gate:                # the gate needs the distances to float64 only: the float32 control is freed
         dense32.clear()
         gc.collect()
@@ -129,6 +113,30 @@ def main() -> int:
           f"non-ffn {max(rows[f'hffn_{n}']['gradient_non_ffn'] for n in CONFIGURATIONS) / control['gradient_non_ffn']:.2f} (limit {GRADIENT_FACTOR:.0f}); "
           f"worst hffn loss {max(rows[f'hffn_{n}']['loss'] for n in CONFIGURATIONS):.1e} (limit {LOSS:.0e}) -> {'PASSED' if passed else 'FAILED'}", flush=True)
     return 0 if passed or not args.gate else 1
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--model-dir", type=Path, required=True)
+    parser.add_argument("--export-dir", type=Path, required=True)
+    parser.add_argument("--tokens", type=Path, required=True)
+    parser.add_argument("--batch", type=int, default=2)
+    parser.add_argument("--seq-len", type=int, default=32)
+    parser.add_argument("--gate", action="store_true", help="judge the gate and return its exit code")
+    parser.add_argument("--out", type=Path)
+    args = parser.parse_args()
+    ids = torch.tensor(json.loads(args.tokens.read_text())["tokens"][:args.batch * args.seq_len]).view(args.batch, args.seq_len)
+    torch.set_num_threads(4)
+    # The supports, then the float64 reference first; each float32 evaluation is then reduced to its distances and
+    # freed, so that the process never holds more than the reference, one model and one set of gradients.
+    model, _runtime = load_pythia_hffn_compact_g4_for_training(args.model_dir, args.export_dir)
+    supports = [flat_support(block.mlp) for block in model.gpt_neox.layers]
+    del model, _runtime
+    dense = dense_model(args.model_dir, args.export_dir).double()
+    reference = dense_gradients(dense, ids, supports)
+    del dense
+    gc.collect()
+    return model_gate(args, ids, supports, reference)
 
 
 if __name__ == "__main__":

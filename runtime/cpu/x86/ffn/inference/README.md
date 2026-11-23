@@ -11,8 +11,8 @@ Results: [RESULTS.md](RESULTS.md) (this leaf) and [`../../../../RESULTS.md`](../
 
 | | |
 |---|---|
-| Degree of optimisation | one kernel, vectorised over the token lanes with AVX2/FMA (scalar fallback without them), T threads on a persistent pool, deterministic reductions. No AVX-512, AMX, BF16 or INT8 path. |
-| Hardware | Linux x86_64, glibc, g++ >= 9. Measured on one machine only: AMD EPYC 9R14 (Zen 4), 8 vCPU (the figures of RESULTS.md). Not validated with clang or on an Intel processor. |
+| Degree of optimisation | one kernel, vectorised over the token lanes with AVX2/FMA (always compiled with `-mavx2 -mfma`; a scalar build exists only as a labelled control), T threads on a persistent pool, deterministic reductions. A block of `N` tokens is one native call, for every `N`. No AVX-512, AMX, BF16 or INT8 path. Not tuned beyond that: optimisation proposals estimated above 2 % are not done and are not claimed. |
+| Hardware | Linux x86_64, glibc, g++ >= 9. Measured on one machine only: a shared OVH cloud VM, AMD EPYC-Milan, 8 vCPU, Linux 6.8, glibc 2.39 (the figures of RESULTS.md). Not validated with clang or on an Intel processor. |
 | Models | An isolated FFN layer given in the compact hidden-major layout (`hffn_ffn_layers.synth.CompactLayer`), GELU (exact), float32. Tested on three synthetic layers (d_model 256 and 512, about 10 % density) and measured on isolated FFN cells of the shared exports (RESULTS.md). No real model here: the LLM use of the kernel is the business of the x86 LLM leaves. |
 | Results | [RESULTS.md](RESULTS.md); each figure carries its evidence class and the name of its qualified run. |
 
@@ -30,9 +30,9 @@ never materialised. Only `x`, `h`, `y` and the reduction buffers are dense.
 ## Contents
 
 ```
-../../common/kernels/hffn_compact_g4_inference.cpp   the kernel, shared by the x86 leaves: AVX2/FMA, scalar fallback, T threads
+../../common/kernels/hffn_compact_g4_inference.cpp   the kernel, shared by the x86 leaves: AVX2/FMA lanes, T threads
 hffn/                   Python loader (ctypes) and tools
-  compact.py            CompactKernel: routes, split into blocks, work buffers
+  compact.py            CompactKernel: routes, work buffers (one native call per block of N tokens)
   build.py              g++ compilation -> build/ (name = hash of the command and the source)
   checks.py             parity contract (python -m hffn.checks)
   provenance.py         hashes of the kernel and of the files of this folder (python -m hffn.provenance)
@@ -48,7 +48,7 @@ The folder reaches the kernel through the nearest ancestor that holds `common/ke
 
 ## Requirements
 
-- Linux x86_64, `g++` ≥ 9 (C++17). AVX2 and FMA for the vector paths.
+- Linux x86_64, `g++` ≥ 9 (C++17), a CPU with AVX2 and FMA (`-mavx2 -mfma` is always passed).
 - Runtime: Python ≥ 3.10 and numpy. The kernel depends only on libstdc++, libm/libmvec and libc. PyTorch is
   **not** needed.
 - Tests and benchmarks: `torch` (CPU), `scipy`, `pytest`, for the dense references.
@@ -63,7 +63,6 @@ pip install -r requirements.txt           # tests and benchmarks
 ## Quick start
 
 ```bash
-export HFFN_CXXFLAGS="-mavx2 -mfma"       # enables the AVX2 paths (otherwise scalar fallback)
 python -m pytest -q                        # < 1 min, compilation included
 python -m hffn.checks                      # detailed parity per test layer
 ```
@@ -116,8 +115,7 @@ The recommended routes keep the up projection per hidden neuron and distribute t
 feature, over the same edges. This is the mechanism of the compact inverse reduction routes of the WANDA article.
 
 - `forward(x)` picks the recommended route (`hffn.compact.recommended_route`); `forward(x, route)` forces a route.
-- Batches of more than 96 tokens are split into balanced blocks, multiples of 8 (`batch_chunks`), processed one
-  after the other.
+- A block of N tokens is one native call, for every N (no split in the loader); the 96-token tile lives inside the kernel.
 - Work buffers are shared by role, sized for the largest N seen, and allocated outside the hot path. `y_t` reuses
   `x_t`. They take about 10 kB per token of the largest block. They start on a 64-byte boundary
   (`WORK_ALIGNMENT`): with numpy's 16-byte alignment, the kernel time depended on the address returned by malloc.
@@ -255,7 +253,7 @@ See [RESULTS.md](RESULTS.md): the published run of this leaf, its figures and it
 - **GELU**: glibc returns different bits for scalar `erff` and for vector `erff` (libmvec) on 31 % of float
   values (exhaustive test on glibc 2.39, not repeated by the tests of this folder). AVX2 builds use the 8-way
   version everywhere; their bits therefore differ from those of a scalar-`erf` build, within the tolerance.
-  Outside glibc, or without AVX2, the GELU goes back through scalar `erf` and independence from position is no
+  Outside glibc the GELU goes back through scalar `erf` and independence from position is no
   longer guaranteed.
 - **`baseline` route**: a reference route, slower than `dual` on the cases it was compared on. Part of the gap is
   attributed to accumulation in memory (one read and one write per edge); the rest is not isolated (hypothesis).
@@ -267,7 +265,7 @@ See [RESULTS.md](RESULTS.md): the published run of this leaf, its figures and it
 `reference/sources.json` gives the origin and the SHA-256 of the kernel and the list of changes since the kernel
 it derives from. The runtime was ported to x86_64 from the HFFN compact kernel of the Apple M1 CPU runtime.
 `python -B -m hffn.provenance` prints the tree digest, the kernel hash and the number of files; on this version it
-prints `tree_sha256=283b5dbfffef15c4ea6eaecea525cc39183c56b157f8a9609093653e944b775c` (35 files).
+prints `tree_sha256=500b3c67c181d7f5ae94b646c0c5af1b95537ba7f8737ec39aabc24020bba779` (35 files).
 
 ## License
 

@@ -1,8 +1,9 @@
 """Untimed M1 caller checks for the final export batch; no production runtime.
 
-Small generated data/checkpoints stay in memory. The actual CLI,
+Small generated data/checkpoints stay in memory. The actual promoted CLI,
 autograd, native FFN and optimizer calls execute; instrumentation observes
-them and never supplies their result.
+them and never supplies their result. This is a draft until its enclosing
+batch protocol and independent reader have been frozen.
 """
 from __future__ import annotations
 from contextlib import ExitStack, contextmanager
@@ -21,7 +22,7 @@ from unittest.mock import patch
 
 import torch
 
-ROOT = next(p for p in Path(__file__).resolve().parents if (p/'runtime'/'common'/'pythia'/'hffn_pythia').is_dir())
+ROOT = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 PKG = 'runtime.cpu.m1.ffn.training'
 PARAMS = ('up_val', 'down_val', 'b_up', 'b_down')
 MEMORY = ('tensor_nbytes', 'optimizer_state_nbytes', 'activation_bytes_estimate',
@@ -82,15 +83,13 @@ def no_legacy(models):
         def find_spec(self, fullname, path=None, target=None):
             if fullname == PKG + '.CPU' or fullname.startswith(PKG + '.CPU.'):
                 raise RuntimeError('CPU-lineage import reached by the caller')
-    def forbidden(*args, **kwargs): raise RuntimeError('CPU-lineage HFFN execution reached by the caller')
     finder = Finder()
     sys.meta_path.insert(0, finder)
     try:
         if any(name == PKG + '.CPU' or name.startswith(PKG + '.CPU.') for name in sys.modules):
             raise RuntimeError('legacy CPU already imported')
-        with patch.object(models.HFFNCompactFFN, '__init__', forbidden), \
-                patch.object(models.HFFNCompactFFN, 'forward', forbidden):
-            yield
+        if hasattr(models, 'HFFNCompactFFN'): raise RuntimeError('legacy HFFN forward still defined')
+        yield
     finally:
         sys.meta_path.remove(finder)
 

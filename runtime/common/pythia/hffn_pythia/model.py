@@ -6,6 +6,9 @@ checkpoint and read the FFN from the same compact export. They differ only in th
   set from the export on the fixed support, zero elsewhere;
 - ``ffn="hffn"``: ``HFFNMLP``, which hands the same activations to the HFFN runtime.
 Embeddings, attention, LayerNorm, KV cache and head stay PyTorch in both arms.
+
+``build_pythia`` is the only construction of a Pythia model on ``runtime/``: ``load_pythia`` and the GPU M1 loaders
+call it, then install their own FFN modules.
 """
 from __future__ import annotations
 
@@ -20,7 +23,7 @@ from transformers.models.gpt_neox import modeling_gpt_neox
 
 from .export import hidden_of_slot, read_layers
 
-# Buffers of older GPT-NeoX checkpoints that the model classes rebuild themselves.
+# Buffers of older GPT-NeoX checkpoints that current models rebuild themselves.
 _LEGACY = (".attention.bias", ".attention.masked_bias", ".attention.rotary_emb.inv_freq")
 
 
@@ -52,13 +55,20 @@ def _set_dense_mlp(mlp: nn.Module, layer: dict) -> None:
 
 @torch.no_grad()
 def _load_non_ffn(model: nn.Module, checkpoint: Path) -> None:
+    """Copy every non-FFN tensor of ``checkpoint`` into ``model``: the two name sets must be equal (legacy buffers
+    aside), and each tensor must have the target's shape and, unless both are floating, its dtype."""
     targets = {name: tensor for name, tensor in model.state_dict().items() if ".mlp." not in name}
     with safe_open(checkpoint, framework="pt", device="cpu") as source:
         names = [name for name in source.keys() if ".mlp." not in name and (name in targets or not name.endswith(_LEGACY))]
         if set(names) != set(targets):
             raise ValueError(f"checkpoint and model tensors differ: {sorted(set(names) ^ set(targets))}")
         for name in names:
-            targets[name].copy_(source.get_tensor(name))
+            value, target = source.get_tensor(name), targets[name]
+            if tuple(value.shape) != tuple(target.shape):
+                raise ValueError(f"tensor shape mismatch {name}: {tuple(value.shape)} != {tuple(target.shape)}")
+            if value.dtype != target.dtype and not (value.is_floating_point() and target.is_floating_point()):
+                raise ValueError(f"tensor dtype mismatch {name}: {value.dtype} != {target.dtype}")
+            target.copy_(value)
 
 
 class _NoFFN(nn.Module):
@@ -72,6 +82,8 @@ class _NoFFN(nn.Module):
 @contextmanager
 def _without_dense_ffn():
     original = modeling_gpt_neox.GPTNeoXMLP
+    if original is _NoFFN:
+        raise RuntimeError("_without_dense_ffn is not reentrant")
     modeling_gpt_neox.GPTNeoXMLP = _NoFFN
     try:
         yield
@@ -79,25 +91,45 @@ def _without_dense_ffn():
         modeling_gpt_neox.GPTNeoXMLP = original
 
 
-def load_pythia(model_dir: str | Path, export_dir: str | Path, ffn: str, make_runtime, device: str = "cpu") -> nn.Module:
+def build_pythia(model_dir: str | Path, *, dense_ffn: bool) -> nn.Module:
+    """The Pythia model of ``model_dir`` in float32 on the CPU, its non-FFN tensors loaded from ``model.safetensors``.
+
+    With ``dense_ffn=False`` no dense FFN is constructed: every ``block.mlp`` is a parameterless ``_NoFFN`` that the
+    caller replaces by its HFFN module before use. With ``dense_ffn=True`` the blocks keep the model's ``GPTNeoXMLP``,
+    left as initialised (the dense arm sets its values from the export)."""
+    root = Path(model_dir)
+    checkpoint = root / "model.safetensors"
+    if not checkpoint.is_file():
+        raise ValueError(f"Pythia loader requires {checkpoint}")
+    config = AutoConfig.from_pretrained(root, local_files_only=True)
+    if config.model_type != "gpt_neox":
+        raise ValueError(f"expected a GPT-NeoX (Pythia) model, got {config.model_type!r}")
+    if dense_ffn:
+        model = AutoModelForCausalLM.from_config(config, dtype=torch.float32)
+    else:
+        with _without_dense_ffn():
+            model = AutoModelForCausalLM.from_config(config, dtype=torch.float32)
+        blocks = list(getattr(getattr(model, "gpt_neox", None), "layers", ()))
+        named = [name for name, _ in (*model.named_parameters(), *model.named_buffers())]
+        if not blocks or not all(type(block.mlp) is _NoFFN for block in blocks) or any(".mlp." in n for n in named):
+            raise RuntimeError("a dense FFN was constructed in the HFFN arm")
+    _load_non_ffn(model, checkpoint)
+    return model
+
+
+def load_pythia(model_dir: str | Path, export_dir: str | Path, ffn: str, make_runtime, device: str = "cpu", *, groups: bool = False) -> nn.Module:
     """Pythia in eval mode (float32, on ``device``) with its FFNs from ``export_dir``, executed dense or by HFFN.
 
     ``make_runtime(layers)`` builds the HFFN runtime of the leaf from the export layers (``read_layers``); it is
     called for the HFFN arm only, so the dense arm needs nothing of the leaf's kernels. The HFFN arm exposes its
-    runtime as ``model.hffn_runtime`` (None in the dense arm).
+    runtime as ``model.hffn_runtime`` (None in the dense arm). ``groups`` is passed to ``read_layers``: with it the layer
+    dicts carry ``group_hidden_offsets`` (the CPU M1 leaf builds its layers from them); the default is the former call.
     """
     if ffn not in ("dense", "hffn"):
         raise ValueError("ffn must be 'dense' or 'hffn'")
-    config = AutoConfig.from_pretrained(model_dir)
-    if ffn == "hffn":
-        with _without_dense_ffn():
-            model = AutoModelForCausalLM.from_config(config, dtype=torch.float32)
-        assert not any(".mlp." in name for name, _ in model.named_parameters())
-    else:
-        model = AutoModelForCausalLM.from_config(config, dtype=torch.float32)
-    _load_non_ffn(model, Path(model_dir) / "model.safetensors")
+    model = build_pythia(model_dir, dense_ffn=(ffn == "dense"))
     blocks = model.gpt_neox.layers
-    layers = read_layers(export_dir, len(blocks))
+    layers = read_layers(export_dir, len(blocks), groups=groups)
     runtime = None
     if ffn == "dense":
         for block, layer in zip(blocks, layers):

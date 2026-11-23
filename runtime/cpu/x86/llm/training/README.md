@@ -12,7 +12,7 @@ Results: [RESULTS.md](RESULTS.md).
 | | |
 |---|---|
 | Degree of optimisation | **forward: the shared x86 inference kernel** ([`cpu/x86/common`](../../../../cpu/x86/common/README.md)): its slots entry of the dual route stores `z` and `h` for the backward, with a dedicated entry for one token. Backward and compact AdamW: the G4 training kernel of [`cpu/common/llm/training`](../../../../cpu/common/llm/training/README.md) (one copy, the same as the Apple M1 leaf), hidden-owned below 32 tokens and dual route from there. Four fixed groups, one thread each, `-O3 -ffast-math`, no manual micro-kernel and no AVX-512, AMX, BF16 or INT8 path. One block of tokens per call. |
-| Hardware | Linux x86_64 with AVX2 and FMA; `g++` 13 or later (C++20 headers of PyTorch). Measured on one AWS `c7a.2xlarge` (AMD EPYC 9R14, 8 vCPU). Other x86 CPUs were not tried. |
+| Hardware | Linux x86_64 with AVX2 and FMA; `g++` 13 or later (C++20 headers of PyTorch). Measured on one shared OVH cloud VM: AMD EPYC-Milan, 8 vCPU, Linux 6.8, glibc 2.39. Other x86 CPUs were not tried. |
 | Models | Pythia 70M, 160M and 410M (GPT-NeoX, float32), FFN of every block pruned by WANDA at 10, 20, 30, 50, 70 and 80 % density, read from the compact exports (18). |
 | Results | [RESULTS.md](RESULTS.md). |
 

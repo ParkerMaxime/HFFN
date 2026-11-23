@@ -63,8 +63,8 @@ between the two. `--model` reads `$HFFN_ASSETS/homogeneous/models/<model>/export
 
 - **Depends on the M1 GPU shared level**: copy the `runtime/` tree, not the leaf alone.
 - **One Apple M1**, passively cooled; the figures are not comparable with other hardware.
-- **`delta` is large and reported, not applied** (RESULTS.md): the sign of several cells is not robust.
-- No training on this leaf: FFN training on the M1 GPU is not published (see `RESULTS.md`, *Not covered*).
+- **`delta` is large** (0.628 in the measured run, RESULTS.md): under such a band "no loss" is a weak statement and the sign of several cells is not robust.
+- No training on this leaf: FFN training on the M1 GPU is the leaf [`../training`](../training/README.md), which takes its forward from this one.
 - The runtime keeps the vocabulary of a multi-bank design (`MoEFFN`, route plans, the bank format id
   `e1b_hidden_banks_v1`); here it always runs one bank and one route.
 

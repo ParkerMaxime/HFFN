@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Isolated-FFN timing on a CUDA machine (python of the PATH: the CUDA environment), from the folder of this script.
-# Usage: BASE_COMMIT=<commit> vm_run.sh smoke|run
-# Writes runs/<mode>_<UTC>_<pid>/: run.log, EXIT, config.json, provenance.json, manifest.json, raw.jsonl, summary.json; base.txt holds the base commit given in BASE_COMMIT.
+# Isolated-FFN timing on hffn-gpu, in the repository copy ~/HFFN deployed by launch.sh.
+# Usage (on the VM): BASE_COMMIT=<commit> vm_run.sh smoke|run
+# Writes runs/<mode>_<UTC>_<pid>/: run.log, EXIT, config.json, provenance.json, manifest.json, raw.jsonl, summary.json; base.txt holds the base commit.
 set -uo pipefail
 mode="${1:-}"
 case "$mode" in smoke|run) ;; *) echo "usage: vm_run.sh smoke|run" >&2; exit 2 ;; esac

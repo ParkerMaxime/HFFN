@@ -1,6 +1,6 @@
-"""The only file of the update gate that touches the runtime: the six seams named below.
+"""The only file of the update gate that touches the runtime: the six seams of SPEC.md section 3.
 
-After a change of the training runtime this file is the one to edit. A seam that moved fails loudly (AttributeError,
+After a re-base of the training runtime this file is the one to edit. A seam that moved fails loudly (AttributeError,
 ImportError), which `check.sh` reports as FAILED. Nothing here is skipped silently.
 """
 from __future__ import annotations

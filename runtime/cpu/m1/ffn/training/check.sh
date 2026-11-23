@@ -16,7 +16,7 @@ out=$leaf/runs/${mode}_$(date -u +%Y%m%dT%H%M%SZ)_$$
 mkdir -p "$out"
 export HFFN_LEAF="$leaf" PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1
 HFFN_LAUNCHER_PID=$$ HFFN_QUAL_STARTED_EPOCH=$(date +%s) "$py" -B "$checks/supervise.py" --seconds "$seconds" --out "$out" -- \
- "$py" -B "$checks/batch.py" --mode "$batch_mode" --hardware "$hardware" --assets "$HFFN_ASSETS" --out "$out" 2>&1 | tee "$out/check.log" &
+ "$py" -B "$checks/batch.py" --mode "$batch_mode" --hardware "$hardware" --assets "$HFFN_ASSETS" --out "$out" --jobs "${HFFN_CHECK_JOBS:-4}" 2>&1 | tee "$out/check.log" &
 logger=$!
 trap 'touch "$out/STOP"; wait "$logger"; exit 130' INT TERM HUP
 wait "$logger"; logger_code=$?

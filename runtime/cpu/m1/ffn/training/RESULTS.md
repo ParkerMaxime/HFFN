@@ -5,77 +5,76 @@ full coverage) named in the heading of its table. The protocol, the use of `delt
 qualified and the limits that apply to every leaf are in [`../../../../RESULTS.md`](../../../../RESULTS.md). The run folders and the
 bench that produced them are not distributed: the figures can be read here, not regenerated from this tree.
 
-One training step of one FFN layer on the Mac (forward on the dual entry of the compact G4 inference kernel with `z` stored; backward and AdamW on the G4 training kernel) against the dense masked control, N = 1, 8, 64 and 512. Machine: Apple M1, 16 GB. Run `m1-cpu-ffn-training/publication_20261021T225431Z_48006`; `delta` = 0.359, applied.
+One training step (forward, backward, AdamW of the compact weights) of an isolated FFN, N = 1, 8, 64 and 512 tokens, B and A against the dense iso-support control. Machine: Apple M1 Mac (16 GB, passively cooled). Run `m1-cpu-ffn-training/publication_20261109T215023Z_60616`; `delta` = 0.074.
+Arms: A (the version published before, v1), B (this version) and the dense control, in the same processes. "B / dense" below 1 means B is faster than the dense control; "B / A" below 1 means B is faster than A. A reading against A is a gain or a loss only beyond `delta` (a gain: `1 - ratio > delta`; no loss: `ratio <= 1 + delta`); a memory ratio against A is read at 2 % and is not moved by `delta`.
 
 ## Measured
 
-### Run `m1-cpu-ffn-training/publication_20261021T225431Z_48006`
+### Run `m1-cpu-ffn-training/publication_20261109T215023Z_60616`
 
-`delta` = 0.359 (512_2048_d050 / N1 / hffn), applied.
+`delta` = 0.074, applied.
 
-| Cell | Size | dense | hffn | hffn/dense [min–max] | processes d/h | reading |
-|---|---|---:|---:|---:|---:|---|
-| 512_2048_d005 | N1 | 5.24 ms | 338.8 µs | 0.065 | 3/3 | gain |
-| 512_2048_d005 | N8 | 6.17 ms | 352.5 µs | 0.057 | 3/3 | gain |
-| 512_2048_d005 | N64 | 6.86 ms | 1.88 ms | 0.274 | 3/3 | gain |
-| 512_2048_d005 | N512 | 14.27 ms | 16.01 ms | 1.122 | 3/3 | within delta |
-| 512_2048_d010 | N1 | 5.39 ms | 550.8 µs | 0.102 | 3/3 | gain |
-| 512_2048_d010 | N8 | 6.35 ms | 544.8 µs | 0.086 | 3/3 | gain |
-| 512_2048_d010 | N64 | 6.78 ms | 3.61 ms | 0.532 | 3/3 | gain |
-| 512_2048_d010 | N512 | 14.59 ms | 30.75 ms | 2.108 | 3/3 | loss |
-| 512_2048_d020 | N1 | 5.32 ms | 1.06 ms | 0.199 [0.198–0.201] | 10/10 | gain |
-| 512_2048_d020 | N8 | 6.43 ms | 1.02 ms | 0.159 [0.150–0.164] | 10/10 | gain |
-| 512_2048_d020 | N64 | 6.97 ms | 7.44 ms | 1.067 [1.033–1.111] | 10/10 | within delta |
-| 512_2048_d020 | N512 | 14.88 ms | 76.18 ms | 5.119 [4.886–5.281] | 10/10 | loss |
-| 512_2048_d030 | N1 | 5.33 ms | 1.56 ms | 0.293 | 3/3 | gain |
-| 512_2048_d030 | N8 | 6.16 ms | 1.41 ms | 0.228 | 3/3 | gain |
-| 512_2048_d030 | N64 | 6.93 ms | 11.45 ms | 1.653 | 3/3 | loss |
-| 512_2048_d030 | N512 | 14.78 ms | 118.54 ms | 8.018 | 3/3 | loss |
-| 512_2048_d050 | N1 | 5.43 ms | 2.62 ms | 0.482 | 3/3 | gain |
-| 512_2048_d050 | N8 | 6.53 ms | 2.35 ms | 0.360 | 3/3 | gain |
-| 512_2048_d050 | N64 | 7.32 ms | 20.13 ms | 2.748 | 3/3 | loss |
-| 512_2048_d050 | N512 | 15.27 ms | 199.94 ms | 13.092 | 3/3 | loss |
-| 512_2048_d075 | N1 | 5.53 ms | 4.01 ms | 0.726 | 3/3 | within delta |
-| 512_2048_d075 | N8 | 6.62 ms | 3.64 ms | 0.551 | 3/3 | gain |
-| 512_2048_d075 | N64 | 7.23 ms | 31.54 ms | 4.361 | 3/3 | loss |
-| 512_2048_d075 | N512 | 15.64 ms | 296.44 ms | 18.953 | 3/3 | loss |
-| 512_2048_d090 | N1 | 5.38 ms | 4.80 ms | 0.892 | 3/3 | within delta |
-| 512_2048_d090 | N8 | 6.47 ms | 4.40 ms | 0.680 | 3/3 | within delta |
-| 512_2048_d090 | N64 | 7.01 ms | 37.27 ms | 5.320 | 3/3 | loss |
-| 512_2048_d090 | N512 | 15.64 ms | 351.76 ms | 22.490 | 3/3 | loss |
-| 512_2048_d100 | N1 | 5.32 ms | 5.37 ms | 1.011 | 3/3 | within delta |
-| 512_2048_d100 | N8 | 6.49 ms | 4.58 ms | 0.706 | 3/3 | within delta |
-| 512_2048_d100 | N64 | 7.00 ms | 42.14 ms | 6.024 | 3/3 | loss |
-| 512_2048_d100 | N512 | 15.61 ms | 389.23 ms | 24.933 | 3/3 | loss |
-| 256_1024_d010 | N1 | 1.24 ms | 187.5 µs | 0.151 | 3/3 | gain |
-| 256_1024_d010 | N8 | 1.41 ms | 199.0 µs | 0.141 | 3/3 | gain |
-| 256_1024_d010 | N64 | 1.81 ms | 1.14 ms | 0.630 | 3/3 | gain |
-| 256_1024_d010 | N512 | 4.48 ms | 9.38 ms | 2.093 | 3/3 | loss |
-| 1024_4096_d010 | N1 | 22.41 ms | 2.11 ms | 0.094 | 3/3 | gain |
-| 1024_4096_d010 | N8 | 24.63 ms | 2.11 ms | 0.086 | 3/3 | gain |
-| 1024_4096_d010 | N64 | 27.86 ms | 15.21 ms | 0.546 | 3/3 | gain |
-| 1024_4096_d010 | N512 | 63.35 ms | 146.97 ms | 2.320 | 3/3 | loss |
 
-| Cell | RSS dense / hffn (MB) | retained dense / hffn (MB) | retained hffn/dense | swap-outs |
-|---|---:|---:|---:|---:|
-| 512_2048_d005 | 684 / 582 | 42 / 3 | 0.061 | 0 / 0 |
-| 512_2048_d010 | 689 / 591 | 42 / 5 | 0.121 | 0 / 0 |
-| 512_2048_d020 | 724 / 636 | 42 / 10 | 0.241 | 0 / 0 |
-| 512_2048_d030 | 759 / 675 | 42 / 15 | 0.361 | 0 / 0 |
-| 512_2048_d050 | 856 / 764 | 42 / 25 | 0.601 | 0 / 0 |
-| 512_2048_d075 | 963 / 865 | 42 / 38 | 0.901 | 0 / 0 |
-| 512_2048_d090 | 986 / 935 | 42 / 45 | 1.081 | 0 / 0 |
-| 512_2048_d100 | 1008 / 975 | 42 / 50 | 1.200 | 0 / 0 |
-| 256_1024_d010 | 452 / 450 | 11 / 1 | 0.122 | 0 / 0 |
-| 1024_4096_d010 | 1216 / 998 | 168 / 20 | 0.121 | 0 / 0 |
+| Cell | Size | Processes (dense/B/A) | B / dense median [min–max] | B / A median [min–max] | B vs A |
+|---|---|---|---|---|---|
+| 1024_4096_d010 | N1 | 3/3/3 | 0.099 [0.099–0.099] | 1.070 [1.070–1.070] | within delta |
+| 1024_4096_d010 | N512 | 3/3/3 | 0.926 [0.926–0.926] | 0.409 [0.409–0.409] | gain |
+| 1024_4096_d010 | N64 | 3/3/3 | 0.290 [0.290–0.290] | 0.555 [0.555–0.555] | gain |
+| 1024_4096_d010 | N8 | 3/3/3 | 0.059 [0.059–0.059] | 0.864 [0.864–0.864] | gain |
+| 256_1024_d010 | N1 | 3/3/3 | 0.148 [0.148–0.148] | 1.059 [1.059–1.059] | within delta |
+| 256_1024_d010 | N512 | 3/3/3 | 1.088 [1.088–1.088] | 0.690 [0.690–0.690] | gain |
+| 256_1024_d010 | N64 | 3/3/3 | 0.281 [0.281–0.281] | 0.650 [0.650–0.650] | gain |
+| 256_1024_d010 | N8 | 3/3/3 | 0.113 [0.113–0.113] | 0.943 [0.943–0.943] | within delta |
+| 512_2048 | N1 | 3/3/3 | 0.315 [0.315–0.315] | 1.070 [1.070–1.070] | within delta |
+| 512_2048 | N512 | 3/3/3 | 2.701 [2.701–2.701] | 0.356 [0.356–0.356] | gain |
+| 512_2048 | N64 | 3/3/3 | 0.747 [0.747–0.747] | 0.490 [0.490–0.490] | gain |
+| 512_2048 | N8 | 3/3/3 | 0.176 [0.176–0.176] | 0.889 [0.889–0.889] | gain |
+| 512_2048_d005 | N1 | 3/3/3 | 0.073 [0.073–0.073] | 1.132 [1.132–1.132] | **loss** |
+| 512_2048_d005 | N512 | 3/3/3 | 0.751 [0.751–0.751] | 0.692 [0.692–0.692] | gain |
+| 512_2048_d005 | N64 | 3/3/3 | 0.164 [0.164–0.164] | 0.648 [0.648–0.648] | gain |
+| 512_2048_d005 | N8 | 3/3/3 | 0.048 [0.048–0.048] | 0.937 [0.937–0.937] | within delta |
+| 512_2048_d010 | N1 | 3/3/3 | 0.116 [0.116–0.116] | 1.081 [1.081–1.081] | **loss** |
+| 512_2048_d010 | N512 | 3/3/3 | 1.131 [1.131–1.131] | 0.605 [0.605–0.605] | gain |
+| 512_2048_d010 | N64 | 3/3/3 | 0.268 [0.268–0.268] | 0.573 [0.573–0.573] | gain |
+| 512_2048_d010 | N8 | 3/3/3 | 0.069 [0.069–0.069] | 0.845 [0.845–0.845] | gain |
+| 512_2048_d020 | N1 | 10/10/10 | 0.214 [0.213–0.215] | 1.076 [1.076–1.077] | **loss** |
+| 512_2048_d020 | N512 | 10/10/10 | 1.926 [1.918–1.950] | 0.430 [0.429–0.436] | gain |
+| 512_2048_d020 | N64 | 10/10/10 | 0.507 [0.496–0.528] | 0.539 [0.531–0.561] | gain |
+| 512_2048_d020 | N8 | 10/10/10 | 0.118 [0.115–0.118] | 0.885 [0.879–0.888] | gain |
+| 512_2048_d050 | N1 | 3/3/3 | 0.525 [0.525–0.525] | 1.043 [1.043–1.043] | within delta |
+| 512_2048_d050 | N512 | 3/3/3 | 4.484 [4.484–4.484] | 0.340 [0.340–0.340] | gain |
+| 512_2048_d050 | N64 | 3/3/3 | 1.318 [1.318–1.318] | 0.489 [0.489–0.489] | gain |
+| 512_2048_d050 | N8 | 3/3/3 | 0.311 [0.311–0.311] | 0.871 [0.871–0.871] | gain |
+| 512_2048_d075 | N1 | 3/3/3 | 0.790 [0.790–0.790] | 1.069 [1.069–1.069] | within delta |
+| 512_2048_d075 | N512 | 3/3/3 | 6.683 [6.683–6.683] | 0.343 [0.343–0.343] | gain |
+| 512_2048_d075 | N64 | 3/3/3 | 1.834 [1.834–1.834] | 0.446 [0.446–0.446] | gain |
+| 512_2048_d075 | N8 | 3/3/3 | 0.493 [0.493–0.493] | 0.847 [0.847–0.847] | gain |
+| 512_2048_d090 | N1 | 3/3/3 | 0.972 [0.972–0.972] | 1.048 [1.048–1.048] | within delta |
+| 512_2048_d090 | N512 | 3/3/3 | 7.895 [7.895–7.895] | 0.346 [0.346–0.346] | gain |
+| 512_2048_d090 | N64 | 3/3/3 | 2.184 [2.184–2.184] | 0.429 [0.429–0.429] | gain |
+| 512_2048_d090 | N8 | 3/3/3 | 0.607 [0.607–0.607] | 0.854 [0.854–0.854] | gain |
+| 512_2048_d100 | N1 | 3/3/3 | 1.073 [1.073–1.073] | 1.051 [1.051–1.051] | within delta |
+| 512_2048_d100 | N512 | 3/3/3 | 8.951 [8.951–8.951] | 0.351 [0.351–0.351] | gain |
+| 512_2048_d100 | N64 | 3/3/3 | 2.511 [2.511–2.511] | 0.443 [0.443–0.443] | gain |
+| 512_2048_d100 | N8 | 3/3/3 | 0.670 [0.670–0.670] | 0.907 [0.907–0.907] | gain |
 
-## Reading
+Memory, primary reading per cell (median over processes, bytes):
 
-- Reference cell `512_2048_d020`: 0.199 (N1), 0.159 (N8), 1.067 (N64, within `delta`), 5.119 (N512, a loss).
-- N512 is within `delta` at d05 (1.122) and a loss from d10 (2.108), up to 24.933 at d100.
-- Memory (adapter count): the HFFN step retains 10 MB against 42 MB for the dense step at d20 (0.241), and more than dense from d90 (1.081).
+| Cell | Reading | dense | B | A | B / dense | B / A | B vs A (2 %) |
+|---|---|---|---|---|---|---|---|
+| 1024_4096_d010 | `retained_bytes` | 167,854,096 | 20,392,836 | 20,261,764 | 0.121 | 1.006 | within 2 % |
+| 256_1024_d010 | `retained_bytes` | 10,506,256 | 1,317,372 | 1,284,604 | 0.125 | 1.026 | **loss** |
+| 512_2048 | `retained_bytes` | 41,984,016 | 15,212,540 | 15,147,004 | 0.362 | 1.004 | within 2 % |
+| 512_2048_d005 | `retained_bytes` | 41,984,016 | 2,640,356 | 2,574,820 | 0.063 | 1.025 | **loss** |
+| 512_2048_d010 | `retained_bytes` | 41,984,016 | 5,150,492 | 5,084,956 | 0.123 | 1.013 | within 2 % |
+| 512_2048_d020 | `retained_bytes` | 41,984,016 | 10,194,332 | 10,128,796 | 0.243 | 1.006 | within 2 % |
+| 512_2048_d050 | `retained_bytes` | 41,984,016 | 25,301,012 | 25,235,476 | 0.603 | 1.003 | within 2 % |
+| 512_2048_d075 | `retained_bytes` | 41,984,016 | 37,879,868 | 37,814,332 | 0.902 | 1.002 | within 2 % |
+| 512_2048_d090 | `retained_bytes` | 41,984,016 | 45,431,852 | 45,366,316 | 1.082 | 1.001 | within 2 % |
+| 512_2048_d100 | `retained_bytes` | 41,984,016 | 50,458,700 | 50,393,164 | 1.202 | 1.001 | within 2 % |
 
 ## Limits
 
-- `delta` = 0.359 is set by `512_2048_d050` N1 hffn, where the process spread is 65 %; many cells read *within delta*.
-- The limits of [`../../../../RESULTS.md`](../../../../RESULTS.md) apply, in particular the noise band `delta`, the retained-bytes definition and the scope of the evidence.
+- B loses time against A beyond `delta` (0.074) on 3 of 40 cells, all at N1 (`d005` 1.132, `d010` 1.081, `d020` 1.076); it gains beyond `delta` on 28 cells (median B/A 0.769) and is within `delta` on 9.
+- Memory: B is 2.55 % above A (B/A 1.0255, beyond the 2 % of the criterion) on `512_2048_d005` and `256_1024_d010`. The bench adapter counts in B the work space `y_local` stored by the owner path, which A does not hold (hypothesis, not isolated). `retained_bytes` is not stated by the adapter.
+- One campaign, one machine; no figure here is compared with a figure of another entry or of the previous version. No claim of convergence equivalence, global speed-up or hardware generalisation.

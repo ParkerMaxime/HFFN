@@ -1,10 +1,11 @@
 """Compile the compact kernel into ``build/`` and return the shared library path.
 
-The kernel (AVX2/FMA with a scalar fallback) is one source file, ``common/kernels/hffn_compact_g4_inference.cpp``,
+The kernel (AVX2/FMA lanes, plus a scalar code path kept for a labelled control) is one source file, ``common/kernels/hffn_compact_g4_inference.cpp``,
 found as the first ancestor folder of this leaf that holds ``common/kernels/<file>``. It only needs g++.
 
-Environment overrides: ``HFFN_CXX`` (compiler, default g++), ``HFFN_CXXFLAGS`` (extra flags;
-``-mavx2 -mfma`` or ``-march=native`` enable the AVX2 paths).
+The build always passes ``-mavx2 -mfma`` (a CPU with AVX2 and FMA is required, as for the other x86 leaves).
+Environment overrides: ``HFFN_CXX`` (compiler, default g++), ``HFFN_CXXFLAGS`` (extra flags, appended last;
+``-mno-avx2 -mno-fma`` gives the scalar build, a labelled control only).
 """
 from __future__ import annotations
 
@@ -19,7 +20,7 @@ BUILD = ROOT / "build"
 
 COMPACT = "hffn_compact_g4_inference.cpp"
 
-BASE_FLAGS = ["-O3", "-ffast-math", "-std=c++17", "-fPIC", "-shared", "-pthread"]
+BASE_FLAGS = ["-O3", "-ffast-math", "-std=c++17", "-fPIC", "-shared", "-pthread", "-mavx2", "-mfma"]
 
 
 def source(name: str = COMPACT) -> Path:

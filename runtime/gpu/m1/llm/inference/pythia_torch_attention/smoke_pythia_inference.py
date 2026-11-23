@@ -11,7 +11,7 @@ from pathlib import Path
 import torch
 from transformers import AutoModelForCausalLM
 
-ROOT = next(p for p in Path(__file__).resolve().parents if (p/'runtime'/'common'/'pythia'/'hffn_pythia').is_dir())
+ROOT = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 sys.path.insert(0, str(ROOT / "runtime/common/pythia"))
 
 from hffn_pythia.dense_control import install_compact_hffn_values_in_dense_pythia  # noqa: E402

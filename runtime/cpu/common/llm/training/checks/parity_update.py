@@ -1,4 +1,4 @@
-"""Update gate of the training runtime, written against the adapter (`arm_adapter.py`). Criteria and closed form: `update_gate_core.py`.
+"""Update gate of the training runtime, written against the adapter (SPEC.md). Criteria and closed form: `update_gate_core.py`.
 
     python -B checks/parity_update.py --model-dir <base checkpoint> --export-dir <export> --tokens <wikitext2_test_tokens.json> [--gate] [--out <json>]
 
@@ -21,33 +21,20 @@ import arm_adapter as adapter  # noqa: E402
 import update_gate_core as core  # noqa: E402
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--model-dir", type=Path, required=True)
-    parser.add_argument("--export-dir", type=Path, required=True)
-    parser.add_argument("--tokens", type=Path, required=True)
-    parser.add_argument("--batch", type=int, default=2)
-    parser.add_argument("--seq-len", type=int, default=32)
-    parser.add_argument("--lr", type=float, default=1e-4)
-    parser.add_argument("--weight-decay", type=float, default=0.01)
-    parser.add_argument("--gate", action="store_true")
-    parser.add_argument("--out", type=Path)
-    args = parser.parse_args()
-    ids = torch.tensor(json.loads(args.tokens.read_text())["tokens"][:args.batch * args.seq_len]).view(args.batch, args.seq_len)
-    torch.set_num_threads(4)
-    lr, wd = args.lr, args.weight_decay
-    base = adapter.base
-
-    model, runtime = adapter.load(args.model_dir, args.export_dir)
+def load_supports(model_dir, export_dir):
+    """The flat supports, their checksum and the initial active weights of the export."""
+    model, runtime = adapter.load(model_dir, export_dir)
     supports = adapter.supports(model)
     checksum = adapter.support_checksum(supports)
     initial = [tuple(t.clone() for t in layer) for layer in adapter.active_weights(model)]
     del model, runtime
+    return supports, checksum, initial
 
-    dense = base.dense_model(args.model_dir, args.export_dir).double()
-    loss64, gradients, _other = base.dense_gradients(dense, ids, supports)
-    del dense, _other
-    gc.collect()
+
+def update_gate(args, ids, supports, checksum, initial, loss64, gradients) -> int:
+    """Everything after the float64 gradients. Returns the exit code."""
+    lr, wd = args.lr, args.weight_decay
+    base = adapter.base
     defaults = torch.optim.AdamW([torch.nn.Parameter(torch.zeros(1))], lr=lr, weight_decay=wd).defaults
     beta1, beta2 = defaults["betas"]
     eps = defaults["eps"]
@@ -104,6 +91,28 @@ def main() -> int:
               f"flipped {row['flipped_share']:.1e}  loss {row['loss_before']:.4f} -> {row['loss_after']:.4f}", flush=True)
     print(f"  update gate -> {'PASSED' if gate['passed'] else 'FAILED'}", flush=True)
     return 0 if gate["passed"] or not args.gate else 1
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--model-dir", type=Path, required=True)
+    parser.add_argument("--export-dir", type=Path, required=True)
+    parser.add_argument("--tokens", type=Path, required=True)
+    parser.add_argument("--batch", type=int, default=2)
+    parser.add_argument("--seq-len", type=int, default=32)
+    parser.add_argument("--lr", type=float, default=1e-4)
+    parser.add_argument("--weight-decay", type=float, default=0.01)
+    parser.add_argument("--gate", action="store_true")
+    parser.add_argument("--out", type=Path)
+    args = parser.parse_args()
+    ids = torch.tensor(json.loads(args.tokens.read_text())["tokens"][:args.batch * args.seq_len]).view(args.batch, args.seq_len)
+    torch.set_num_threads(4)
+    supports, checksum, initial = load_supports(args.model_dir, args.export_dir)
+    dense = adapter.base.dense_model(args.model_dir, args.export_dir).double()
+    loss64, gradients, _other = adapter.base.dense_gradients(dense, ids, supports)
+    del dense, _other
+    gc.collect()
+    return update_gate(args, ids, supports, checksum, initial, loss64, gradients)
 
 
 if __name__ == "__main__":

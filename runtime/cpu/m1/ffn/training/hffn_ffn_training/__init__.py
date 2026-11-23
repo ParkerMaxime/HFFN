@@ -1,5 +1,5 @@
 """One FFN training step on the M1 CPU: the forward is the dual entry of the compact G4 inference kernel of
-``runtime/cpu/m1/llm/inference/compact`` with ``z`` stored; backward and AdamW are those of the G4 training kernel of
+``runtime/cpu/m1/ffn/inference`` with ``z`` stored; backward and AdamW are those of the G4 training kernel of
 ``runtime/cpu/common/llm/training``, unchanged."""
 from pathlib import Path
 

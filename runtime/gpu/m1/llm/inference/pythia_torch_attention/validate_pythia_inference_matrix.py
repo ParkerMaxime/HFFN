@@ -28,7 +28,7 @@ def main() -> None:
     rows = []
     for model_size in args.models:
         for density in args.densities:
-            model_dir = args.model_root / f"pythia{model_size}m"
+            model_dir = args.model_root / f"pythia{model_size}m_sparse{density}_ffn_only" / "training"
             export_dir = args.export_root / f"pythia{model_size}m_sparse{density}_ffn_only" / "export"
             output = args.output_dir / f"pythia{model_size}m_d{density}.json"
             command = [

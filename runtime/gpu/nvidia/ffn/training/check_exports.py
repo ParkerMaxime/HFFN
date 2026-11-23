@@ -3,7 +3,7 @@
 Reuses `gates_for` of the leaf's `check.py` unchanged; only the source of the layer differs: an export layer
 (`hffn_pythia.export.read_layer`, hidden-major) is wrapped as the `CompactLayer` the gates expect.
 Layers: `--layer` (default the first, a middle and the last), at the N of `--n`. Input seed: PCG64([index + 1000 + seed offset, n]), printed in each JSON line; the seed varies the input stream only, not the export weights.
-Usage (VM): python -B check_exports.py [--density 50 70] [--models pythia410m] [--layer -1] [--n 2100]    (HFFN_ASSETS: the assets folder)
+Usage (VM): python -B check_exports.py [--density 50 70] [--models pythia410m] [--layer -1] [--n 2100]    (HFFN_ASSETS is required)
 """
 from __future__ import annotations
 
@@ -26,9 +26,7 @@ from hffn_ffn_layers import layers  # noqa: E402
 REPO = check.REPO
 sys.path.insert(0, str(REPO / "runtime/common/pythia"))
 from hffn_pythia.export import FORMAT, read_layer  # noqa: E402
-ASSETS = Path(os.environ["HFFN_ASSETS"]) if "HFFN_ASSETS" in os.environ else None
-if ASSETS is None and "HFFN_EXPORTS" not in os.environ:
-    raise SystemExit("HFFN_ASSETS (or HFFN_EXPORTS) must name the assets folder (pythia/exports)")
+ASSETS = Path(os.environ["HFFN_ASSETS"])
 EXPORTS = Path(os.environ["HFFN_EXPORTS"]) if "HFFN_EXPORTS" in os.environ else ASSETS / "pythia/exports"
 MODELS = ("pythia70m", "pythia410m")
 NS = (128, 2100)
@@ -123,13 +121,13 @@ def main() -> int:
     if args.equivalence:
         return 0 if equivalence() else 1
     check.ts.oracle = oracle_gpu if os.environ.get("HFFN_ORACLE", "gpu") == "gpu" else check.ts.oracle
-    gate5 = check.ts.gate5_local   # local form of this leaf's train_step.py
+    promoted_gate5 = check.ts.gate5_local   # local form of this leaf's train_step.py
 
     def printed(*a, **k):
         torch.cuda.synchronize()
         before = torch.cuda.memory_allocated()
         torch.cuda.reset_peak_memory_stats()
-        out = gate5(*a, **k)
+        out = promoted_gate5(*a, **k)
         torch.cuda.synchronize()
         print(json.dumps({"gate5_local": out, "memory_allocated_before": before, "memory_allocated_after": torch.cuda.memory_allocated(),
                           "memory_peak_during": torch.cuda.max_memory_allocated()}), flush=True)

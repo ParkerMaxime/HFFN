@@ -1,50 +1,35 @@
-# Results — M1 GPU LLM training (Pythia)
+# Results — M1 GPU LLM training
 
 Evidence class: **measured** unless a line says otherwise, each figure read in a qualified run (status `passed`, exit code 0,
 full coverage) named in the heading of its table. The protocol, the use of `delta`, the machines, the runs that were not
 qualified and the limits that apply to every leaf are in [`../../../../RESULTS.md`](../../../../RESULTS.md). The run folders and the
 bench that produced them are not distributed: the figures can be read here, not regenerated from this tree.
 
-One training step of Pythia-410M with the FFNs as compact HFFN modules on Metal (attention and the rest on PyTorch/MPS) against the dense iso-support model, batch 1 with 32 and 128 tokens. Machine: Apple M1 GPU, 16 GB. Two runs, in two parts that are not compared with each other.
+One training step of Pythia-410M at 10 % FFN density (batch 1, 32 or 128 tokens). B is the leaf moved onto the FFN training component of `gpu/m1/ffn/training` for the backward and the AdamW update. Machine: Apple M1 Mac (16 GB, passively cooled). Run `m1-gpu-llm-training/publication_20261110T054806Z_68384`; `delta` = 0.017.
+Arms: A (the version published before, v1), B (this version) and the dense control, in the same processes. "B / dense" below 1 means B is faster than the dense control; "B / A" below 1 means B is faster than A. A reading against A is a gain or a loss only beyond `delta` (a gain: `1 - ratio > delta`; no loss: `ratio <= 1 + delta`); a memory ratio against A is read at 2 % and is not moved by `delta`.
 
 ## Measured
 
-### Run `m1-gpu-llm-training/publication_20261021T215425Z_43892`
+### Run `m1-gpu-llm-training/publication_20261110T054806Z_68384`
 
-`delta` = 0.166 (pythia410m_sparse20 / b1_t32 / dense), reported (GPU: not applied).
+`delta` = 0.017, applied.
 
-| Cell | Size | dense | hffn | hffn/dense [min–max] | processes d/h | reading |
-|---|---|---:|---:|---:|---:|---|
-| pythia410m_sparse20 | b1_t32 | 942.77 ms | 673.62 ms | 0.715 [0.709–0.712] | 10/10 | < 1 |
-| pythia410m_sparse20 | b1_t128 | 1.07 s | 1.13 s | 1.056 [1.055–1.064] | 10/10 | > 1 (inside reported delta) |
 
-| Cell | RSS dense / hffn (MB) | device dense / hffn (MB) | retained dense / hffn (MB) | retained hffn/dense | swap-outs |
-|---|---:|---:|---:|---:|---:|
-| pythia410m_sparse20 | 2168 / 3567 | 9479 / 8296 | 7291 / 4474 | 0.614 | 0 / 0 |
+| Cell | Size | Processes (dense/B/A) | B / dense median [min–max] | B / A median [min–max] | B vs A |
+|---|---|---|---|---|---|
+| pythia410m_sparse10 | b1_t128 | 3/3/3 | 1.350 [1.350–1.350] | 1.475 [1.475–1.475] | **loss** |
+| pythia410m_sparse10 | b1_t32 | 3/3/3 | 0.925 [0.925–0.925] | 1.396 [1.396–1.396] | **loss** |
 
-### Run `m1-gpu-llm-training/publication_20261022T123442Z_81919`
+Memory, primary reading per cell (median over processes, bytes):
 
-`delta` = 0.004 (pythia410m_sparse10 / b1_t128 / hffn), reported (GPU: not applied).
-
-| Cell | Size | dense | hffn | hffn/dense [min–max] | processes d/h | reading |
-|---|---|---:|---:|---:|---:|---|
-| pythia410m_sparse10 | b1_t32 | 830.08 ms | 551.53 ms | 0.664 | 3/3 | < 1 |
-| pythia410m_sparse10 | b1_t128 | 959.10 ms | 877.04 ms | 0.914 | 3/3 | < 1 |
-
-| Cell | RSS dense / hffn (MB) | device dense / hffn (MB) | retained dense / hffn (MB) | retained hffn/dense | swap-outs |
-|---|---:|---:|---:|---:|---:|
-| pythia410m_sparse10 | 2274 / 3292 | 9479 / 6820 | 7291 / 3870 | 0.531 | 0 / 0 |
-
-## Reading
-
-- d20 (`m1-gpu-llm-training/publication_20261021T215425Z_43892`, `delta` = 0.166, reported): 0.715 at 32 tokens, 1.056 at 128 tokens (inside `delta`).
-- d10 (`m1-gpu-llm-training/publication_20261022T123442Z_81919`, `delta` = 0.004, reported): 0.664 and 0.914.
-- **d80: `OOM` on the HFFN arm.** The cell does not fit the 16 GB Mac (it is swap-bound); no figure exists for either arm. A memory fix is deferred to the next optimisation phase.
-- Memory (adapter count): the HFFN arm retains 3870 and 4474 MB at d10 and d20 against 7291 MB dense, and samples less device memory at d20 (8296 against 9479 MB).
+| Cell | Reading | dense | B | A | B / dense | B / A | B vs A (2 %) |
+|---|---|---|---|---|---|---|---|
+| pythia410m_sparse10 | `footprint_timed_max_bytes` | 9,926,806,288 | 7,438,438,456 | 7,485,279,376 | 0.749 | 0.994 | within 2 % |
 
 ## Limits
 
-- Part of the d10 and d20 cells ran in different machine states and are not compared with each other.
-- The d80 `OOM` is a limit of this version, not a measurement of the format.
-- The figures were measured with a tree that still held, per layer, four device index tensors of unused fused layouts (removed from the published tree; the kernels the training step runs are unchanged). The retained and sampled memory figures are therefore an upper bound for this tree (hypothesis, not re-measured).
-- The limits of [`../../../../RESULTS.md`](../../../../RESULTS.md) apply, in particular the noise band `delta`, the retained-bytes definition and the scope of the evidence.
+- **B loses time against A beyond `delta` (0.017) on both timed cells**: B/A 1.396 (`b1_t32`) and 1.475 (`b1_t128`); memory is within 2 % (B/A 0.994). This is the price of the move onto the owner path, judged on parity alone; the move was kept for that functional reason (one path per mechanism). Against dense, B is 0.925 at `b1_t32` and 1.350 at `b1_t128`.
+- The host-side costs of bridging the two frameworks stay in the entry point of the leaf (activation layout conversion, staging copies, output allocation, compact-gradient copy, handle conversion, transient command objects, host synchronisation per call, native state allocated and not used); they are declared in the README of the leaf with their **estimated** counts, none of them measured separately. Whether they account for the loss is a hypothesis, not isolated.
+- Only 410M at 10 % is on the timed grid. 410M at 20 % and 80 % are out of it by decision (the HFFN timed process fails the swap guard in the smokes of the 16 GB Mac); the check of the leaf covers every export at parity only.
+- Form P (one arm per process), without block lifecycle (written limit).
+- One campaign, one machine; no figure here is compared with a figure of another entry or of the previous version. No claim of convergence equivalence, global speed-up or hardware generalisation.

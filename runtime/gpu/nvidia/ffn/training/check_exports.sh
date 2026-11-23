@@ -5,8 +5,8 @@
 # provenance.json (hashes of the executed sources, GPU, names and sizes of the exports read) and EXIT (exit code of
 # check_exports.py; fail-closed: exit 0 without the final line "check_exports: PASSED" is recorded as 1).
 # manifest.json reads "running" from the start: a run killed before the end (hard stop, timeout) keeps "running", no EXIT.
-# Usage: ./check_exports.sh [check_exports.py arguments]      (python of the PATH: the CUDA environment;
-# HFFN_ASSETS names the assets folder, as for check_exports.py)
+# Usage on the VM: ./check_exports.sh [check_exports.py arguments]      (python of the PATH: the CUDA environment;
+# HFFN_ASSETS as for check_exports.py, HFFN_ASSETS is required)
 set -uo pipefail
 cd "$(dirname "$0")"
 export PYTHONUNBUFFERED=1 PYTHONWARNINGS=ignore

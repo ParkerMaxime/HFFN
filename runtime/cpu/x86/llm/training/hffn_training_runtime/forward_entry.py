@@ -5,14 +5,15 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# The shared x86 inference kernel (build and ctypes entry) lives in `runtime/cpu/x86/common/hffn_x86_common`.
+# The shared x86 inference kernel (build and ctypes entry) lives in `runtime/cpu/x86/common/hffn_x86_common`;
+# the tree root is the first parent that contains `runtime/common/pythia`.
 _COMMON = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir()) / "runtime/cpu/x86/common"
 if str(_COMMON) not in sys.path:
     sys.path.insert(0, str(_COMMON))
 
 from hffn_x86_common.inference import InferenceKernel, inference_lib, inference_n1_lib  # noqa: E402
 
-from .compact_export import G4_GROUPS, HFFNCompactG4Layer, HFFNDualRoute  # noqa: E402
+from hffn_pythia.compact_format import G4_GROUPS, HFFNCompactG4Layer, HFFNDualRoute  # noqa: E402
 from .forward_route_check import check_forward_route  # noqa: E402  (the shared copy, joined to this package by its path)
 
 DEFAULT_BUILD_DIR = Path(__file__).resolve().parents[1] / "build"

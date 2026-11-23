@@ -178,7 +178,7 @@ def summarize(rows):
 
 
 def verdict(cells, complete, gate_passed):
-    """The admissibility and retention criteria of the timing method (leaf README), fixed before any measurement."""
+    """The criteria of README.md, section 5, fixed before any measurement."""
     if not complete:
         return {'admissible': False, 'reason': 'incomplete coverage'}
     aa = [a for c in cells for a in c['aa']]

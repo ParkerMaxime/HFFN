@@ -22,21 +22,11 @@ import torch
 from . import build
 from hffn_pythia.export import hidden_of_slot
 
-MAX_CHUNK = 96  # the kernel keeps a batch of up to 96 tokens in registers
 MAX_DEFAULT_THREADS = 8
 
 
 def default_threads() -> int:
     return max(1, min(len(os.sched_getaffinity(0)), MAX_DEFAULT_THREADS))
-
-
-def chunks(n: int) -> list[tuple[int, int]]:
-    """(start, size) of the consecutive token chunks of a batch: balanced, multiples of 8, at most MAX_CHUNK."""
-    if n <= MAX_CHUNK:
-        return [(0, n)]
-    count = -(-n // MAX_CHUNK)
-    size = -(-(-(-n // count)) // 8) * 8
-    return [(start, min(size, n - start)) for start in range(0, n, size)]
 
 
 def balanced_partition(cost: torch.Tensor, parts: int) -> torch.Tensor:
@@ -103,11 +93,10 @@ class HFFNRuntime:
 
     def _reserve(self, n: int) -> None:
         """Grow the work buffers for a batch of n tokens (PyTorch aligns CPU tensors on 64 bytes)."""
-        chunk = min(n, MAX_CHUNK)
-        if chunk > self._chunk:
-            self._chunk = chunk
-            self._x_t = torch.empty(self.d_model * chunk)  # [d_model, chunk], also the transposed output
-            self._act = torch.empty(self.d_ff * chunk)     # [d_ff, chunk]
+        if n > self._chunk:
+            self._chunk = n
+            self._x_t = torch.empty(self.d_model * n)  # [d_model, N], also the transposed output
+            self._act = torch.empty(self.d_ff * n)     # [d_ff, N]
         if n > self._tokens:
             self._tokens = n
             self._y = torch.empty(n, self.d_model)
@@ -123,7 +112,7 @@ class HFFNRuntime:
         if x.dim() != 2 or x.shape[1] != self.d_model or x.dtype != torch.float32 or not x.is_contiguous():
             raise ValueError("expected a contiguous float32 [N, d_model] tensor")
         n = x.shape[0]
-        if n > self._tokens or min(n, MAX_CHUNK) > self._chunk:
+        if n > self._tokens or n > self._chunk:
             self._reserve(n)
         y = self._y[:n]
         model, timing = self._model[index], self._timing
@@ -132,8 +121,7 @@ class HFFNRuntime:
             self._decode(self.threads, x_ptr, *model, self.d_model, self.d_ff, y_ptr, act, timing)
             self.kernel_ns += timing[1]
             return y
-        row = 4 * self.d_model
-        for start, size in chunks(n):
-            self._dual(self.threads, x_ptr + start * row, *model, size, self.d_model, self.d_ff, x_t, y_ptr + start * row, x_t, act, act, timing)
-            self.kernel_ns += timing[0] + timing[1] + timing[2] + timing[3]
+        # One native call for the whole block of N tokens; the kernel walks the tokens in tiles of 96 inside its neuron loop.
+        self._dual(self.threads, x_ptr, *model, n, self.d_model, self.d_ff, x_t, y_ptr, x_t, act, act, timing)
+        self.kernel_ns += timing[0] + timing[1] + timing[2] + timing[3]
         return y

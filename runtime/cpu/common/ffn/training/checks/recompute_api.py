@@ -1,6 +1,6 @@
-"""Independent stdlib reader for the seven API rows per layer.
+"""Independent stdlib reader for the draft's seven API rows per layer.
 
-This validates API evidence only. Source admission, the numerical gates, callers,
+This validates API evidence only. Source admission, the old gates, callers,
 refusal suites and reliable run completion belong to the outer batch reader.
 No runtime or harness code is imported here.
 """
@@ -14,7 +14,7 @@ import math
 from pathlib import Path
 import re
 
-ROOT = next(path for path in Path(__file__).resolve().parents if (path / 'runtime' / 'common' / 'pythia' / 'hffn_pythia').is_dir())
+ROOT = next(path for path in Path(__file__).resolve().parents if (path / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 COMMON = ROOT / 'runtime/cpu/common/ffn/training/hffn_ffn_training'
 PARAMETERS = ('up_val', 'down_val', 'b_up', 'b_down')
 QUANTITIES = {'y', 'z', 'h', 'grad_x', 'grad_up', 'grad_down', 'grad_b_up', 'grad_b_down'}

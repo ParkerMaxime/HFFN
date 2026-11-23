@@ -11,7 +11,7 @@ Results: [RESULTS.md](RESULTS.md).
 
 | | |
 |---|---|
-| Degree of optimisation | **forward: the kernel of the sibling inference leaf** ([`../inference/compact`](../inference/compact/README.md), its dual entry, which also stores `z` and `h` for the backward). Backward and compact AdamW: the G4 training kernel of [`cpu/common/llm/training`](../../../../cpu/common/llm/training/README.md), hidden-owned below 32 tokens and dual route from there. Four fixed groups, plain C++ under `-O3 -ffast-math`, no manual micro-kernel. One block of tokens per call. |
+| Degree of optimisation | **forward: the kernel of the sibling inference leaf** ([`../../ffn/inference`](../../ffn/inference/README.md), the owner of the M1 CPU forward: its dual and stores entries, which also store `z` and `h` for the backward; the Pythia loader is the consumer [`../inference/compact`](../inference/compact/README.md)). Backward and compact AdamW: the G4 training kernel of [`cpu/common/llm/training`](../../../../cpu/common/llm/training/README.md), hidden-owned below 32 tokens and dual route from there. Four fixed groups, plain C++ under `-O3 -ffast-math`, no manual micro-kernel. One block of tokens per call. |
 | Hardware | Apple M1 (arm64), macOS, `clang++`. One machine, passively cooled. |
 | Models | Pythia 70M, 160M and 410M (GPT-NeoX, float32), FFN of every block pruned by WANDA at 10, 20, 30, 50, 70 and 80 % density, read from the compact exports (18). |
 | Results | [RESULTS.md](RESULTS.md); |
@@ -21,7 +21,7 @@ Results: [RESULTS.md](RESULTS.md).
 ```
 check.sh                          layer, model and update gates on exports, without timing (below)
 hffn_training_runtime/            the entry of the leaf on the shared level
-  forward_entry.py                binds the shared runtime to the inference kernel of the sibling leaf
+  forward_entry.py                binds the shared runtime to the inference kernel of `../../ffn/inference`
   build_entry.py                  build constants (compiler, flags) of the native extension
 parity_hffn_layer_training.py     one layer: forward and gradients against the direct equation, on one export
 ```
@@ -84,7 +84,7 @@ The script ends with `check: PASSED` or `check: FAILED`. `HFFN_CHECK_OUT=<dir>` 
 - **Legacy checkpoints:** `padded_export` and `padded_import` (shared level) read a checkpoint of the former padded training
   format and convert it once to the compact format; they hold no forward, gradient or update and no training path reaches
   them. They are the only trace of that format.
-- **Depends on the sibling inference leaf** for the forward: copy the `runtime/` tree, not the leaf alone.
+- **Depends on the inference leaf `../../ffn/inference`** for the forward: copy the `runtime/` tree, not the leaf alone.
 - No claim of convergence equivalence: the gates measure the distance to float64 of one step, not a trajectory.
 - One machine; no other arm64 hardware was tried.
 

@@ -1,11 +1,14 @@
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import TYPE_CHECKING, Dict, List
 
 import torch
 import torch.nn.functional as F
 
-from runtime.cpu.m1.ffn.training.models import HFFNCompactFFN, SparseMaskedReferenceFFN
+from runtime.cpu.m1.ffn.training.models import SparseMaskedReferenceFFN
+
+if TYPE_CHECKING:
+    from runtime.cpu.m1.ffn.training.shared_toy import HFFNToyFFN
 
 
 def build_optimizer(name: str, params, lr: float, weight_decay: float) -> torch.optim.Optimizer:
@@ -16,14 +19,8 @@ def build_optimizer(name: str, params, lr: float, weight_decay: float) -> torch.
     raise ValueError(f"Unsupported optimizer: {name}")
 
 
-def _clone_hffn(hffn, reference, n):
-    from runtime.cpu.m1.ffn.training.shared_toy import HFFNToyFFN
-    if isinstance(hffn, HFFNToyFFN):
-        return hffn.clone_reserved(max(n, 1))
-    state = {k: v.detach().clone() for k, v in hffn.state_dict().items()}
-    clone = HFFNCompactFFN(reference)
-    clone.load_state_dict(state)
-    return clone
+def _clone_hffn(hffn, n):
+    return hffn.clone_reserved(max(n, 1))
 
 
 def active_dense_to_compact(weight_tensor: torch.Tensor, ptr: torch.Tensor, idx: torch.Tensor, axis: str) -> torch.Tensor:
@@ -48,7 +45,7 @@ def active_dense_to_compact(weight_tensor: torch.Tensor, ptr: torch.Tensor, idx:
 
 def parity_snapshot(
     reference: SparseMaskedReferenceFFN,
-    hffn: HFFNCompactFFN,
+    hffn: HFFNToyFFN,
     x: torch.Tensor,
     loss_target: torch.Tensor,
 ) -> Dict[str, float]:
@@ -56,7 +53,7 @@ def parity_snapshot(
 
     ref_clone = SparseMaskedReferenceFFN(reference.up.in_features, reference.up.out_features, 1.0, torch.Generator())
     ref_clone.load_state_dict(ref_state)
-    hffn_clone = _clone_hffn(hffn, ref_clone, x.shape[0])
+    hffn_clone = _clone_hffn(hffn, x.shape[0])
 
     x_ref = x.detach().clone().requires_grad_(True)
     x_hffn = x.detach().clone().requires_grad_(True)
@@ -86,7 +83,7 @@ def parity_snapshot(
 
 def optimizer_step_parity(
     reference: SparseMaskedReferenceFFN,
-    hffn: HFFNCompactFFN,
+    hffn: HFFNToyFFN,
     x: torch.Tensor,
     target: torch.Tensor,
     optimizer_name: str,
@@ -97,7 +94,7 @@ def optimizer_step_parity(
 
     ref_clone = SparseMaskedReferenceFFN(reference.up.in_features, reference.up.out_features, 1.0, torch.Generator())
     ref_clone.load_state_dict(ref_state)
-    hffn_clone = _clone_hffn(hffn, ref_clone, x.shape[0])
+    hffn_clone = _clone_hffn(hffn, x.shape[0])
 
     ref_opt = build_optimizer(optimizer_name, ref_clone.parameters(), lr, weight_decay)
     hffn_opt = build_optimizer(optimizer_name, hffn_clone.parameters(), lr, weight_decay)

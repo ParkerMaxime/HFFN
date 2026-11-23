@@ -1,5 +1,5 @@
 """End-to-end token parity of the CPU M1 compact HFFN arm against the dense arm: the shared check, with this
-capsule's loader. PyTorch runs on `--threads` threads (README: 4).
+loader of the leaf. PyTorch runs on `--threads` threads (README: 4).
 
     python -B -m checks.parity_model --model-dir <base checkpoint> --export-dir <export> --threads 4
 """

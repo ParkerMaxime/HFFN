@@ -2,7 +2,7 @@
   "files": [
     {
       "path": "../../../common/llm/training/native/hffn_compact_g4_training.cpp",
-      "sha256": "5267a5bb531f76505c60cdde3f024878de06804e2b7f7398ed356769354cb3de",
+      "sha256": "938cc864230aef683172a444edde07cf72c32d33d9d99aba5f6daa70ff1cee78",
       "role": "G4 training kernel, one copy for the x86 and M1 training leaves; the group count is read from g4_contract.h"
     },
     {
@@ -17,32 +17,27 @@
     },
     {
       "path": "../../../common/llm/training/hffn_training_runtime/compact_model.py",
-      "sha256": "a573d3897111526bf40edd060b30bbdf052e7947c57d40bf1b4134f9a50328b5",
+      "sha256": "e8ff77814475b12ccd749a10bff5999f1d06b4d8849cebad9601dc903f60c0de",
       "role": "compact model and optimizer; zero_grad and step follow torch.optim semantics; cold state_dict and load_state_dict"
     },
     {
       "path": "../../../common/llm/training/hffn_training_runtime/compact_direct_loader.py",
-      "sha256": "16b6f773cbed85b53bcf583dae4a3a5e40db54dc988cc5aee1a18bb8c5e69541",
+      "sha256": "aea9231b5ac4b4bdf1feece752db68d848fdb5268d1078d8ffe4c17ac5b45586",
       "role": "compact loading, on the forward of the sibling inference kernel"
     },
     {
-      "path": "../../../common/llm/training/hffn_training_runtime/compact_export.py",
-      "sha256": "c465ea949b68e0cddc8e762be29be512f8f1fc20d5385854070935f7b65d40be",
-      "role": "conversion of a padded layer to the compact format"
+      "path": "../../../../common/pythia/hffn_pythia/compact_format.py",
+      "sha256": "29f3f474274a2484810e7ab7ccf1526c898d3ba0e10a4838a50c1fd5ad1d98cd",
+      "role": "the compact layer, its validation and its reverse routes, shared by the Pythia leaves"
     },
     {
       "path": "../../../../common/pythia/hffn_pythia/export.py",
-      "sha256": "3881ed36970f651c940a2bec8cfe847de4b20c61caf8043c88f63b551f7bea9f",
+      "sha256": "3f8945de43dbd61f0dd3d9bf847daae48e5365f563d5a6c2cb14cf5c34059527",
       "role": "reader of the compact exports (groups=True for the training runtime), shared with the Pythia inference leaves"
     },
     {
-      "path": "../../../common/llm/training/hffn_training_runtime/padded_export.py",
-      "sha256": "b652cc884dd043dd375b38a76044474556848a78da2f13f5329cefbbee5662b0",
-      "role": "reader of the padded export format"
-    },
-    {
       "path": "../../../common/llm/training/hffn_training_runtime/compact_runtime.py",
-      "sha256": "d9f7a0cf5edb96447fd949a22df6be1775e1617cb33029787cecd0201132448c",
+      "sha256": "d80d74547762ed02c69da8c1e95dff8ede56afbad572b4e58e40411ebea17d5e",
       "role": "compact training runtime, with cold state_dict and load_state_dict"
     },
     {
@@ -51,29 +46,29 @@
       "role": "save and restore of the compact runtime and of the compact optimizer"
     },
     {
-      "path": "../../../common/llm/training/hffn_training_runtime/padded_import.py",
-      "sha256": "78d7c694ff4fcdee49bb036b936795990021c0095d5235e3ffcdc59fc426baae",
-      "role": "cold import of a padded training checkpoint into the compact runtime"
-    },
-    {
       "path": "hffn_training_runtime/forward_entry.py",
-      "sha256": "22ff18a6fc9171130ecbee437d1c4f8cf497b87f33892f633cfea75113a8530e",
+      "sha256": "5ee84f6c4a6ad0c794b57371c498ffbd1291be3d261295a7f9c8023d68ab407e",
       "role": "entry of the forward of this leaf: the sibling inference kernel"
     },
     {
       "path": "../../../common/llm/training/hffn_training_runtime/forward_route_check.py",
-      "sha256": "0278bbc484d741e69b215b78fa312d735d0efe7ffe9dda5d1471c05ff699655c",
+      "sha256": "ce59e151adf3ccc4d778f3b18c09037dcf9f5dc2306829c8c1248ee33e625697",
       "role": "check of the forward route, one copy for x86 and M1"
     },
     {
       "path": "../../../common/llm/training/hffn_training_runtime/masked_reference.py",
-      "sha256": "471730b3b96b6965416217b454aa47dced82cafc2c78944d1a941e919fc3ea56",
+      "sha256": "c1dc22e9d2c2f36f6349f2caea3eec399f0cadb874191b809c052c88d667ed6d",
       "role": "dense fixed-support reference of the checks (a control)"
     },
     {
       "path": "../../../common/llm/training/hffn_training_runtime/compact_torch_extension.py",
-      "sha256": "90e0be38177001c70850e5b88099da948a54936f21c3f8500c0c18ce75610b0b",
+      "sha256": "ae9d84cd151cb16cff1abf30297c0cbc2b5774a96756abd9f5bf7178e5dd8965",
       "role": "build and load of the training extension"
+    },
+    {
+      "path": "../../../common/recipe/compact_extension.py",
+      "sha256": "8aeacc49f9cd1b196ef69db1bef9f7d010ebd249d5f26c44c126dcfb3c545b08",
+      "role": "build recipe shared by the CPU leaves, loaded by path from the tree root by the facade of each leaf"
     },
     {
       "path": "hffn_training_runtime/build_entry.py",
@@ -82,18 +77,28 @@
     },
     {
       "path": "hffn_training_runtime/__init__.py",
-      "sha256": "9ff68b7663ee65442891b1a747aa795eb52002ccf118648fbe6cf6a253d741cb",
+      "sha256": "6c4001596662d5ae8baad805b10f50e4792ac4b660a96f9deef52b30ab77067f",
       "role": "compact names; the package path extends to the shared level"
     },
     {
       "path": "../../common/hffn_x86_common/inference.py",
-      "sha256": "4d4a8c64a47c24a5b938ebf0fa163a4edd1a4e7fe2791ab32ac50ca47256a18d",
+      "sha256": "83eecb070f39b3978e0ea7661720208ec9ea5c144a4e8ad7c506b460327463ba",
       "role": "x86 inference binding, with the isolated N = 1 sidecar and the ordinary inference library"
     },
     {
       "path": "../../common/kernels/hffn_compact_g4_inference_n1.cpp",
       "sha256": "7f5eaa934f41bbcd2aa33ffbf2824aaa84a2e9aecfdd2d6bf8ba7ae58e55a95f",
       "role": "N = 1 sidecar: a materializing entry compiled as a hidden-visibility library that includes the shared inference kernel source"
+    },
+    {
+      "path": "hffn_training_runtime/grad_first_runtime.py",
+      "sha256": "5e313e159938efc27161fe0acb54e96d5d49d80bcbac76008ae6fecce5bbd274",
+      "role": "x86 training runtime: gradients written first, then the native AdamW update"
+    },
+    {
+      "path": "../../../common/recipe/plain_dylib.py",
+      "sha256": "4a7e638fd79ff511f0810f059ade3993f66baa76c3cce1f17816dcf0665197db",
+      "role": "shared plain-library build recipe used by the x86 inference builder"
     }
   ]
 }

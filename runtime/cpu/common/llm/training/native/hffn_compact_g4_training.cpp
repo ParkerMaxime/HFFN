@@ -37,11 +37,79 @@ inline void bgroup8(const BJob& j,int g) {
         if(j.compute_up) for(int p=us;p<ue;++p){const int in=j.upidx[p];const float* x=j.x+static_cast<size_t>(in)*8;const float w=j.upval[p];j.gup[p]+=gz[0]*x[0]+gz[1]*x[1]+gz[2]*x[2]+gz[3]*x[3]+gz[4]*x[4]+gz[5]*x[5]+gz[6]*x[6]+gz[7]*x[7];if(j.write_gx){float* out=j.gxlocal+(static_cast<size_t>(g)*j.h+in)*8;out[0]+=gz[0]*w;out[1]+=gz[1]*w;out[2]+=gz[2]*w;out[3]+=gz[3]*w;out[4]+=gz[4]*w;out[5]+=gz[5]*w;out[6]+=gz[6]*w;out[7]+=gz[7]*w;}}
     }
 }
+// Build switch HFFN_G4_UP_TOKEN_CONTIGUOUS: with the macro undefined these two expand to nothing, so the preprocessed
+// text of bgroup is the shipped text and no compiler can tell the two sources apart.
+#ifdef HFFN_G4_UP_TOKEN_CONTIGUOUS
+#define HFFN_G4_UP_POST_DECL const bool up_post=j.compute_up&&!j.write_gx;
+#define HFFN_G4_UP_POST_TEST &&!up_post
+#else
+#define HFFN_G4_UP_POST_DECL
+#define HFFN_G4_UP_POST_TEST
+#endif
+#ifdef HFFN_G4_DOWN_TOKEN_CONTIGUOUS
+// Build switch HFFN_G4_DOWN_TOKEN_CONTIGUOUS. Token bound of the private gh array of bgroup: the bound of
+// tile_for, so every call [begin,end) of the shipped dispatch is one chunk; bgroup still walks longer ranges in
+// chunks of this size, so the array can never be overrun.
+constexpr int kG4DownTile=128;
+#endif
 inline void bgroup(const BJob& j,int g) {
     if(j.n==8&&j.begin==0&&j.end==8){bgroup8(j,g);return;}
     for(int hidden=j.groups[g];hidden<j.groups[g+1];++hidden) {
         const int us=j.upoff[hidden],ue=j.upoff[hidden+1],ds=j.downoff[hidden],de=j.downoff[hidden+1]; float bgrad=0.0f;
-        for(int b=j.begin;b<j.end;++b) { float gh=0.0f; for(int p=ds;p<de;++p){const float v=j.gy[static_cast<size_t>(j.downidx[p])*j.n+b];j.gdown[p]+=j.act[static_cast<size_t>(hidden)*j.n+b]*v;gh+=j.downval[p]*v;} const float gz=gh*gelu_grad(j.z[static_cast<size_t>(hidden)*j.n+b]);j.gz[static_cast<size_t>(hidden)*j.n+b]=gz;bgrad+=gz;if(j.compute_up)for(int p=us;p<ue;++p){const int in=j.upidx[p];j.gup[p]+=gz*j.x[static_cast<size_t>(in)*j.n+b];if(j.write_gx)j.gxlocal[(static_cast<size_t>(g)*j.h+in)*j.n+b]+=gz*j.upval[p];}}
+        HFFN_G4_UP_POST_DECL
+#ifdef HFFN_G4_DOWN_TOKEN_CONTIGUOUS
+        // Down side slot-outer, token-inner. For each down slot p, one contiguous pass over the chunk's tokens of
+        // gy[downidx[p]*n..] and act[hidden*n..]. gdown[p] is loaded once, receives act[b]*v for b ascending (the
+        // chain of the token-outer loop) and is stored once; four slots are blocked by four independent
+        // accumulators and the token loop is neither vectorised, interleaved nor unrolled, so no chain is split.
+        // gh[b] receives downval[p]*v for p ascending (slot blocks in order, slots in order inside a block), the
+        // chain of the token-outer loop. Reassociation is off in this block so that -ffast-math can neither
+        // reorder nor horizontally reduce the four gh terms of a block; contraction keeps the build's setting.
+        for(int c0=j.begin;c0<j.end;c0+=kG4DownTile){const int c1=std::min(c0+kG4DownTile,j.end);float ghs[kG4DownTile];
+            {_Pragma("clang fp reassociate(off)")
+                const float* ar=j.act+static_cast<size_t>(hidden)*j.n;
+                for(int b=c0;b<c1;++b)ghs[b-c0]=0.0f;
+                int p=ds;
+#ifdef HFFN_G4_DOWN_BLOCK8
+                // eight slots per token pass (accumulators a0..a7, one gh chain t); slots stay in order
+                // inside the block and blocks stay in order, so every chain is the one of the block of four.
+                for(;p+8<=de;p+=8){const float* y0=j.gy+static_cast<size_t>(j.downidx[p])*j.n;const float* y1=j.gy+static_cast<size_t>(j.downidx[p+1])*j.n;const float* y2=j.gy+static_cast<size_t>(j.downidx[p+2])*j.n;const float* y3=j.gy+static_cast<size_t>(j.downidx[p+3])*j.n;
+                    const float* y4=j.gy+static_cast<size_t>(j.downidx[p+4])*j.n;const float* y5=j.gy+static_cast<size_t>(j.downidx[p+5])*j.n;const float* y6=j.gy+static_cast<size_t>(j.downidx[p+6])*j.n;const float* y7=j.gy+static_cast<size_t>(j.downidx[p+7])*j.n;
+                    const float w0=j.downval[p],w1=j.downval[p+1],w2=j.downval[p+2],w3=j.downval[p+3],w4=j.downval[p+4],w5=j.downval[p+5],w6=j.downval[p+6],w7=j.downval[p+7];
+                    float a0=j.gdown[p],a1=j.gdown[p+1],a2=j.gdown[p+2],a3=j.gdown[p+3],a4=j.gdown[p+4],a5=j.gdown[p+5],a6=j.gdown[p+6],a7=j.gdown[p+7];
+                    _Pragma("clang loop vectorize(disable) interleave(disable) unroll(disable)")
+                    for(int b=c0;b<c1;++b){const float a=ar[b];const float v0=y0[b],v1=y1[b],v2=y2[b],v3=y3[b],v4=y4[b],v5=y5[b],v6=y6[b],v7=y7[b];a0+=a*v0;a1+=a*v1;a2+=a*v2;a3+=a*v3;a4+=a*v4;a5+=a*v5;a6+=a*v6;a7+=a*v7;float t=ghs[b-c0];t+=w0*v0;t+=w1*v1;t+=w2*v2;t+=w3*v3;t+=w4*v4;t+=w5*v5;t+=w6*v6;t+=w7*v7;ghs[b-c0]=t;}
+                    j.gdown[p]=a0;j.gdown[p+1]=a1;j.gdown[p+2]=a2;j.gdown[p+3]=a3;j.gdown[p+4]=a4;j.gdown[p+5]=a5;j.gdown[p+6]=a6;j.gdown[p+7]=a7;}
+#endif
+                for(;p+4<=de;p+=4){const float* y0=j.gy+static_cast<size_t>(j.downidx[p])*j.n;const float* y1=j.gy+static_cast<size_t>(j.downidx[p+1])*j.n;const float* y2=j.gy+static_cast<size_t>(j.downidx[p+2])*j.n;const float* y3=j.gy+static_cast<size_t>(j.downidx[p+3])*j.n;
+                    const float w0=j.downval[p],w1=j.downval[p+1],w2=j.downval[p+2],w3=j.downval[p+3];
+                    float a0=j.gdown[p],a1=j.gdown[p+1],a2=j.gdown[p+2],a3=j.gdown[p+3];
+                    _Pragma("clang loop vectorize(disable) interleave(disable) unroll(disable)")
+                    for(int b=c0;b<c1;++b){const float a=ar[b];const float v0=y0[b],v1=y1[b],v2=y2[b],v3=y3[b];a0+=a*v0;a1+=a*v1;a2+=a*v2;a3+=a*v3;float t=ghs[b-c0];t+=w0*v0;t+=w1*v1;t+=w2*v2;t+=w3*v3;ghs[b-c0]=t;}
+                    j.gdown[p]=a0;j.gdown[p+1]=a1;j.gdown[p+2]=a2;j.gdown[p+3]=a3;}
+                for(;p<de;++p){const float* y0=j.gy+static_cast<size_t>(j.downidx[p])*j.n;const float w0=j.downval[p];float a0=j.gdown[p];
+                    _Pragma("clang loop vectorize(disable) interleave(disable) unroll(disable)")
+                    for(int b=c0;b<c1;++b){const float v0=y0[b];a0+=ar[b]*v0;ghs[b-c0]+=w0*v0;}
+                    j.gdown[p]=a0;}}
+            // The remaining token loop of the shipped code, gh read from the chunk array: gz, bgrad in token order
+            // (the loop is kept scalar so the bgrad chain is not split) and the inline up update unchanged.
+            _Pragma("clang loop vectorize(disable) interleave(disable) unroll(disable)")
+            for(int b=c0;b<c1;++b) { const float gz=ghs[b-c0]*gelu_grad(j.z[static_cast<size_t>(hidden)*j.n+b]);j.gz[static_cast<size_t>(hidden)*j.n+b]=gz;bgrad+=gz;if(j.compute_up HFFN_G4_UP_POST_TEST)for(int p=us;p<ue;++p){const int in=j.upidx[p];j.gup[p]+=gz*j.x[static_cast<size_t>(in)*j.n+b];if(j.write_gx)j.gxlocal[(static_cast<size_t>(g)*j.h+in)*j.n+b]+=gz*j.upval[p];}}}
+#else
+        for(int b=j.begin;b<j.end;++b) { float gh=0.0f; for(int p=ds;p<de;++p){const float v=j.gy[static_cast<size_t>(j.downidx[p])*j.n+b];j.gdown[p]+=j.act[static_cast<size_t>(hidden)*j.n+b]*v;gh+=j.downval[p]*v;} const float gz=gh*gelu_grad(j.z[static_cast<size_t>(hidden)*j.n+b]);j.gz[static_cast<size_t>(hidden)*j.n+b]=gz;bgrad+=gz;if(j.compute_up HFFN_G4_UP_POST_TEST)for(int p=us;p<ue;++p){const int in=j.upidx[p];j.gup[p]+=gz*j.x[static_cast<size_t>(in)*j.n+b];if(j.write_gx)j.gxlocal[(static_cast<size_t>(g)*j.h+in)*j.n+b]+=gz*j.upval[p];}}
+#endif
+#ifdef HFFN_G4_UP_TOKEN_CONTIGUOUS
+        // grad_up per up slot over the tile's tokens in ascending order, from the stored gup[p]: the sequence of
+        // additions of each slot is the one of the token-outer loop. Slots are blocked by four independent
+        // accumulators; a slot's chain is never split across tokens.
+        if(up_post){const float* gzr=j.gz+static_cast<size_t>(hidden)*j.n;int p=us;
+            for(;p+4<=ue;p+=4){const float* x0=j.x+static_cast<size_t>(j.upidx[p])*j.n;const float* x1=j.x+static_cast<size_t>(j.upidx[p+1])*j.n;const float* x2=j.x+static_cast<size_t>(j.upidx[p+2])*j.n;const float* x3=j.x+static_cast<size_t>(j.upidx[p+3])*j.n;
+                float a0=j.gup[p],a1=j.gup[p+1],a2=j.gup[p+2],a3=j.gup[p+3];
+                _Pragma("clang loop vectorize(disable) interleave(disable) unroll(disable)")
+                for(int b=j.begin;b<j.end;++b){const float g=gzr[b];a0+=g*x0[b];a1+=g*x1[b];a2+=g*x2[b];a3+=g*x3[b];}
+                j.gup[p]=a0;j.gup[p+1]=a1;j.gup[p+2]=a2;j.gup[p+3]=a3;}
+            for(;p<ue;++p){const float* x0=j.x+static_cast<size_t>(j.upidx[p])*j.n;float a0=j.gup[p];_Pragma("clang loop vectorize(disable) interleave(disable) unroll(disable)") for(int b=j.begin;b<j.end;++b)a0+=gzr[b]*x0[b];j.gup[p]=a0;}}
+#endif
         j.gbup[hidden]+=bgrad;
     }
 }

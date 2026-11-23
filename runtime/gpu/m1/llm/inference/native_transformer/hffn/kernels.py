@@ -26,21 +26,19 @@ down  output-owner reduction per segment:
       Decode: one dispatch for all segments; prefill: one dispatch per segment.
 
 Rounding: per-bank sums in edge order, then the gated sum and the bias with
-`volatile` stores so the compiler cannot contract them into FMAs. 
+`volatile` stores so the compiler cannot contract them into FMAs.
 
 d_model (the width of x and y) is a compile-time constant of each generated library, given by the
 caller; called with d_model = 256, every generator emits the source of the fixed width 256.
 """
 
-PRELUDE = '''
-inline float erf_accurate(float x) {
-  float ax=metal::abs(x),t=1.0f/(1.0f+0.3275911f*ax);
-  float p=(((((1.061405429f*t-1.453152027f)*t+1.421413741f)*t-0.284496736f)*t+0.254829592f)*t);
-  float y=1.0f-p*metal::exp(-ax*ax);
-  return x<0.0f?-y:y;
-}
-inline float gelu(float x) { return 0.5f*x*(1.0f+erf_accurate(x*0.7071067811865475f)); }
-'''
+import sys
+from pathlib import Path
+_COMMON = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())/'runtime/gpu/m1/common'
+if str(_COMMON) not in sys.path:sys.path.insert(0,str(_COMMON))
+from hffn_m1.activation import inference_source
+
+PRELUDE = inference_source()
 ACTIVATIONS = {    # hidden activation: its Metal definition; the exact-erf GELU is the one of PRELUDE
     'gelu': None,
     'relu': 'inline float relu(float x) { return metal::max(x, 0.0f); }\n',

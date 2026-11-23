@@ -1,14 +1,23 @@
-"""Hybrid PyTorch + compact Metal AdamW for Pythia training."""
+"""Hybrid PyTorch + native compact AdamW for Pythia training.
+
+the compact arm is the owner's optimizer-only step of ``gpu/m1/ffn/training`` (one dedicated
+native context per layer, ``NativeFFNAdapter.optimizer_step``); the non-FFN weights stay the dense PyTorch AdamW. The consumer
+keeps its moment form (lerp), its non-finite policy and its step counters; it computes the float32 scalars of each update.
+"""
 
 from __future__ import annotations
 
 import math
 
+import numpy
 import torch
 from torch import nn
 
 from .model import HFFNMetalMLP
-from .shaders import adamw_source
+
+
+def _f32(value: float) -> float:
+    return float(numpy.float32(value))
 
 
 class HFFNMetalAdamW:
@@ -22,6 +31,9 @@ class HFFNMetalAdamW:
         betas: tuple[float, float] = (0.9, 0.999),
         eps: float = 1e-8,
     ) -> None:
+        for module in modules:
+            if getattr(module, "adapter", None) is None:
+                raise TypeError("HFFNMetalAdamW: every compact module needs the native adapter (NativeBackwardMLP)")
         self.modules = modules
         self.lr = float(lr)
         self.weight_decay = float(weight_decay)
@@ -36,18 +48,19 @@ class HFFNMetalAdamW:
             eps=self.eps,
             weight_decay=self.weight_decay,
         )
-        self.lib = torch.mps.compile_shader(adamw_source())
-        self.moments = [
-            (torch.zeros_like(module.flat), torch.zeros_like(module.flat)) for module in modules
-        ]
         self.steps = [0 for _ in modules]
-        self._inflight: list[tuple[torch.mps.Event, tuple[torch.Tensor, ...]]] = []
+        for module in modules:
+            module.adapter.prepare_optimizer()
+
+    @property
+    def moments(self) -> list[tuple[torch.Tensor, torch.Tensor]]:
+        """Read-back of the compact moments per layer (CPU float32, flat order), for the gates that read them; cold, a copy."""
+        return [module.adapter.export_moments() for module in self.modules]
 
     def _reap_inflight(self) -> None:
-        self._inflight = [entry for entry in self._inflight if not entry[0].query()]
+        """Kept for callers: every native update waits for its own completion, nothing stays in flight."""
 
     def zero_grad(self, set_to_none: bool = True) -> None:
-        self._reap_inflight()
         self.base.zero_grad(set_to_none=set_to_none)
         for module in self.modules:
             if set_to_none:
@@ -57,35 +70,30 @@ class HFFNMetalAdamW:
 
     def step(self) -> None:
         self.base.step()
-        submitted_grads = []
-        for index, (module, (moment1, moment2)) in enumerate(zip(self.modules, self.moments)):
+        for index, module in enumerate(self.modules):
             grad = module.flat.grad
             if grad is None:
                 continue
-            submitted_grads.append(grad)
             self.steps[index] += 1
             step = self.steps[index]
             step_size = self.lr / (1.0 - self.beta1 ** step)
             beta2_scale = math.sqrt(1.0 - self.beta2 ** step)
-            self.lib.adamw_compact(
-                module.flat, grad, moment1, moment2,
-                self.lr, self.beta1, self.beta2, self.eps,
-                self.weight_decay, step_size, beta2_scale,
-                threads=module.flat.numel(), group_size=256,
-            )
-        if submitted_grads:
-            completion = torch.mps.Event()
-            completion.record()
-            self._inflight.append((completion, tuple(submitted_grads)))
+            scalars = tuple(_f32(v) for v in (self.lr, self.beta1, self.beta2, self.eps, self.weight_decay,
+                                              step_size, beta2_scale))
+            module.adapter.optimizer_step(scalars, grad)
 
     def set_lr(self, lr: float) -> None:
-        """Update both the PyTorch and compact-Metal learning rates."""
+        """Update both the PyTorch and compact-native learning rates."""
         self.lr = float(lr)
         for group in self.base.param_groups:
             group["lr"] = self.lr
 
     def state_dict(self) -> dict:
         """Return a portable checkpoint containing both optimizer arms."""
+        compact = []
+        for step, module in zip(self.steps, self.modules):
+            moment1, moment2 = module.adapter.export_moments()
+            compact.append({"step": step, "moment1": moment1, "moment2": moment2})
         return {
             "format": "hffn_metal_adamw_state_v1",
             "hyperparameters": {
@@ -95,14 +103,7 @@ class HFFNMetalAdamW:
                 "eps": self.eps,
             },
             "base": self.base.state_dict(),
-            "compact": [
-                {
-                    "step": step,
-                    "moment1": moment1.detach().cpu(),
-                    "moment2": moment2.detach().cpu(),
-                }
-                for step, (moment1, moment2) in zip(self.steps, self.moments)
-            ],
+            "compact": compact,
         }
 
     def load_state_dict(self, state: dict) -> None:
@@ -118,11 +119,9 @@ class HFFNMetalAdamW:
             raise ValueError("AdamW beta/epsilon mismatch")
         self.weight_decay = float(hyper["weight_decay"])
         self.set_lr(float(hyper["lr"]))
-        for index, (saved, (moment1, moment2)) in enumerate(zip(compact, self.moments)):
-            saved_m1 = saved["moment1"]
-            saved_m2 = saved["moment2"]
-            if tuple(saved_m1.shape) != tuple(moment1.shape) or tuple(saved_m2.shape) != tuple(moment2.shape):
+        for index, (saved, module) in enumerate(zip(compact, self.modules)):
+            expected = tuple(module.flat.shape)
+            if tuple(saved["moment1"].shape) != expected or tuple(saved["moment2"].shape) != expected:
                 raise ValueError(f"compact optimizer shape mismatch at layer {index}")
-            moment1.copy_(saved_m1.to(device=moment1.device, dtype=moment1.dtype))
-            moment2.copy_(saved_m2.to(device=moment2.device, dtype=moment2.dtype))
+            module.adapter.restore_moments(saved["moment1"], saved["moment2"], int(saved["step"]))
             self.steps[index] = int(saved["step"])

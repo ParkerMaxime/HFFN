@@ -19,8 +19,8 @@ Work buffers (dense, owned by the loader, reused across calls):
   starting on a 64-byte boundary (``WORK_ALIGNMENT``);
 - only the buffers the route uses (decode: act; dual: x_t, act; baseline: x_t, act, y_local);
 - y_t shares x_t (x_t is dead once the hidden phase is over);
-- batches above 96 tokens run as consecutive chunks of at most 96 (balanced, multiples of 8),
-  so that every chunk takes the kernel's register-blocked paths.
+- a block of N tokens is one native call for every N; the 96-token tile lives inside the kernel
+  not in this loader.
 No PyTorch import: the kernel only needs the C++ runtime and glibc's libm/libmvec.
 """
 from __future__ import annotations
@@ -35,7 +35,6 @@ from . import build
 from hffn_ffn_layers.synth import CompactLayer
 
 ROUTES = ("decode", "baseline", "dual")
-MAX_BATCH = 96
 MAX_DEFAULT_THREADS = 8
 
 _ROLES = {"decode": ("act",), "baseline": ("x_t", "act", "y_local"), "dual": ("x_t", "act")}
@@ -58,15 +57,6 @@ def default_threads() -> int:
 
 def recommended_route(n: int) -> str:
     return "decode" if n == 1 else "dual"
-
-
-def batch_chunks(n: int, max_batch: int | None) -> list[tuple[int, int]]:
-    """(start, size) of the consecutive token chunks of a batch of n."""
-    if not max_batch or n <= max_batch:
-        return [(0, n)]
-    count = -(-n // max_batch)
-    size = -(-(-(-n // count)) // 8) * 8
-    return [(start, min(size, n - start)) for start in range(0, n, size)]
 
 
 def _balanced_group_offsets(cost: np.ndarray, threads: int) -> np.ndarray:
@@ -105,12 +95,11 @@ def dual_route(layer: CompactLayer, threads: int) -> dict:
 
 
 class CompactKernel:
-    def __init__(self, layer: CompactLayer, max_batch: int | None = MAX_BATCH, threads: int | None = None,
+    def __init__(self, layer: CompactLayer, threads: int | None = None,
                  hidden_owned: bool = True):
         """``hidden_owned=False`` keeps only what the recommended routes read (the up arrays and
         the reverse schedule): the hidden-major down arrays, a third of the model, are not
         referenced and the ``baseline`` route is unavailable."""
-        self.max_batch = max_batch
         self._lib = ctypes.CDLL(str(build.build()))
         self.threads = threads or default_threads()
         self._groups = hidden_partition(layer, self.threads)
@@ -129,7 +118,6 @@ class CompactKernel:
             function.restype = None
         self._flat: dict[str, np.ndarray] = {}
         self._timing: dict[int, np.ndarray] = {}
-        self._chunked_timing: dict[int, np.ndarray] = {}
         self._arguments_cache: dict[tuple[str, int], tuple] = {}
 
     # Memory -------------------------------------------------------------------------------
@@ -195,29 +183,14 @@ class CompactKernel:
         assert x_nt.dtype == np.float32 and x_nt.flags.c_contiguous and x_nt.shape[1] == self.layer.d_model
         route = route or recommended_route(n)
         y = np.empty_like(x_nt)
-        chunks = batch_chunks(n, self.max_batch if route != "decode" else None)
-        calls = []
-        for start, size in chunks:
-            function, arguments, x_slot, y_slot = self._arguments(route, size)
-            arguments = list(arguments)
-            arguments[x_slot] = x_nt.ctypes.data + start * x_nt.strides[0]
-            arguments[y_slot] = y.ctypes.data + start * y.strides[0]
-            calls.append((function, arguments))
-        if len(calls) == 1:
-            function, arguments = calls[0]
-            for _ in range(repeat):
-                function(*arguments)
-            return y
+        function, arguments, x_slot, y_slot = self._arguments(route, n)
+        arguments = list(arguments)
+        arguments[x_slot] = x_nt.ctypes.data
+        arguments[y_slot] = y.ctypes.data
         for _ in range(repeat):
-            total = np.zeros(4, np.int64)
-            for (function, arguments), (_, size) in zip(calls, chunks):
-                function(*arguments)
-                total += self._timing[size]  # chunks of equal size share one timing array
-            self._chunked_timing[n] = total
+            function(*arguments)  # one native call for the whole block of N tokens
         return y
 
     def kernel_ns(self, n: int) -> np.ndarray:
         """Phase timings (ns) of the last call at batch n, measured inside the kernel."""
-        if self.max_batch and n > self.max_batch and n in self._chunked_timing:
-            return self._chunked_timing[n].copy()
         return self._timing[n].copy()

@@ -48,8 +48,8 @@ def read_layer(path: Path, *, groups: bool = False) -> dict:
     return layer
 
 
-def read_layers(export_dir: str | Path, count: int) -> list[dict]:
-    return [read_layer(Path(export_dir) / f"layer{index}" / f"{FORMAT}.pt") for index in range(count)]
+def read_layers(export_dir: str | Path, count: int, *, groups: bool = False) -> list[dict]:
+    return [read_layer(Path(export_dir) / f"layer{index}" / f"{FORMAT}.pt", groups=groups) for index in range(count)]
 
 
 def hidden_of_slot(layer: dict, side: str) -> torch.Tensor:

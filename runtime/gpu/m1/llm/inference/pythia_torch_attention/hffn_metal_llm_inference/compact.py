@@ -8,8 +8,8 @@ from pathlib import Path
 
 import torch
 
-# The file reader of the export exists once, at the shared Pythia level, found from the root of the `runtime/` tree
-# (the first parent that holds `runtime/common/pythia`).
+# The file reader of the export exists once, at the shared Pythia level, found from the repository root (the first
+# parent that holds runtime/common/pythia): the upward search of the CPU readers would not find it from every folder.
 _ROOT = next(p for p in Path(__file__).resolve().parents if (p / "runtime" / "common" / "pythia" / "hffn_pythia").is_dir())
 _PYTHIA = _ROOT / "runtime/common/pythia"
 if str(_PYTHIA) not in sys.path:
